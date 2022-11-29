@@ -1,104 +1,96 @@
-// App.js
+import { React, useState } from "react";
+import {
+  NativeBaseProvider,
+  HStack,
+  Pressable,
+  Center,
+  Box,
+  IContainerProps,
+  Text,
+} from "native-base";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { View, Dimensions } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import React, { Component } from 'react';
-import { TextInput, Text, Button, Alert, View, StyleSheet } from 'react-native';
-import * as yup from 'yup'
-import { Formik } from 'formik'
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Navigation from "../navigations/Navigation";
 
-
-const SampleForm=()=>{
-
-    const inputStyle = {
-        borderWidth: 1,
-        borderColor: '#4e4e4e',
-        padding: 12,
-        marginBottom: 5,
-      };
-    return (
-        <Formik
-          initialValues={{ 
-            firstname: '',
-            lastname:'',
-            email: '', 
-            password: '', 
-            contact:'',
-
-          }}
-          onSubmit={values => Alert.alert(JSON.stringify(values))}
-          validationSchema={yup.object().shape({
-            firstname: yup
-              .string()
-              .required('Please, provide your name!'),
-            lasttname: yup
-              .string()
-              .required('Please, provide your name!'),
-            email: yup
-              .string()
-              .email()
-              .required(),
-            contact: yup
-              .string()
-              .email()
-              .required(),
-            password: yup
-              .string()
-              .min(4)
-              .max(10, 'Password should not excced 10 chars.')
-              .required(),
-          })}
-         >
-          {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
-            <View style={styles.formContainer}>
-              <TextInput
-                value={values.name}
-                style={inputStyle}
-                onChangeText={handleChange('firstname')}
-                onBlur={() => setFieldTouched('firstname')}
-                placeholder="First Name"
-              />
-              {touched.name && errors.name &&
-                <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.name}</Text>
-              }            
-              <TextInput
-                value={values.email}
-                style={inputStyle}
-                onChangeText={handleChange('email')}
-                onBlur={() => setFieldTouched('email')}
-                placeholder="E-mail"
-              />
-              {touched.email && errors.email &&
-                <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.email}</Text>
-              }
-              <TextInput
-                value={values.password}
-                style={inputStyle}
-                onChangeText={handleChange('password')}
-                placeholder="Password"
-                onBlur={() => setFieldTouched('password')}
-                secureTextEntry={true}
-              />
-              {touched.password && errors.password &&
-                <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.password}</Text>
-              }
-              <Button
-                color="#3740FE"
-                title='Submit'
-                disabled={!isValid}
-                onPress={handleSubmit}
-              />
-            </View>
-          )}
-        </Formik>
-      );
-
-
-}
-
-const styles = StyleSheet.create({
-  formContainer: {
-    padding: 50 
-  }
-});
-console.disableYellowBox = true;
+const SampleForm = ({ navigation }) => {
+  const [selected, setSelected] = useState(1);
+  const windowWidth = Dimensions.get("window");
+  return (
+    <NativeBaseProvider>
+      <HStack
+        marginTop="175%"
+        flex={1}
+        bg="#3F778E"
+        alignItems="center"
+        // safeAreaBottom
+        shadow={6}
+      >
+        <Pressable
+          cursor="pointer"
+          marginTop={1}
+          opacity={selected === 0 ? 1 : 0.5}
+          py="3"
+          flex={1}
+          onPress={() => setSelected(0)}
+          {...(selected == 0 && navigation.navigate("Home"))}
+        >
+          <Center>
+            <Icon name="home" color="white" size="20px" />
+            <Text color="white" fontSize="12">
+              Home
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 1 ? 1 : 0.5}
+          py="2"
+          flex={1}
+          onPress={() => setSelected(1)}
+          {...(selected == 1 && navigation.navigate("List"))}
+        >
+          <Center>
+            <Ionicons mb="1" name="search" color="white" size="20px" />
+            <Text color="white" fontSize="12">
+              Search
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 2 ? 1 : 0.6}
+          py="2"
+          flex={1}
+          onPress={() => setSelected(2)}
+        >
+          <Center>
+            <Icon mb="1" name="cart" color="white" size="20px" />
+            <Text color="white" fontSize="12">
+              Cart
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 3 ? 1 : 0.5}
+          py="2"
+          flex={1}
+          onPress={() => setSelected(3)}
+          {...(selected == 3 && navigation.navigate("Edit"))}
+        >
+          <Center>
+            <Icon mb="1" name="account" color="white" size="20px" />
+            <Text color="white" fontSize="12">
+              Account
+            </Text>
+          </Center>
+        </Pressable>
+      </HStack>
+    </NativeBaseProvider>
+  );
+};
 
 export default SampleForm;

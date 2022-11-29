@@ -1,20 +1,47 @@
 import React from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Pressable,
+  SafeAreaView,
+} from "react-native";
+import * as Animatable from "react-native-animatable";
 
 const Welcome = ({ navigation }) => {
-  const abc = () => {};
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Animatable.View marginVertical={100}>
+        <Animatable.Image
+          animation="rotate"
+          delay={1000}
+          iterationCount={"infinite"}
+          useNativeDriver={true}
+          style={{
+            width: 100,
+            height: 100,
+          }}
+          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+        />
+      </Animatable.View>
+
       <Text>Welcome Screen</Text>
-      <Button
-        //this name Images has come from the app page navigator
-        onPress={() => navigation.navigate("Register")}
-        title={"To Register Screen"}
-      />
-      <Button
+
+      <Pressable
+        style={styles.buttonStyle}
         onPress={() => navigation.navigate("Login")}
-        title={"To Login Screen"}
-      />
+      >
+        <Text style={styles.textStyle}>LOGIN</Text>
+      </Pressable>
+
+      <Pressable
+        style={styles.buttonStyle}
+        onPress={() => navigation.navigate("Register")}
+      >
+        <Text style={styles.textStyle}>REGISTER</Text>
+      </Pressable>
+
       <Button
         onPress={() => navigation.navigate("List")}
         title={"To Topic List Screen"}
@@ -23,17 +50,44 @@ const Welcome = ({ navigation }) => {
         onPress={() => navigation.navigate("SampleForm")}
         title={"To Sample Form"}
       />
-    </View>
+
+      <Button onPress={() => navigation.navigate("Home")} title={"To Homeee"} />
+
+      <Button
+        onPress={() => navigation.navigate("Edit")}
+        title={"To Edittingggg"}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     fontFamily: "Roboto-Black",
+    flex: 1,
     backgroundColor: "#3486A7",
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonStyle: {
+    backgroundColor: "green",
+
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 35,
+    height: 20,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    borderWidth: 1,
+    minWidth: 250,
+    shadowOpacity: 0.3,
+  },
+  buttonTextStyle: {
+    fontFamily: "Roboto-Black",
+    fontSize: 20,
+    padding: 5,
+    color: "white",
+    textAlign: "center",
   },
 });
 

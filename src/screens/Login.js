@@ -21,20 +21,20 @@ const Login = () => {
 
   let rotateValueHolder = new Animated.Value(0);
 
-  const startImageRotateFunction = () => {
-    rotateValueHolder.setValue(0);
-    Animated.timing(rotateValueHolder, {
-      toValue: 1,
-      duration: 5000,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start(() => startImageRotateFunction());
-  };
+  // const startImageRotateFunction = () => {
+  //   rotateValueHolder.setValue(0);
+  //   Animated.timing(rotateValueHolder, {
+  //     toValue: 1,
+  //     duration: 5000,
+  //     easing: Easing.linear,
+  //     useNativeDriver: false,
+  //   }).start(() => startImageRotateFunction());
+  // };
 
-  const RotateData = rotateValueHolder.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
+  // const RotateData = rotateValueHolder.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: ["0deg", "360deg"],
+  // });
 
   return (
     <View style={styles.container}>
@@ -45,7 +45,7 @@ const Login = () => {
           height: 200,
           top: -200,
           marginTop: 60,
-          transform: [{ rotate: RotateData }],
+          // transform: [{ rotate: RotateData }],
         }}
         source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
       />
@@ -96,12 +96,12 @@ const Login = () => {
         <Text style={styles.buttonTextStyle}>LOGIN</Text>
       </View>
 
-      <TouchableHighlight
+      {/* <TouchableHighlight
         onPress={startImageRotateFunction}
         style={styles.buttonStyle}
       >
         <Text style={styles.buttonTextStyle}>Start Image Rotate Function</Text>
-      </TouchableHighlight>
+      </TouchableHighlight> */}
     </View>
   );
 };

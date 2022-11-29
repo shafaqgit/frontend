@@ -54,11 +54,11 @@ const List = () => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <Image
-        source={require("/Users/user/Desktop/frontend/FYP/assets/images/bg.jpg")}
+      {/* <Image
+        source={require("D:\react prac\shq_front_git\frontend\assets\images\bg.jpg")}
         style={StyleSheet.absoluteFillObject}
         blurRadius={70}
-      />
+      /> */}
       {isLoading ? (
         <ActivityIndicator />
       ) : (

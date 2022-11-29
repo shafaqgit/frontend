@@ -4,7 +4,10 @@ import Login from "../screens/Login";
 import Register from "../screens/Register";
 import Welcome from "../screens/Welcome";
 import List from "../screens/List";
+import Edit from "../screens/Edit";
 import SampleForm from "../screens/SampleForm";
+import Home from "../screens/Home";
+
 const stackNavigatorOptions = {
   headerShown: true,
   headerStyle: {
@@ -20,6 +23,8 @@ const AppNavigator = createStackNavigator(
     Register: { screen: Register, navigationOptions: { title: "Register" } },
     Login: { screen: Login, navigationOptions: { title: "Login" } },
     List: { screen: List, navigationOptions: { title: "Topic List" } },
+    Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
+    Home: { screen: Home, navigationOptions: { title: "Home" } },
     SampleForm: {
       screen: SampleForm,
       navigationOptions: { title: "Sample Form" },
