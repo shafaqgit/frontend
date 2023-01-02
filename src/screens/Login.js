@@ -9,10 +9,10 @@ import {
   View,
   Animated,
   Easing,
-  Button,
   TouchableHighlight,
   Text,
 } from "react-native";
+import { Button, NativeBaseProvider } from "native-base";
 import { withOrientation } from "react-navigation";
 
 const Login = () => {
@@ -37,72 +37,75 @@ const Login = () => {
   // });
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.textStyle}>WELCOME</Text>
-      <Animated.Image
-        style={{
-          width: 200,
-          height: 200,
-          top: -200,
-          marginTop: 60,
-          // transform: [{ rotate: RotateData }],
-        }}
-        source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
-      />
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 40,
-          alignItems: "center",
-          padding: 10,
-          borderWidth: 2,
-          borderRadius: 35,
-          shadowOpacity: 0.2,
-          top: -60,
-        }}
-      >
-        <Ionicons name="md-mail" size={32} color="black" />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          keyboardType="email-address"
-          style={styles.input}
+    <NativeBaseProvider>
+      <View style={styles.container}>
+        <Text style={styles.textStyle}>WELCOME</Text>
+        <Animated.Image
+          style={{
+            width: 200,
+            height: 200,
+            top: -200,
+            marginTop: 60,
+            // transform: [{ rotate: RotateData }],
+          }}
+          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
         />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 40,
-          alignItems: "center",
-          padding: 10,
-          borderWidth: 2,
-          borderRadius: 35,
-          shadowOpacity: 0.2,
-          top: -30,
-        }}
-      >
-        <Ionicons name="md-key" size={32} color="black" />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          keyboardType="visible-password"
-          secureTextEntry
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>LOGIN</Text>
-      </View>
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: 40,
+            alignItems: "center",
+            padding: 10,
+            borderWidth: 2,
+            borderRadius: 35,
+            shadowOpacity: 0.2,
+            top: -60,
+          }}
+        >
+          <Ionicons name="md-mail" size={32} color="black" />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType="email-address"
+            style={styles.input}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: 40,
+            alignItems: "center",
+            padding: 10,
+            borderWidth: 2,
+            borderRadius: 35,
+            shadowOpacity: 0.2,
+            top: -30,
+          }}
+        >
+          <Ionicons name="md-key" size={32} color="black" />
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            keyboardType="visible-password"
+            secureTextEntry
+            style={styles.input}
+          />
+        </View>
+        <View>
+          <Button style={styles.buttonStyle}>LOGIN</Button>
+          {/* <Text style={styles.buttonTextStyle}>LOGIN</Text> */}
+        </View>
 
-      {/* <TouchableHighlight
+        {/* <TouchableHighlight
         onPress={startImageRotateFunction}
         style={styles.buttonStyle}
       >
         <Text style={styles.buttonTextStyle}>Start Image Rotate Function</Text>
       </TouchableHighlight> */}
-    </View>
+      </View>
+    </NativeBaseProvider>
   );
 };
 
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#3486A7",
+    backgroundColor: "#D2822D",
   },
   input: {
     padding: 2,
@@ -130,7 +133,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buttonStyle: {
-    backgroundColor: "green",
     height: 55,
     alignItems: "center",
     justifyContent: "center",

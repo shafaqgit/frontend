@@ -23,7 +23,7 @@ const SampleForm = ({ navigation }) => {
       <HStack
         marginTop="175%"
         flex={1}
-        bg="#3F778E"
+        bg="#A66117"
         alignItems="center"
         // safeAreaBottom
         shadow={6}
@@ -65,11 +65,12 @@ const SampleForm = ({ navigation }) => {
           py="2"
           flex={1}
           onPress={() => setSelected(2)}
+          {...(selected == 2 && navigation.navigate("Profile"))}
         >
           <Center>
-            <Icon mb="1" name="cart" color="white" size="20px" />
+            <Icon mb="1" name="eye" color="white" size="20px" />
             <Text color="white" fontSize="12">
-              Cart
+              Profile
             </Text>
           </Center>
         </Pressable>

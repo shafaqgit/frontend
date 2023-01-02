@@ -1,63 +1,84 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  Pressable,
-  SafeAreaView,
-} from "react-native";
+import { Text, View, StyleSheet, Pressable, SafeAreaView } from "react-native";
+import { Heading, NativeBaseProvider, Button } from "native-base";
 import * as Animatable from "react-native-animatable";
 
 const Welcome = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Animatable.View marginVertical={100}>
-        <Animatable.Image
-          animation="rotate"
-          delay={1000}
-          iterationCount={"infinite"}
-          useNativeDriver={true}
-          style={{
-            width: 100,
-            height: 100,
-          }}
-          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+    <NativeBaseProvider>
+      <SafeAreaView style={styles.container}>
+        <Animatable.View marginVertical={100}>
+          <Animatable.Image
+            animation="rotate"
+            delay={1000}
+            iterationCount={"infinite"}
+            useNativeDriver={true}
+            style={{
+              width: 100,
+              height: 100,
+            }}
+            source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+          />
+        </Animatable.View>
+
+        <Heading marginBottom={"10%"}>Programmers' Battle</Heading>
+
+        <Button
+          style={styles.buttonStyle}
+          size={"sm"}
+          onPress={() => navigation.navigate("Login")}
+        >
+          LOGIN
+        </Button>
+
+        <Button
+          style={styles.buttonStyle}
+          size={"sm"}
+          onPress={() => navigation.navigate("Register")}
+        >
+          SIGN UP
+        </Button>
+
+        <Button
+          style={styles.buttonStyle}
+          size={"sm"}
+          onPress={() => navigation.navigate("SampleForm")}
+          title={"To Sample Form"}
+        >
+          BATTLE
+        </Button>
+
+        {/* <Button
+          onPress={() => navigation.navigate("Assess")}
+          title={"To Assessment"}
         />
-      </Animatable.View>
 
-      <Text>Welcome Screen</Text>
+        <Button
+          onPress={() => navigation.navigate("List")}
+          title={"To Topic List Screen"}
+        />
 
-      <Pressable
-        style={styles.buttonStyle}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.textStyle}>LOGIN</Text>
-      </Pressable>
+        <Button
+          onPress={() => navigation.navigate("Xyz")}
+          title={"To fkvdfvmfdvmffx Screen"}
+        />
 
-      <Pressable
-        style={styles.buttonStyle}
-        onPress={() => navigation.navigate("Register")}
-      >
-        <Text style={styles.textStyle}>REGISTER</Text>
-      </Pressable>
+        <Button
+          onPress={() => navigation.navigate("Profile")}
+          title={"To Profile"}
+        />
 
-      <Button
-        onPress={() => navigation.navigate("List")}
-        title={"To Topic List Screen"}
-      />
-      <Button
-        onPress={() => navigation.navigate("SampleForm")}
-        title={"To Sample Form"}
-      />
+        <Button
+          onPress={() => navigation.navigate("Home")}
+          title={"To Homeee"}
+        />
 
-      <Button onPress={() => navigation.navigate("Home")} title={"To Homeee"} />
-
-      <Button
-        onPress={() => navigation.navigate("Edit")}
-        title={"To Edittingggg"}
-      />
-    </SafeAreaView>
+        <Button
+          onPress={() => navigation.navigate("Edit")}
+          title={"To Edittingggg"}
+        /> */}
+      </SafeAreaView>
+    </NativeBaseProvider>
   );
 };
 
@@ -65,17 +86,15 @@ const styles = StyleSheet.create({
   container: {
     fontFamily: "Roboto-Black",
     flex: 1,
-    backgroundColor: "#3486A7",
+    backgroundColor: "#D2822D",
     alignItems: "center",
     justifyContent: "center",
   },
   buttonStyle: {
-    backgroundColor: "green",
-
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 35,
-    height: 20,
+    height: 40,
     marginHorizontal: 10,
     marginVertical: 10,
     borderWidth: 1,

@@ -53,7 +53,7 @@ const List = () => {
     );
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* <Image
         source={require("D:\react prac\shq_front_git\frontend\assets\images\bg.jpg")}
         style={StyleSheet.absoluteFillObject}
@@ -62,14 +62,16 @@ const List = () => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <FlatList
-          data={data}
-          keyExtractor={(item) => `key-${item.id}`}
-          renderItem={renderItem}
-          contentContainerStyle={{ padding: 10 }}
-        />
+        <View style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+          <FlatList
+            data={data}
+            keyExtractor={(item) => `key-${item.id}`}
+            renderItem={renderItem}
+            contentContainerStyle={{ padding: 10 }}
+          />
+        </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
