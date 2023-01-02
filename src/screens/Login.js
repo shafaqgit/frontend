@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 // import all the components we are going to use
@@ -14,10 +14,13 @@ import {
 } from "react-native";
 import { Button, NativeBaseProvider } from "native-base";
 import { withOrientation } from "react-navigation";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {login} = useContext(AuthContext);
 
   let rotateValueHolder = new Animated.Value(0);
 
@@ -40,6 +43,7 @@ const Login = () => {
     <NativeBaseProvider>
       <View style={styles.container}>
         <Text style={styles.textStyle}>WELCOME</Text>
+       
         <Animated.Image
           style={{
             width: 200,
@@ -48,7 +52,7 @@ const Login = () => {
             marginTop: 60,
             // transform: [{ rotate: RotateData }],
           }}
-          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+          source={require("../../assets/images/coding.png")}
         />
         <View
           style={{
@@ -94,7 +98,7 @@ const Login = () => {
           />
         </View>
         <View>
-          <Button style={styles.buttonStyle}>LOGIN</Button>
+          <Button style={styles.buttonStyle} onPress={()=>{login(email, password)}}>LOGIN</Button>
           {/* <Text style={styles.buttonTextStyle}>LOGIN</Text> */}
         </View>
 
@@ -104,6 +108,9 @@ const Login = () => {
       >
         <Text style={styles.buttonTextStyle}>Start Image Rotate Function</Text>
       </TouchableHighlight> */}
+
+
+
       </View>
     </NativeBaseProvider>
   );

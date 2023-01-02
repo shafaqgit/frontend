@@ -128,7 +128,7 @@ const Profile = () => {
   return (
     <View>
       <ImageBackground
-        source={require("/Users/user/Desktop/frontend/FYP/assets/images/profile.jpg")}
+        source={require("../../assets/images/profile.jpg")}
         style={StyleSheet.absoluteFillObject}
         blurRadius={100}
       />

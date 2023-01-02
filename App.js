@@ -1,11 +1,13 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React,{ useContext } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from 'expo-splash-screen';
 import AppNavigator from "./src/navigations/Navigation";
 import { StatusBar } from "expo-status-bar";
 import * as NavigationBar from "expo-navigation-bar";
 import Navigator from "./src/navigations/Navigation";
+import { AuthContext, AuthProvider } from "./src/context/AuthContext";
+import AppNav from './src/navigations/AppNav';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -23,10 +25,19 @@ export default function App() {
     "Roboto-Thin": require("./assets/fonts/Roboto-ThinItalic.ttf"),
   });
   const visibility = NavigationBar.useVisibility();
+
   if (!fontsLoaded) {
-    return <AppLoading />;
+    SplashScreen.preventAutoHideAsync();
+    return null;
   }
+   // Hide the splash screen
+   SplashScreen.hideAsync();
+     
   if (fontsLoaded) {
-    return <Navigator />;
+    return (
+      <AuthProvider>
+          <AppNav/>
+      </AuthProvider>
+    );
   }
 }

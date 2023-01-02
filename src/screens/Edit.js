@@ -13,7 +13,7 @@ import {
   NativeBaseProvider,
   Input,
 } from "native-base";
-import SampleForm from "./SampleForm";
+// import SampleForm from "./SampleForm";
 LogBox.ignoreAllLogs();
 const Edit = () => {
   const [formData, setData] = useState({});

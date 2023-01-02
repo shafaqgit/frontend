@@ -1,4 +1,6 @@
 import React from "react";
+import io from "socket.io-client";
+import { useState, useContext } from "react";
 import {
   VStack,
   FormControl,
@@ -20,10 +22,18 @@ import {
   Input,
 } from "native-base";
 import {} from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
 const Home = ({ navigation }) => {
+  const {logout, userInfo}=useContext(AuthContext);
+  
+  const socket=io("http://192.168.42.232:8080");
+
+  
+  socket.emit("new login", userInfo.user.firstName);
   return (
     <NativeBaseProvider>
+      
       <Box bg={"orange.200"} flex={1}>
         <Box
           bg="white"
@@ -87,6 +97,14 @@ const Home = ({ navigation }) => {
 
         {/* ; } */}
       </Box>
+      <Text style={{fontSize:18, fontFamily: 'Roboto-Medium'}}>
+        Hello {userInfo.user.firstName}</Text>
+      <Button
+              style={{ backgroundColor: "#bc231e" }}
+              onPress={()=>{logout()}}
+            >
+              Logout
+            </Button>
     </NativeBaseProvider>
   );
 };

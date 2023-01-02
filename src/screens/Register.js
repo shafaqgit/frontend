@@ -53,7 +53,7 @@ const Register = () => {
             marginTop: 110,
             // transform: [{ rotate: RotateData }],
           }}
-          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+          source={require("../../assets/images/coding.png")}
         />
         <View
           style={{

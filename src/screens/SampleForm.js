@@ -13,10 +13,33 @@ import { View, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Navigation from "../navigations/Navigation";
+
 
 const SampleForm = ({ navigation }) => {
-  const [selected, setSelected] = useState(1);
+  const handleClick = (count) => {
+    setSelected(count);
+    switch (count) {
+      case 0:
+        navigation.navigate("Home");
+        break;
+      case 1:
+        setSelected(1);
+        navigation.navigate("List");
+        break;
+      case 2:
+        setSelected(2);
+        navigation.navigate("Profile");
+        break;
+      case 3:
+        setSelected(3);
+        navigation.navigate("Edit");
+        break;
+      default:
+        setSelected(0);
+        navigation.navigate("Home");
+    }
+  };
+  const [selected, setSelected] = useState(0);
   const windowWidth = Dimensions.get("window");
   return (
     <NativeBaseProvider>
@@ -34,8 +57,8 @@ const SampleForm = ({ navigation }) => {
           opacity={selected === 0 ? 1 : 0.5}
           py="3"
           flex={1}
-          onPress={() => setSelected(0)}
-          {...(selected == 0 && navigation.navigate("Home"))}
+          onPress={() => handleClick(0)}
+          //  {...(selected === 0 && navigation.navigate("Home"))}
         >
           <Center>
             <Icon name="home" color="white" size="20px" />
@@ -49,8 +72,8 @@ const SampleForm = ({ navigation }) => {
           opacity={selected === 1 ? 1 : 0.5}
           py="2"
           flex={1}
-          onPress={() => setSelected(1)}
-          {...(selected == 1 && navigation.navigate("List"))}
+          onPress={() => handleClick(1)}
+          // {...(selected == 1 && navigation.navigate("List"))}
         >
           <Center>
             <Ionicons mb="1" name="search" color="white" size="20px" />
@@ -64,8 +87,8 @@ const SampleForm = ({ navigation }) => {
           opacity={selected === 2 ? 1 : 0.6}
           py="2"
           flex={1}
-          onPress={() => setSelected(2)}
-          {...(selected == 2 && navigation.navigate("Profile"))}
+          onPress={() => handleClick(2)}
+          //{...(selected === 2 && navigation.navigate("Profile"))}
         >
           <Center>
             <Icon mb="1" name="eye" color="white" size="20px" />
@@ -79,8 +102,8 @@ const SampleForm = ({ navigation }) => {
           opacity={selected === 3 ? 1 : 0.5}
           py="2"
           flex={1}
-          onPress={() => setSelected(3)}
-          {...(selected == 3 && navigation.navigate("Edit"))}
+          onPress={() => handleClick(3)}
+          // {...(selected === 3 && navigation.navigate("Edit"))}
         >
           <Center>
             <Icon mb="1" name="account" color="white" size="20px" />

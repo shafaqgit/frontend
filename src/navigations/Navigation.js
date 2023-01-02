@@ -22,12 +22,13 @@ const stackNavigatorOptions = {
 
 const AppNavigator = createStackNavigator(
   {
-    Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
-    Register: { screen: Register, navigationOptions: { title: "Register" } },
-    Login: { screen: Login, navigationOptions: { title: "Login" } },
+    // Login: { screen: Login, navigationOptions: { headerShown: false } },
+    Home: { screen: Home, navigationOptions: { headerShown: false} },
+    // Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
+    // Register: { screen: Register, navigationOptions: { title: "Register" } },
+    // Welcome: { screen: Welcome, navigationOptions: { title: "Welcome" } },
     List: { screen: List, navigationOptions: { title: "Topic List" } },
     Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
-    Home: { screen: Home, navigationOptions: { title: "Home" } },
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },

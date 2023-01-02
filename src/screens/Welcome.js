@@ -17,7 +17,7 @@ const Welcome = ({ navigation }) => {
               width: 100,
               height: 100,
             }}
-            source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+            source={require("../../assets/images/coding.png")}
           />
         </Animatable.View>
 
@@ -39,14 +39,23 @@ const Welcome = ({ navigation }) => {
           SIGN UP
         </Button>
 
-        <Button
+        {/* <Button
+          style={styles.buttonStyle}
+          size={"sm"}
+          onPress={() => navigation.navigate("Home")}
+          title={"Home"}
+        >
+          HOME
+        </Button> */}
+
+        {/* <Button
           style={styles.buttonStyle}
           size={"sm"}
           onPress={() => navigation.navigate("SampleForm")}
           title={"To Sample Form"}
         >
           BATTLE
-        </Button>
+        </Button> */}
 
         {/* <Button
           onPress={() => navigation.navigate("Assess")}
