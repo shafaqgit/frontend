@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   Image: {
     width: 100,
     height: 100,
-    borderRadius: 20,
+    borderRadius: 50,
   },
   wrapText: {
     flex: 1,

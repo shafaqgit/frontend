@@ -48,6 +48,15 @@ const Welcome = ({ navigation }) => {
           BATTLE
         </Button>
 
+        <Button
+          style={styles.buttonStyle}
+          size={"sm"}
+          onPress={() => navigation.navigate("Friends")}
+          title={"To Sample Form"}
+        >
+          Friend List
+        </Button>
+
         {/* <Button
           onPress={() => navigation.navigate("Assess")}
           title={"To Assessment"}

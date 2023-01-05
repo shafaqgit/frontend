@@ -10,6 +10,7 @@ import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import Assess from "../screens/Assess";
 import Xyz from "../screens/Xyz";
+import Friends from "../screens/Friends";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -31,6 +32,7 @@ const AppNavigator = createStackNavigator(
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
+    Friends: { screen: Friends, navigationOptions: { title: "Friends" } },
     SampleForm: {
       screen: SampleForm,
       navigationOptions: { title: "Sample Form" },
