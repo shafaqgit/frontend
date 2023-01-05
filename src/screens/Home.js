@@ -1,5 +1,6 @@
 import React from "react";
-import io from "socket.io-client";
+// import RNFS from 'react-native-fs';
+// import RNFetchBlob from 'rn-fetch-blob'
 import { useState, useContext } from "react";
 import {
   VStack,
@@ -24,17 +25,23 @@ import {
 import {} from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
-const Home = ({ navigation }) => {
-  const {logout, userInfo}=useContext(AuthContext);
-  
-  const socket=io("http://192.168.42.232:8080");
 
-  
-  socket.emit("new login", userInfo.user.firstName);
+const Home = ({ navigation }) => {
+  const { logout, userInfo } = useContext(AuthContext);
+
+  // const base64Image = FS.Base64.encode(userInfo.user.profilePicture);
+  // console.log(base64Image);
+  // const userImg = require("../../assets/images/profile.jpg");
+
   return (
     <NativeBaseProvider>
-      
+              {/* <Center>
+              <Image size={150} borderRadius={100} source={{ uri: SERVER_IP + './public/uploads/'+userInfo.user._id +'_profile'+'.jpeg'}} alt="Alternate Text" />
+              </Center> */}
+              
+
       <Box bg={"orange.200"} flex={1}>
+              
         <Box
           bg="white"
           shadow={5}
@@ -97,14 +104,30 @@ const Home = ({ navigation }) => {
 
         {/* ; } */}
       </Box>
-      <Text style={{fontSize:18, fontFamily: 'Roboto-Medium'}}>
-        Hello {userInfo.user.firstName}</Text>
       <Button
-              style={{ backgroundColor: "#bc231e" }}
-              onPress={()=>{logout()}}
-            >
-              Logout
-            </Button>
+        style={{ backgroundColor: "#A66117" }}
+        onPress={() => navigation.navigate("Edit")}
+      >
+        Edit
+      </Button>
+      <Button
+        style={{ backgroundColor: "#A66117" }}
+        onPress={() => navigation.navigate("SampleForm")}
+      >
+        SampleForm
+      </Button>
+
+      <Text style={{ fontSize: 18, fontFamily: "Roboto-Medium" }}>
+        Hello {userInfo.user.firstName}
+      </Text>
+      <Button
+        style={{ backgroundColor: "#bc231e" }}
+        onPress={() => {
+          logout();
+        }}
+      >
+        Logout
+      </Button>
     </NativeBaseProvider>
   );
 };

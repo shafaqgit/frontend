@@ -8,11 +8,11 @@ import {
   IContainerProps,
   Text,
 } from "native-base";
-import Ionicons from "@expo/vector-icons/Ionicons";
+// import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, Dimensions } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+// import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+// import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const SampleForm = ({ navigation }) => {
@@ -61,7 +61,7 @@ const SampleForm = ({ navigation }) => {
           //  {...(selected === 0 && navigation.navigate("Home"))}
         >
           <Center>
-            <Icon name="home" color="white" size="20px" />
+            {/* <Icon name="home" color="white" size="20px" /> */}
             <Text color="white" fontSize="12">
               Home
             </Text>
@@ -76,7 +76,7 @@ const SampleForm = ({ navigation }) => {
           // {...(selected == 1 && navigation.navigate("List"))}
         >
           <Center>
-            <Ionicons mb="1" name="search" color="white" size="20px" />
+            {/* <Ionicons mb="1" name="search" color="white" size="20px" /> */}
             <Text color="white" fontSize="12">
               Search
             </Text>
@@ -91,7 +91,7 @@ const SampleForm = ({ navigation }) => {
           //{...(selected === 2 && navigation.navigate("Profile"))}
         >
           <Center>
-            <Icon mb="1" name="eye" color="white" size="20px" />
+            {/* <Icon mb="1" name="eye" color="white" size="20px" /> */}
             <Text color="white" fontSize="12">
               Profile
             </Text>
@@ -106,7 +106,7 @@ const SampleForm = ({ navigation }) => {
           // {...(selected === 3 && navigation.navigate("Edit"))}
         >
           <Center>
-            <Icon mb="1" name="account" color="white" size="20px" />
+            {/* <Icon mb="1" name="account" color="white" size="20px" /> */}
             <Text color="white" fontSize="12">
               Account
             </Text>

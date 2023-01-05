@@ -1,10 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {createContext, useState, useEffect} from "react";
 import axios from "axios";
+import io from "socket.io-client";
 export const AuthContext= createContext();
 
 export const AuthProvider = ({children}) =>{
     const baseUrl = "http://192.168.42.232:3000";
+    const socket=io("http://192.168.42.232:8080");
 
     const [isLoading, setIsLoading] = useState(false);
     const [userToken, setUserToken]= useState(null);
@@ -24,7 +26,10 @@ export const AuthProvider = ({children}) =>{
             setUserToken(userInfo.token);
             AsyncStorage.setItem('userToken', userInfo.token);
             AsyncStorage.setItem('userInfo',JSON.stringify(userInfo));
-            console.log(userInfo.token)
+            console.log(userInfo)
+                        
+
+            socket.emit("login", userInfo.user.firstName);
         })
         .catch(e => {
             console.log(`Login error ${e}`);
@@ -43,6 +48,7 @@ export const AuthProvider = ({children}) =>{
         AsyncStorage.removeItem('userInfo');
         setIsLoading(false);
         console.log("Clicked the logged-out");
+        socket.emit("logout", userInfo.user.firstName);
     }
 
     const isLoggedIn = async() => {

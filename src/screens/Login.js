@@ -87,15 +87,16 @@ const Login = () => {
             top: -30,
           }}
         >
-          <Ionicons name="md-key" size={32} color="black" />
+          <Ionicons name="md-call" size={32} color="black" />
           <TextInput
             placeholder="Password"
             value={password}
             onChangeText={(text) => setPassword(text)}
-            keyboardType="visible-password"
+            keyboardType="default"
             secureTextEntry
             style={styles.input}
           />
+
         </View>
         <View>
           <Button style={styles.buttonStyle} onPress={()=>{login(email, password)}}>LOGIN</Button>

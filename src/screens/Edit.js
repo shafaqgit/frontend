@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useContext} from "react";
 import { View, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import Ionicons from "@expo/vector-icons/Ionicons";
+// import Ionicons from "@expo/vector-icons/Ionicons";
 import { LogBox } from "react-native";
+import axios from "axios";
 import {
   VStack,
   FormControl,
@@ -13,15 +14,20 @@ import {
   NativeBaseProvider,
   Input,
 } from "native-base";
+import { AuthContext } from "../context/AuthContext";
 // import SampleForm from "./SampleForm";
 LogBox.ignoreAllLogs();
 const Edit = () => {
+  const baseUrl = "http://192.168.42.232:3000";
+
+  const {userInfo} = useContext(AuthContext);
+
   const [formData, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [image, setImage] = useState(null);
 
   const validate = () => {
-    if (formData.firstName === undefined) {
+    if (formData.name === undefined) {
       setErrors({ ...errors, name: "Name is required" });
       return false;
     } else if (formData.name.length < 3) {
@@ -53,8 +59,49 @@ const Edit = () => {
     return true;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async() => {
     validate() ? console.log("Submitted") : console.log("Validation Failed");
+    var UserData = new FormData();
+    UserData.append('firstName',formData.name);
+    UserData.append('lastName',formData.lastName);
+    UserData.append('email',formData.email);
+    
+    UserData.append('UserImage', {
+      name: userInfo.user._id +'_profile'+'.jpeg',
+      uri: image,
+      type: 'image/jpg',
+    });
+
+    console.log(UserData);
+    // PUT request using axios with error handling
+    // const axios_body = { 
+      
+    //   "firstName": req.body.firstName,
+    //   "lastName": req.body.lastName,
+    //   "email": req.body.email,
+    // };
+    // console.log("Axios body is: ", axios_body);
+    console.log("Going to edit the profile of: "+userInfo.user._id +" , "+ userInfo.user.firstName);
+
+
+    const res = await axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+        // authorization: `JWT ${token}`,
+      },
+    });
+
+    if (res.data) {
+      console.log("Updated");
+    }
+   
+    // axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData)
+    //     .then(response => console.log({ response }))
+    //     .catch(error => {
+    //         console.log({ errorMessage: error });
+    //         console.error('There was an error!', error);
+    //     });
   };
 
   const handlePhoto = async () => {
@@ -81,8 +128,8 @@ const Edit = () => {
         <Center flex={1}>
           <Card
             backgroundColor={"white"}
-            height={"80%"}
-            width={"80%"}
+            height={"95%"}
+            width={"95%"}
             borderRadius={20}
           >
             <VStack width="90%" mx="3" maxW="300px">
@@ -104,7 +151,7 @@ const Edit = () => {
               <FormControl isRequired isInvalid={"image" in errors}>
                 <Button
                   marginBottom={10}
-                  leftIcon={<Ionicons name="cloud-upload-outline" size="sm" />}
+                  // leftIcon={<Ionicons name="cloud-upload-outline" size="sm" />}
                   onPress={handlePhoto}
                 >
                   Upload Photo
