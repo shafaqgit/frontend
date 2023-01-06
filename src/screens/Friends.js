@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Status from "../components/Status";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import {
   SafeAreaView,
@@ -24,6 +25,7 @@ const Friends = () => {
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [key, setKey] = useState(null);
+  const [color, setColor] = useState(false);
   let row: Array<any> = [];
   let prevOpenedRow;
 
@@ -84,6 +86,7 @@ const Friends = () => {
         >
           <View style={styles.item}>
             <View style={{ flexDirection: "row" }}>
+              <Status color={color} />
               <Image
                 style={styles.Image}
                 source={{ uri: item.url }}
@@ -230,6 +233,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "center",
   },
+
   item: {
     flexDirection: "column",
     marginBottom: 20,
