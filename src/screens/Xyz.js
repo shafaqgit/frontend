@@ -45,7 +45,7 @@ const Xyz = () => {
             marginTop: 100,
             marginBottom: 20,
           }}
-          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+          source={require("../../assets/images/coding.png")}
         ></Image>
         <Center w="100%">
           <Box safeArea p="2" py="8" w="90%" maxW="290">

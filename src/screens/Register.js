@@ -67,7 +67,7 @@ const Register = () => {
             marginTop: 30,
             // marginBottom: 10,
           }}
-          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+          source={require("../../assets/images/coding.png")}
         ></Image>
         {/* <Image
           style={{
