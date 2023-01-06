@@ -25,9 +25,15 @@ const Friends = () => {
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [key, setKey] = useState(null);
+  const [friend, setFriend] = useState(false);
   const [color, setColor] = useState(false);
   let row: Array<any> = [];
   let prevOpenedRow;
+
+  const handleFriend = () => {
+    setFriend(true);
+    console.log(friend);
+  };
 
   useEffect(() => {
     getListPhotos();
@@ -101,26 +107,40 @@ const Friends = () => {
               style={{ flexDirection: "row", marginLeft: 90, marginTop: 10 }}
             >
               <TouchableOpacity>
-                <Button
-                  style={{
-                    width: 130,
-                    height: 35,
-                    top: 5,
-                    padding: 10,
-                    justifyContent: "center",
-                    marginRight: 5,
-                  }}
-                >
+                {{ friend } ? (
                   <Text
                     style={{
-                      fontWeight: "bold",
-                      fontStyle: "Roboto-Black",
-                      color: "white",
+                      paddingTop: 15,
+                      marginRight: 50,
                     }}
                   >
-                    Add Friend
+                    Request Sent
                   </Text>
-                </Button>
+                ) : (
+                  <Button
+                    style={{
+                      width: 130,
+                      height: 35,
+                      top: 5,
+                      padding: 10,
+                      justifyContent: "center",
+                      marginRight: 5,
+                    }}
+                    onPress={() => {
+                      handleFriend();
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontStyle: "Roboto-Black",
+                        color: "white",
+                      }}
+                    >
+                      Add Friend
+                    </Text>
+                  </Button>
+                )}
               </TouchableOpacity>
               <Button
                 style={{
