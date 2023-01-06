@@ -1,204 +1,142 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Image,
-  LogBox,
-  ImageDetail,
-  StatusBar,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
-import {
-  Box,
-  Card,
-  Text,
-  Button,
   Center,
-  Progress,
+  Box,
+  Heading,
+  VStack,
+  HStack,
+  Image,
+  FormControl,
+  Input,
+  Link,
+  Form,
+  Button,
+  Text,
   NativeBaseProvider,
 } from "native-base";
+import { Alert, View, Toast } from "react-native";
 
-LogBox.ignoreAllLogs();
-const ITEM_MARGIN_BOTTOM = 20;
-let timer = () => {};
-const List = ({ navigation }) => {
-  const [data, setData] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(50);
-  const [count, setCount] = useState(1);
-  const [nexted, setNext] = useState(0);
-  const [isLoading, setisLoading] = useState(true);
+const Xyz = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [hasShownAlert, setHasShownAlert] = useState(false);
+  const [emailError, setemailError] = useState();
+  var validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-  useEffect(() => {
-    getListPhotos();
-    return () => {};
-  }, []);
-
-  getListPhotos = () => {
-    const apiURL = "http://192.168.10.6:3000/api/questions";
-    fetch(apiURL)
-      .then((res) => res.json())
-      .then((resJSON) => {
-        setData(resJSON);
-        console.log(resJSON);
-      })
-      .catch((error) => {
-        console.log("API ERROR", error);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
+  const handleSubmit = () => {
+    console.log("hi");
+    if (!email) {
+      Alert.alert("Email is required.");
+    } else if (!email.match(validRegex)) {
+      Alert.alert("Invalid Email");
+    } else if (!password) {
+      Alert.alert("Password is required.");
+    }
   };
-  renderItem = ({ item, index }) => {
-    return (
-      <NativeBaseProvider>
-        {index == count && (
-          <Box>
-            <Box
-              bg="white"
-              shadow={5}
-              rounded="2xl"
-              maxWidth="90%"
-              margin={5}
-              marginTop={"10%"}
-              marginBottom={"10%"}
-              // justifyContent={"center"}
-            >
-              <Card paddingBottom={"15%"}>
-                <Text
-                  bold
-                  position="absolute"
-                  color="black"
-                  top={0}
-                  m={[1, -2, 8]}
-                >
-                  {/* {...(selected == 3 && navigation.navigate("Edit"))} */}
-                  {/* {item.id == { count } && item.questionContent} */}
-
-                  {item.questionContent}
-                </Text>
-              </Card>
-            </Box>
-
-            <Box>
-              {item.options.map((i) => {
-                return (
-                  <Box
-                    flexDirection={"column"}
-                    marginLeft={"5%"}
-                    marginTop={"5%"}
-                    marginRight={"5%"}
-                  >
-                    <Button justifyContent={"left"}> {i}</Button>
-                  </Box>
-                );
-              })}
-            </Box>
-          </Box>
-        )}
-      </NativeBaseProvider>
-    );
-  };
-
-  const startTimer = () => {
-    timer = setTimeout(() => {
-      if (timeLeft <= 0) {
-        clearTimeout(timer);
-        return false;
-      }
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-  };
-
-  useEffect(() => {
-    startTimer();
-    return () => clearTimeout(timer);
-  });
-
-  const next = () => {
-    setCount(count + 1);
-    setNext(nexted + 1);
-  };
-  const start = () => {
-    setTimeLeft(50);
-    clearTimeout(timer);
-    startTimer();
-  };
-
   return (
-    <View style={styles.container}>
-      {/* <Image
-        source={require("D:\react prac\shq_front_git\frontend\assets\images\bg.jpg")}
-        style={StyleSheet.absoluteFillObject}
-        blurRadius={70}
-      /> */}
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <NativeBaseProvider>
-          <Box style={{ backgroundColor: "#E79E4F", flex: 1 }}>
-            <Center w="100%">
-              <View>
-                <Text>{timeLeft}</Text>
-              </View>
-            </Center>
+    <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
+      <View style={{ backgroundColor: "#D2822D", flex: 1 }}>
+        <Image
+          style={{
+            height: 100,
+            width: 100,
+            marginLeft: 160,
+            marginTop: 100,
+            marginBottom: 20,
+          }}
+          source={require("/Users/user/Desktop/frontend/FYP/assets/images/coding.png")}
+        ></Image>
+        <Center w="100%">
+          <Box safeArea p="2" py="8" w="90%" maxW="290">
+            <Heading
+              size="lg"
+              fontWeight="600"
+              color="coolGray.800"
+              _dark={{
+                color: "warmGray.50",
+              }}
+            >
+              Welcome
+            </Heading>
+            <Heading
+              mt="1"
+              _dark={{
+                color: "warmGray.200",
+              }}
+              color="coolGray.600"
+              fontWeight="medium"
+              size="xs"
+            >
+              Sign in to continue!
+            </Heading>
 
-            <FlatList
-              data={data}
-              keyExtractor={(item) => `key-${item.id}`}
-              renderItem={renderItem}
-              contentContainerStyle={{ padding: 10 }}
-            />
-            <Center marginBottom={"15%"}>
-              <Box>
-                <Button onPress={next}>Next</Button>
-              </Box>
-            </Center>
-            <Center>
-              <Box w="90%" maxW="400" marginBottom={"10%"}>
-                <Progress value={nexted} mx="10" />
-              </Box>
-            </Center>
+            <VStack space={3} mt="5">
+              <FormControl>
+                <FormControl.Label>Email ID</FormControl.Label>
+                <Input
+                  type="email"
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormControl.Label>Password</FormControl.Label>
+                <Input
+                  type="password"
+                  value={password}
+                  maxLength={6}
+                  onChangeText={(text) => setPassword(text)}
+                />
+                <Link
+                  _text={{
+                    fontSize: "xs",
+                    fontWeight: "500",
+                    color: "indigo.500",
+                  }}
+                  alignSelf="flex-end"
+                  mt="1"
+                >
+                  Forget Password?
+                </Link>
+              </FormControl>
+
+              <Button
+                onPress={() => {
+                  handleSubmit();
+                }}
+                mt="2"
+                colorScheme="indigo"
+              >
+                Sign in
+              </Button>
+              <HStack mt="6" justifyContent="center">
+                <Text
+                  fontSize="sm"
+                  color="coolGray.600"
+                  _dark={{
+                    color: "warmGray.200",
+                  }}
+                >
+                  I'm a new user.{" "}
+                </Text>
+                <Link
+                  _text={{
+                    color: "indigo.500",
+                    fontWeight: "medium",
+                    fontSize: "sm",
+                  }}
+                  href="#"
+                >
+                  Sign Up
+                </Link>
+              </HStack>
+            </VStack>
           </Box>
-        </NativeBaseProvider>
-      )}
-    </View>
+        </Center>
+      </View>
+    </NativeBaseProvider>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  textStyle: {
-    fontSize: 18,
-  },
-  Image: {
-    width: 100,
-    height: 100,
-    borderRadius: 20,
-  },
-  wrapText: {
-    flex: 1,
-    marginLeft: 10,
-    justifyContent: "center",
-  },
-  item: {
-    flexDirection: "row",
-    marginBottom: 20,
-    borderRadius: 10,
-    backgroundColor: "white",
-    shadowColor: "grey",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    padding: 10,
-  },
-});
-
-export default List;
+export default Xyz;

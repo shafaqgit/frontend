@@ -57,6 +57,15 @@ const Welcome = ({ navigation }) => {
           Friend List
         </Button>
 
+        <Button
+          style={styles.buttonStyle}
+          size={"sm"}
+          onPress={() => navigation.navigate("Xyz")}
+          title={"To Ass"}
+        >
+          HI
+        </Button>
+
         {/* <Button
           onPress={() => navigation.navigate("Assess")}
           title={"To Assessment"}
