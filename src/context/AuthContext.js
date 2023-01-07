@@ -1,16 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {createContext, useState, useEffect} from "react";
+import { Buffer } from 'buffer';
 import axios from "axios";
 import io from "socket.io-client";
 export const AuthContext= createContext();
 
 export const AuthProvider = ({children}) =>{
-    const baseUrl = "http://192.168.42.232:3000";
-    const socket=io("http://192.168.42.232:8080");
+    const serverUrl = "http://192.168.10.60";
+    const serverPort = ":3000";
+    const socketPort = ":8080";
+    const baseUrl = serverUrl+serverPort;
+    const socket=io(serverUrl+socketPort);
 
     const [isLoading, setIsLoading] = useState(false);
     const [userToken, setUserToken]= useState(null);
     const [userInfo, setUserInfo]= useState(null);
+
+    
 
     const login =(email, password)=>{
 
@@ -21,22 +27,30 @@ export const AuthProvider = ({children}) =>{
         })
         .then(res => {
             
+      // Decode the base64-encoded image data
+            res.data.user.profilePicture = Buffer.from(res.data.user.profilePicture, 'base64').toString();
             let userInfo= res.data;
             setUserInfo(userInfo);
             setUserToken(userInfo.token);
             AsyncStorage.setItem('userToken', userInfo.token);
             AsyncStorage.setItem('userInfo',JSON.stringify(userInfo));
-            console.log(userInfo)
+            
+            console.log(userInfo.user.firstName," joined");
                         
 
             socket.emit("login", userInfo.user.firstName);
+            // return true;
         })
         .catch(e => {
             console.log(`Login error ${e}`);
-        });
+            // return false;
+        })
+        .finally(() => {
+            setIsLoading(false);
+          });
         // setUserToken("IamSecretToken");
         // AsyncStorage.setItem('userToken', 'IamSecretToken');
-        setIsLoading(false);
+        
         console.log("Clicked the logged-in");
         console.log("Entered email and Password is: ", email,"  ",password);
     }
@@ -74,7 +88,7 @@ export const AuthProvider = ({children}) =>{
         isLoggedIn();
     }, []);
     return(
-        <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo}}>
+        <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo,serverUrl, serverPort,socketPort }}>
             {children}
         </AuthContext.Provider>
 

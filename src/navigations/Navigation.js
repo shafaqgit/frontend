@@ -10,6 +10,8 @@ import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import Assess from "../screens/Assess";
 import Xyz from "../screens/Xyz";
+import NonFriends from "../screens/NonFriends";
+import Friends from "../screens/Friends";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -28,6 +30,8 @@ const AppNavigator = createStackNavigator(
     // Register: { screen: Register, navigationOptions: { title: "Register" } },
     // Welcome: { screen: Welcome, navigationOptions: { title: "Welcome" } },
     List: { screen: List, navigationOptions: { title: "Topic List" } },
+    NonFriends: { screen: NonFriends, navigationOptions: { title: "NonFriends" } },
+    Friends: { screen: Friends, navigationOptions: { title: "Friends" } },
     Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },

@@ -1,7 +1,8 @@
 import React from "react";
 // import RNFS from 'react-native-fs';
 // import RNFetchBlob from 'rn-fetch-blob'
-import { useState, useContext } from "react";
+import * as FileSystem from 'expo-file-system';
+import { useState, useContext , useEffect} from "react";
 import {
   VStack,
   FormControl,
@@ -22,23 +23,46 @@ import {
   NativeBaseProvider,
   Input,
 } from "native-base";
-import {} from "react-native";
+import {StyleSheet} from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
 
 const Home = ({ navigation }) => {
-  const { logout, userInfo } = useContext(AuthContext);
+  
 
-  // const base64Image = FS.Base64.encode(userInfo.user.profilePicture);
-  // console.log(base64Image);
-  // const userImg = require("../../assets/images/profile.jpg");
+
+  const { logout, userInfo } = useContext(AuthContext);
+  const {newFilePath, setNewFilePath} = useState(null);
+
+
+  const [imageUri, setImageUri] = React.useState(null);
+  // console.log(userInfo.user.profilePicture);
+  const decoded = userInfo.user.profilePicture;
+  React.useEffect(() => {
+    async function decodeAndDisplay() {
+     
+      // Write the decoded image data to a file
+      const fileName = 'image.jpg';
+      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+      await FileSystem.writeAsStringAsync(fileUri, decoded, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      // Set the image URI
+      setImageUri(fileUri);
+    }
+
+    decodeAndDisplay();
+  }, []);
 
   return (
     <NativeBaseProvider>
-              {/* <Center>
-              <Image size={150} borderRadius={100} source={{ uri: SERVER_IP + './public/uploads/'+userInfo.user._id +'_profile'+'.jpeg'}} alt="Alternate Text" />
-              </Center> */}
-              
+       <Image
+          style={styles.Image}
+          source={{ uri: imageUri }}
+          resizeMode="contain"
+          alt = "Profile Picture"
+        />    
 
       <Box bg={"orange.200"} flex={1}>
               
@@ -104,6 +128,13 @@ const Home = ({ navigation }) => {
 
         {/* ; } */}
       </Box>
+
+      <Button
+        style={{ backgroundColor: "#A66117" }}
+        onPress={() => navigation.navigate("Friends")}
+      >
+        All Friends List
+      </Button>
       <Button
         style={{ backgroundColor: "#A66117" }}
         onPress={() => navigation.navigate("Edit")}
@@ -112,10 +143,11 @@ const Home = ({ navigation }) => {
       </Button>
       <Button
         style={{ backgroundColor: "#A66117" }}
-        onPress={() => navigation.navigate("SampleForm")}
+        onPress={() => navigation.navigate("NonFriends")}
       >
-        SampleForm
+        All Non-Friends List
       </Button>
+
 
       <Text style={{ fontSize: 18, fontFamily: "Roboto-Medium" }}>
         Hello {userInfo.user.firstName}
@@ -131,5 +163,36 @@ const Home = ({ navigation }) => {
     </NativeBaseProvider>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  textStyle: {
+    fontSize: 18,
+  },
+  Image: {
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+  },
+  wrapText: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: "center",
+  },
+  item: {
+    flexDirection: "row",
+    marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: "white",
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    padding: 10,
+  },
+});
 export default Home;

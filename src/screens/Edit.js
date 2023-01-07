@@ -18,7 +18,8 @@ import { AuthContext } from "../context/AuthContext";
 // import SampleForm from "./SampleForm";
 LogBox.ignoreAllLogs();
 const Edit = () => {
-  const baseUrl = "http://192.168.42.232:3000";
+  const {serverUrl,serverPort}= useContext(AuthContext);
+  const baseUrl = serverUrl+serverPort;
 
   const {userInfo} = useContext(AuthContext);
 
@@ -73,14 +74,7 @@ const Edit = () => {
     });
 
     console.log(UserData);
-    // PUT request using axios with error handling
-    // const axios_body = { 
-      
-    //   "firstName": req.body.firstName,
-    //   "lastName": req.body.lastName,
-    //   "email": req.body.email,
-    // };
-    // console.log("Axios body is: ", axios_body);
+
     console.log("Going to edit the profile of: "+userInfo.user._id +" , "+ userInfo.user.firstName);
 
 
