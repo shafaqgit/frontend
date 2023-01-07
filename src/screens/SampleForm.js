@@ -48,7 +48,7 @@ const SampleForm = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <Home />
+      <Home nav={navigation} />
       <HStack
         bg="#A66117"
         alignItems="center"

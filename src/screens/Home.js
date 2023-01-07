@@ -21,7 +21,7 @@ import {
 } from "native-base";
 import {} from "react-native";
 
-const Home = ({ navigation }) => {
+const Home = (props) => {
   return (
     <NativeBaseProvider>
       <Box bg={"orange.200"} flex={1}>
@@ -49,7 +49,7 @@ const Home = ({ navigation }) => {
           <Stack space={4} p={[4, 4, 8]}>
             <Button
               style={{ backgroundColor: "#A66117" }}
-              onPress={() => navigation.navigate("Xyz")}
+              onPress={() => props.nav.navigate("Xyz")}
             >
               Practice Mode
             </Button>

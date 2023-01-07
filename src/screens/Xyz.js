@@ -33,7 +33,7 @@ const Xyz = ({ navigation }) => {
   const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
 
-  getListPhotos = () => {
+  const getListPhotos = () => {
     const apiURL = "http://192.168.10.6:3000/api/questions";
     fetch(apiURL)
       .then((res) => res.json())
@@ -52,7 +52,7 @@ const Xyz = ({ navigation }) => {
     getListPhotos();
     return () => {};
   }, []);
-  renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <NativeBaseProvider>
         {index == count && (
