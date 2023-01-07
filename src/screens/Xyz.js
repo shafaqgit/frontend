@@ -1,142 +1,253 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Timer from "../components/Timer";
 import {
-  Center,
-  Box,
-  Heading,
-  VStack,
-  HStack,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
   Image,
-  FormControl,
-  Input,
-  Link,
-  Form,
-  Button,
+  LogBox,
+  ImageDetail,
+  StatusBar,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import {
+  Box,
+  Card,
   Text,
+  Button,
+  Center,
+  Progress,
   NativeBaseProvider,
 } from "native-base";
-import { Alert, View, Toast } from "react-native";
 
-const Xyz = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [hasShownAlert, setHasShownAlert] = useState(false);
-  const [emailError, setemailError] = useState();
-  let regEmail =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+LogBox.ignoreAllLogs();
+const ITEM_MARGIN_BOTTOM = 20;
+let timer = () => {};
+const Xyz = ({ navigation }) => {
+  const [data, setData] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [count, setCount] = useState(1);
+  const [nexted, setNext] = useState(0);
+  const [check, setCheck] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
 
-  const handleSubmit = () => {
-    console.log("hi");
-    if (!email) {
-      Alert.alert("Email is required.");
-    } else if (!regEmail.test(email)) {
-      Alert.alert("Invalid Email");
-    } else if (!password) {
-      Alert.alert("Password is required.");
-    }
+  getListPhotos = () => {
+    const apiURL = "http://192.168.10.6:3000/api/questions";
+    fetch(apiURL)
+      .then((res) => res.json())
+      .then((resJSON) => {
+        setData(resJSON);
+        console.log(resJSON);
+      })
+      .catch((error) => {
+        console.log("API ERROR", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
   };
-  return (
-    <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
-      <View style={{ backgroundColor: "#D2822D", flex: 1 }}>
-        <Image
-          style={{
-            height: 100,
-            width: 100,
-            marginLeft: 160,
-            marginTop: 100,
-            marginBottom: 20,
-          }}
-          source={require("../../assets/images/coding.png")}
-        ></Image>
-        <Center w="100%">
-          <Box safeArea p="2" py="8" w="90%" maxW="290">
-            <Heading
-              size="lg"
-              fontWeight="600"
-              color="coolGray.800"
-              _dark={{
-                color: "warmGray.50",
-              }}
+  useEffect(() => {
+    getListPhotos();
+    return () => {};
+  }, []);
+  renderItem = ({ item, index }) => {
+    return (
+      <NativeBaseProvider>
+        {index == count && (
+          <Box>
+            <Box
+              bg="white"
+              shadow={5}
+              rounded="2xl"
+              maxWidth="90%"
+              margin={5}
+              marginTop={"10%"}
+              marginBottom={"10%"}
+              // justifyContent={"center"}
             >
-              Welcome
-            </Heading>
-            <Heading
-              mt="1"
-              _dark={{
-                color: "warmGray.200",
-              }}
-              color="coolGray.600"
-              fontWeight="medium"
-              size="xs"
-            >
-              Sign in to continue!
-            </Heading>
-
-            <VStack space={3} mt="5">
-              <FormControl>
-                <FormControl.Label>Email ID</FormControl.Label>
-                <Input
-                  type="email"
-                  value={email}
-                  onChangeText={(text) => setEmail(text)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label>Password</FormControl.Label>
-                <Input
-                  type="password"
-                  value={password}
-                  maxLength={6}
-                  onChangeText={(text) => setPassword(text)}
-                />
-                <Link
-                  _text={{
-                    fontSize: "xs",
-                    fontWeight: "500",
-                    color: "indigo.500",
-                  }}
-                  alignSelf="flex-end"
-                  mt="1"
-                >
-                  Forget Password?
-                </Link>
-              </FormControl>
-
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                }}
-                mt="2"
-                colorScheme="indigo"
-              >
-                Sign in
-              </Button>
-              <HStack mt="6" justifyContent="center">
+              <Card paddingBottom={"15%"}>
                 <Text
-                  fontSize="sm"
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
+                  bold
+                  position="absolute"
+                  color="black"
+                  top={0}
+                  m={[1, -2, 8]}
                 >
-                  I'm a new user.{" "}
+                  {/* {...(selected == 3 && navigation.navigate("Edit"))} */}
+                  {/* {item.id == { count } && item.questionContent} */}
+
+                  {item.questionContent}
                 </Text>
-                <Link
-                  _text={{
-                    color: "indigo.500",
-                    fontWeight: "medium",
-                    fontSize: "sm",
-                  }}
-                  href="#"
-                >
-                  Sign Up
-                </Link>
-              </HStack>
-            </VStack>
+              </Card>
+            </Box>
+
+            <Box>
+              {item.options.map((i) => {
+                return (
+                  <Box
+                    flexDirection={"column"}
+                    marginLeft={"5%"}
+                    marginTop={"5%"}
+                    marginRight={"5%"}
+                  >
+                    <Button justifyContent={"left"}> {i}</Button>
+                  </Box>
+                );
+              })}
+            </Box>
           </Box>
-        </Center>
-      </View>
-    </NativeBaseProvider>
+        )}
+      </NativeBaseProvider>
+    );
+  };
+
+  const startTimer = () => {
+    timer = setTimeout(() => {
+      if (timeLeft <= 0) {
+        clearTimeout(timer);
+        return false;
+      }
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    startTimer();
+    return () => clearTimeout(timer);
+  });
+
+  const prev = () => {
+    setCount(count - 1);
+    setNext(nexted - 10);
+  };
+  const next = () => {
+    setCount(count + 1);
+    setNext(nexted + 10);
+  };
+  const start = () => {
+    setTimeLeft(60);
+    clearTimeout(timer);
+    startTimer();
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* <Image
+        source={require("D:\react prac\shq_front_git\frontend\assets\images\bg.jpg")}
+        style={StyleSheet.absoluteFillObject}
+        blurRadius={70}
+      /> */}
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <NativeBaseProvider>
+          {check == false ? (
+            <Button
+              onPress={() => {
+                setCheck(true);
+              }}
+            >
+              Start Assessment
+            </Button>
+          ) : (
+            <Box style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+              <Timer check={check} func={setCheck} />
+              {/* <Center w="100%">
+                <View>
+                  <Text>{timeLeft}</Text>
+                </View>
+              </Center> */}
+
+              <FlatList
+                data={data}
+                keyExtractor={(item) => `key-${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{ padding: 10 }}
+              />
+              <Center marginBottom={"15%"}>
+                <Box>
+                  {nexted !== 100 ? (
+                    <View flexDirection="row" justifyContent="center">
+                      <Button
+                        style={{ width: "40%", marginRight: "2%" }}
+                        onPress={() => {
+                          if ((nexted !== 0) | (nexted < 0)) {
+                            prev();
+                          }
+                        }}
+                      >
+                        <Text style={{ paddingRight: 10 }}>Prev</Text>
+                      </Button>
+
+                      <Button style={{ width: "40%" }} onPress={next}>
+                        <Text style={{ paddingRight: 10 }}>Next</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                    <View></View>
+                  )}
+                </Box>
+              </Center>
+              <Center>
+                <Box w="90%" maxW="400" marginBottom={"10%"}>
+                  {nexted != 100 ? (
+                    <Progress value={nexted} mx="10" />
+                  ) : (
+                    <Box>
+                      <Button
+                        style={{ width: "100%", color: "green" }}
+                        onPress={() => {
+                          setCheck(false);
+                        }}
+                      >
+                        <Text style={{ paddingLeft: 0 }}>Submit</Text>
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              </Center>
+            </Box>
+          )}
+        </NativeBaseProvider>
+      )}
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
+  textStyle: {
+    fontSize: 18,
+  },
+  Image: {
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+  },
+  wrapText: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: "center",
+  },
+  item: {
+    flexDirection: "row",
+    marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: "white",
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    padding: 10,
+  },
+});
 
 export default Xyz;

@@ -25,15 +25,10 @@ const Friends = () => {
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [key, setKey] = useState(null);
-  const [friend, setFriend] = useState(false);
+  const [friend, setFriend] = useState(null);
   const [color, setColor] = useState(false);
   let row: Array<any> = [];
   let prevOpenedRow;
-
-  const handleFriend = () => {
-    setFriend(true);
-    console.log(friend);
-  };
 
   useEffect(() => {
     getListPhotos();
@@ -79,7 +74,7 @@ const Friends = () => {
       </View>
     );
   };
-  renderItem = ({ item, index }, onClick) => {
+  renderItem = ({ item, index }, onClick, handleFriend) => {
     return (
       <NativeBaseProvider>
         <Swipeable
@@ -107,16 +102,7 @@ const Friends = () => {
               style={{ flexDirection: "row", marginLeft: 90, marginTop: 10 }}
             >
               <TouchableOpacity>
-                {{ friend } ? (
-                  <Text
-                    style={{
-                      paddingTop: 15,
-                      marginRight: 50,
-                    }}
-                  >
-                    Request Sent
-                  </Text>
-                ) : (
+                {friend !== item.title ? (
                   <Button
                     style={{
                       width: 130,
@@ -126,9 +112,7 @@ const Friends = () => {
                       justifyContent: "center",
                       marginRight: 5,
                     }}
-                    onPress={() => {
-                      handleFriend();
-                    }}
+                    onClick={handleFriend(item.title)}
                   >
                     <Text
                       style={{
@@ -140,6 +124,15 @@ const Friends = () => {
                       Add Friend
                     </Text>
                   </Button>
+                ) : (
+                  <Text
+                    style={{
+                      paddingTop: 15,
+                      marginRight: 50,
+                    }}
+                  >
+                    Request Sent
+                  </Text>
                 )}
               </TouchableOpacity>
               <Button
