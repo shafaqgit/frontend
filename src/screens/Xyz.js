@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Timer from "../components/Timer";
 import {
   SafeAreaView,
   StyleSheet,
@@ -24,19 +25,15 @@ import {
 LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
-const List = ({ navigation }) => {
+const Xyz = ({ navigation }) => {
   const [data, setData] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(50);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [count, setCount] = useState(1);
   const [nexted, setNext] = useState(0);
+  const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
 
-  useEffect(() => {
-    getListPhotos();
-    return () => {};
-  }, []);
-
-  getListPhotos = () => {
+  const getListPhotos = () => {
     const apiURL = "http://192.168.10.6:3000/api/questions";
     fetch(apiURL)
       .then((res) => res.json())
@@ -51,7 +48,11 @@ const List = ({ navigation }) => {
         setisLoading(false);
       });
   };
-  renderItem = ({ item, index }) => {
+  useEffect(() => {
+    getListPhotos();
+    return () => {};
+  }, []);
+ const renderItem = ({ item, index }) => {
     return (
       <NativeBaseProvider>
         {index == count && (
@@ -117,12 +118,16 @@ const List = ({ navigation }) => {
     return () => clearTimeout(timer);
   });
 
+  const prev = () => {
+    setCount(count - 1);
+    setNext(nexted - 10);
+  };
   const next = () => {
     setCount(count + 1);
-    setNext(nexted + 1);
+    setNext(nexted + 10);
   };
   const start = () => {
-    setTimeLeft(50);
+    setTimeLeft(60);
     clearTimeout(timer);
     startTimer();
   };
@@ -138,30 +143,73 @@ const List = ({ navigation }) => {
         <ActivityIndicator />
       ) : (
         <NativeBaseProvider>
-          <Box style={{ backgroundColor: "#E79E4F", flex: 1 }}>
-            <Center w="100%">
-              <View>
-                <Text>{timeLeft}</Text>
-              </View>
-            </Center>
+          {check == false ? (
+            <Button
+              onPress={() => {
+                setCheck(true);
+              }}
+            >
+              Start Assessment
+            </Button>
+          ) : (
+            <Box style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+              <Timer check={check} func={setCheck} />
+              {/* <Center w="100%">
+                <View>
+                  <Text>{timeLeft}</Text>
+                </View>
+              </Center> */}
 
-            <FlatList
-              data={data}
-              keyExtractor={(item) => `key-${item.id}`}
-              renderItem={renderItem}
-              contentContainerStyle={{ padding: 10 }}
-            />
-            <Center marginBottom={"15%"}>
-              <Box>
-                <Button onPress={next}>Next</Button>
-              </Box>
-            </Center>
-            <Center>
-              <Box w="90%" maxW="400" marginBottom={"10%"}>
-                <Progress value={nexted} mx="10" />
-              </Box>
-            </Center>
-          </Box>
+              <FlatList
+                data={data}
+                keyExtractor={(item) => `key-${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{ padding: 10 }}
+              />
+              <Center marginBottom={"15%"}>
+                <Box>
+                  {nexted !== 100 ? (
+                    <View flexDirection="row" justifyContent="center">
+                      <Button
+                        style={{ width: "40%", marginRight: "2%" }}
+                        onPress={() => {
+                          if ((nexted !== 0) | (nexted < 0)) {
+                            prev();
+                          }
+                        }}
+                      >
+                        <Text style={{ paddingRight: 10 }}>Prev</Text>
+                      </Button>
+
+                      <Button style={{ width: "40%" }} onPress={next}>
+                        <Text style={{ paddingRight: 10 }}>Next</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                    <View></View>
+                  )}
+                </Box>
+              </Center>
+              <Center>
+                <Box w="90%" maxW="400" marginBottom={"10%"}>
+                  {nexted != 100 ? (
+                    <Progress value={nexted} mx="10" />
+                  ) : (
+                    <Box>
+                      <Button
+                        style={{ width: "100%", color: "green" }}
+                        onPress={() => {
+                          setCheck(false);
+                        }}
+                      >
+                        <Text style={{ paddingLeft: 0 }}>Submit</Text>
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              </Center>
+            </Box>
+          )}
         </NativeBaseProvider>
       )}
     </View>
@@ -172,6 +220,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   textStyle: {
     fontSize: 18,
   },
@@ -201,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default List;
+export default Xyz

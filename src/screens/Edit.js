@@ -87,6 +87,7 @@ const Edit = () => {
     });
 
     if (res.data) {
+      console.log(res.data);
       console.log("Updated");
     }
    

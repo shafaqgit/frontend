@@ -27,15 +27,16 @@ import {StyleSheet} from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
 
-const Home = ({ navigation }) => {
-  
+
+// const Home = ({ navigation }) => {
+const Home = (props) => {
+
+  const { logout, userInfo, serverUrl, serverPort } = useContext(AuthContext);
+  const baseUrl = serverUrl+serverPort;
+  // const {newFilePath, setNewFilePath} = useState(null);
 
 
-  const { logout, userInfo } = useContext(AuthContext);
-  const {newFilePath, setNewFilePath} = useState(null);
-
-
-  const [imageUri, setImageUri] = React.useState(null);
+  // const [imageUri, setImageUri] = React.useState(null);
   // console.log(userInfo.user.profilePicture);
 
   // const decoded = userInfo.user.profilePicture;
@@ -56,6 +57,33 @@ const Home = ({ navigation }) => {
   //   decodeAndDisplay();
   // }, []);
 
+//----------------------------------------------------------------------------------------
+
+  const downloadImage = async (imageUrl) => {
+    console.log("Image Url is: ", imageUrl);
+    const fileName = imageUrl.split('/').pop();
+    const newPath = `${FileSystem.documentDirectory}${fileName}`;
+  
+    try {
+      await FileSystem.downloadAsync(imageUrl, newPath);
+      return newPath;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const loadImage = async () => {
+      const imagePath = await downloadImage(baseUrl+'/api/Image/'+userInfo.user.profilePicture);
+      setImage(imagePath);
+      
+    };
+    loadImage();
+  }, []);
+
+
   return (
     <NativeBaseProvider>
        {/* <Image
@@ -64,6 +92,12 @@ const Home = ({ navigation }) => {
           resizeMode="contain"
           alt = "Profile Picture"
         />     */}
+
+        <Image
+      style={{ width: 200, height: 200 }}
+      source={image ? { uri: image } : null}
+      alt="Profile Picture"
+    />
 
       <Box bg={"orange.200"} flex={1}>
               
@@ -91,7 +125,7 @@ const Home = ({ navigation }) => {
           <Stack space={4} p={[4, 4, 8]}>
             <Button
               style={{ backgroundColor: "#A66117" }}
-              onPress={() => navigation.navigate("Xyz")}
+              onPress={() => props.nav.navigate("Xyz")}
             >
               Practice Mode
             </Button>
@@ -130,37 +164,7 @@ const Home = ({ navigation }) => {
         {/* ; } */}
       </Box>
 
-      <Button
-        style={{ backgroundColor: "#A66117" }}
-        onPress={() => navigation.navigate("Friends")}
-      >
-        All Friends List
-      </Button>
-      <Button
-        style={{ backgroundColor: "#A66117" }}
-        onPress={() => navigation.navigate("RequestPage")}
-      >
-        Friend Requests
-      </Button>
-      <Button
-        style={{ backgroundColor: "#A66117" }}
-        onPress={() => navigation.navigate("NonFriends")}
-      >
-        All Non-Friends List
-      </Button>
-
-
-      <Text style={{ fontSize: 18, fontFamily: "Roboto-Medium" }}>
-        Hello {userInfo.user.firstName}
-      </Text>
-      <Button
-        style={{ backgroundColor: "#bc231e" }}
-        onPress={() => {
-          logout();
-        }}
-      >
-        Logout
-      </Button>
+      
     </NativeBaseProvider>
   );
 };

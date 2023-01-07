@@ -4,6 +4,7 @@ import Login from "../screens/Login";
 import Register from "../screens/Register";
 import Home from "../screens/Home";
 import Welcome from "../screens/Welcome";
+// import SampleForm from "../screens/SampleForm";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -20,6 +21,7 @@ const AppNavigator = createStackNavigator(
     // Login: { screen: Login, navigationOptions: { headerShown: false } },
     Login: { screen: Login, navigationOptions: { title: "Login" } },
     Register: { screen: Register, navigationOptions: { title: "Register" } },
+    // SampleForm: { screen: SampleForm, navigationOptions: { title: "Sample Form" }},
     // Home: { screen: Home, navigationOptions: { title: "Home" } },
   },
   {

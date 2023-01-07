@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext} from "react";
+import * as FileSystem from 'expo-file-system';
 import {
   SafeAreaView,
   View,
@@ -10,6 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
   ImageBackground,
+  TouchableHighlight,
 } from "react-native";
 import {
   Button,
@@ -24,20 +26,52 @@ import {
   NativeBaseProvider,
   Image,
 } from "native-base";
+import { AuthContext } from "../context/AuthContext";
+// import Navigation from "../navigations/Navigation";
 
 const cardGap = 16;
 
 const cardWidth = (Dimensions.get("window").width - cardGap * 3) / 2;
-const Profile = () => {
+
+const Profile = ({ navigation }) => {
+
+
+  const {userInfo,serverUrl, serverPort}=useContext(AuthContext);
+  const baseUrl = serverUrl+serverPort;
   const [data, setData] = useState([]);
   const [count, setCount] = useState(1);
   const [isLoading, setisLoading] = useState(true);
+
+
+  const downloadImage = async (imageUrl) => {
+    console.log("Image Url is: ", imageUrl);
+    const fileName = imageUrl.split('/').pop();
+    const newPath = `${FileSystem.documentDirectory}${fileName}`;
+  
+    try {
+      await FileSystem.downloadAsync(imageUrl, newPath);
+      return newPath;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const loadImage = async () => {
+      const imagePath = await downloadImage(baseUrl+'/api/Image/'+userInfo.user.profilePicture);
+      setImage(imagePath);
+      
+    };
+    loadImage();
+  }, []);
 
   useEffect(() => {
     getListPhotos();
     return () => {};
   }, []);
-  getCards = (marginRight) => {
+ const getCards = (marginRight) => {
     return (
       <View
         style={{
@@ -51,14 +85,14 @@ const Profile = () => {
           justifyContent: "center",
           alignItems: "center",
         }}
-      >
+       >
         <TouchableOpacity>
           <Text>Hi</Text>
         </TouchableOpacity>
       </View>
     );
   };
-  getListPhotos = () => {
+ const getListPhotos = () => {
     const apiURL = "https://jsonplaceholder.typicode.com/photos";
     fetch(apiURL)
       .then((res) => res.json())
@@ -72,20 +106,27 @@ const Profile = () => {
         setisLoading(false);
       });
   };
-  renderItem = ({ item, index }) => {
+ const renderItem = ({ item, index }) => {
+  
     return (
       <NativeBaseProvider>
+
+{/* <Image
+      style={{ width: 200, height: 200 }}
+      source={image ? { uri: image } : null}
+      alt="Profile Picture"
+    /> */}
         {item.id == count && (
           <Box flexDirection={"row"} marginTop={"5%"}>
             <Image
               size={150}
               marginTop={"5%"}
               marginRight={"5%"}
-              borderWidth={"1%"}
+              borderWidth={1}
               borderColor="#3F778E"
               alt="fallback text"
               borderRadius={100}
-              source={{ uri: item.url }}
+              source={{ uri: image }}
               fallbackSource={{
                 uri: "https://www.w3schools.com/css/img_lights.jpg",
               }}
@@ -95,19 +136,20 @@ const Profile = () => {
                 paddingTop={"10%"}
                 color="white"
                 size="md"
-                fontSize={50}
+                fontSize={35}
                 bold
-              >
+               >
                 Welcome
               </Heading>
               <Heading
                 flexDirection={"column"}
                 color="white"
                 size="md"
-                fontSize={50}
+                fontSize={35}
                 bold
               >
-                Home!
+                {userInfo.user.firstName}
+                
               </Heading>
             </Box>
           </Box>
@@ -126,12 +168,12 @@ const Profile = () => {
     );
   };
   return (
-    <View>
-      <ImageBackground
-        source={require("../../assets/images/profile.jpg")}
+    <View backgroundColor="#E79E4F" flex={1}>
+      {/* <ImageBackground
+        source={require("/Users/user/Desktop/frontend/FYP/assets/images/profile.jpg")}
         style={StyleSheet.absoluteFillObject}
         blurRadius={100}
-      />
+      /> */}
       {isLoading ? (
         <ActivityIndicator />
       ) : (
@@ -154,111 +196,216 @@ const Profile = () => {
                 justifyContent: "center",
               }}
             >
-              <View
-                style={{
-                  marginTop: cardGap,
-                  marginRight: "3%",
-                  width: cardWidth,
-                  height: 150,
-                  backgroundColor: "white",
-                  borderRadius: 16,
-                  shadowOpacity: 0.2,
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("List");
+                }}
+              >
+                <View
+                  style={{
+                    marginTop: cardGap,
+                    marginRight: "3%",
+                    width: cardWidth,
+                    height: 150,
+                    backgroundColor: "white",
+                    borderRadius: 16,
+                    shadowOpacity: 0.2,
 
-                  // justifyContent: "center",
-                  // alignItems: "top",
-                }}
-              >
-                {/* <TouchableOpacity></TouchableOpacity> */}
-                <Button top={"60%"} borderRadius={"2xl"}>
-                  hi
-                </Button>
-              </View>
-              <View
-                style={{
-                  marginTop: cardGap,
-                  // marginLeft: count % 2 !== 0 ? cardGap : 0,
-                  width: cardWidth,
-                  height: 150,
-                  backgroundColor: "white",
-                  borderRadius: 16,
-                  shadowOpacity: 0.2,
-                  // justifyContent: "center",
-                  // alignItems: "center",
-                }}
-              >
-                <Button top={"60%"} borderRadius={"2xl"}>
-                  hi
-                </Button>
-              </View>
-              <View
-                style={{
-                  marginTop: cardGap,
-                  marginRight: "3%",
-                  width: cardWidth,
-                  height: 150,
-                  backgroundColor: "white",
-                  borderRadius: 16,
-                  shadowOpacity: 0.2,
-                  // justifyContent: "center",
-                  // alignItems: "center",
-                }}
-              >
-                <Button top={"60%"} borderRadius={"2xl"}>
-                  hi
-                </Button>
-              </View>
-              <View
-                style={{
-                  marginTop: cardGap,
+                    // justifyContent: "center",
+                    // alignItems: "top",
+                  }}
+                >
+                  <ImageBackground
+                    source={require("../../assets/images/list.jpg")}
+                    style={StyleSheet.absoluteFillObject}
+                    borderRadius={16}
+                    // blurRadius={100}
+                  />
+                  <Text
+                    style={{
+                      color: "grey",
+                      fontWeight: "bold",
+                      paddingLeft: "5%",
+                    }}
+                  >
+                    Topics
+                  </Text>
 
-                  width: cardWidth,
-                  height: 150,
-                  backgroundColor: "white",
-                  borderRadius: 16,
-                  shadowOpacity: 0.2,
-                  // justifyContent: "center",
-                  // alignItems: "center",
-                }}
-              >
-                <Button top={"60%"} borderRadius={"2xl"}>
-                  hi
-                </Button>
-              </View>
+                  {/* <TouchableOpacity></TouchableOpacity> */}
+                </View>
+              </TouchableOpacity>
 
-              <View
-                style={{
-                  marginTop: cardGap,
-                  marginRight: "3%",
-                  width: cardWidth,
-                  height: 150,
-                  backgroundColor: "white",
-                  borderRadius: 16,
-                  shadowOpacity: 0.2,
-                  // justifyContent: "center",
-                  // alignItems: "center",
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Edit");
                 }}
-              >
-                <Button top={"60%"} borderRadius={"2xl"}>
-                  hi
-                </Button>
-              </View>
-              <View
-                style={{
-                  marginTop: cardGap,
+               >
+                <View
+                  style={{
+                    marginTop: cardGap,
+                    // marginLeft: count % 2 !== 0 ? cardGap : 0,
+                    width: cardWidth,
+                    height: 150,
+                    backgroundColor: "white",
+                    borderRadius: 16,
+                    shadowOpacity: 0.2,
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  <ImageBackground
+                    source={require("../../assets/images/edit.jpg")}
+                    style={StyleSheet.absoluteFillObject}
+                    borderRadius={16}
+                    // blurRadius={100}
+                  />
+                  <Text
+                    style={{
+                      color: "grey",
+                      fontWeight: "bold",
+                      paddingLeft: "5%",
+                    }}
+                  >
+                    Edit Profile
+                  </Text>
+                </View>
+              </TouchableOpacity>
 
-                  width: cardWidth,
-                  height: 150,
-                  backgroundColor: "white",
-                  borderRadius: 16,
-                  shadowOpacity: 0.2,
-                  // justifyContent: "center",
-                  // alignItems: "center",
+              <TouchableOpacity>
+                <View
+                  style={{
+                    marginTop: cardGap,
+                    marginRight: "3%",
+                    width: cardWidth,
+                    height: 150,
+                    backgroundColor: "white",
+                    borderRadius: 16,
+                    shadowOpacity: 0.2,
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  <ImageBackground
+                    source={require("../../assets/images/analytics.jpg")}
+                    style={StyleSheet.absoluteFillObject}
+                    borderRadius={16}
+                    // blurRadius={100}
+                  />
+                  <Text
+                    style={{
+                      color: "grey",
+                      fontWeight: "bold",
+                      paddingLeft: "5%",
+                    }}
+                  >
+                    Progress
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <View
+                  style={{
+                    marginTop: cardGap,
+
+                    width: cardWidth,
+                    height: 150,
+                    backgroundColor: "white",
+                    borderRadius: 16,
+                    shadowOpacity: 0.2,
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  <ImageBackground
+                    source={require("../../assets/images/badge.jpg")}
+                    style={StyleSheet.absoluteFillObject}
+                    borderRadius={16}
+                    // blurRadius={100}
+                  />
+                  <Text
+                    style={{
+                      color: "grey",
+                      fontWeight: "bold",
+                      paddingLeft: "5%",
+                    }}
+                  >
+                    Badges
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("RequestPage");
                 }}
-              >
-                <Button top={"60%"} borderRadius={"2xl"}>
-                  hi
-                </Button>
-              </View>
+               >
+                <View
+                  style={{
+                    marginTop: cardGap,
+                    marginRight: "3%",
+                    width: cardWidth,
+                    height: 150,
+                    backgroundColor: "white",
+                    borderRadius: 16,
+                    shadowOpacity: 0.2,
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  <ImageBackground
+                    source={require("../../assets/images/friendreq.jpg")}
+                    style={StyleSheet.absoluteFillObject}
+                    borderRadius={16}
+                    // blurRadius={100}
+                  />
+                  <Text
+                    style={{
+                      color: "grey",
+                      fontWeight: "bold",
+                      paddingLeft: "5%",
+                    }}
+                  >
+                    Friend Requests
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Friends");
+                }}
+                >
+                <View
+                  style={{
+                    marginTop: cardGap,
+
+                    width: cardWidth,
+                    height: 150,
+                    backgroundColor: "white",
+                    borderRadius: 16,
+                    shadowOpacity: 0.2,
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  <ImageBackground
+                    source={require("../../assets/images/friend.jpg")}
+                    style={StyleSheet.absoluteFillObject}
+                    borderRadius={16}
+                    // blurRadius={100}
+                  />
+                  <Text
+                    style={{
+                      color: "grey",
+                      fontWeight: "bold",
+                      paddingLeft: "5%",
+                    }}
+                  >
+                    Friends
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </NativeBaseProvider>
         </View>

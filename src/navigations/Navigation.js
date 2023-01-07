@@ -26,7 +26,8 @@ const stackNavigatorOptions = {
 const AppNavigator = createStackNavigator(
   {
     // Login: { screen: Login, navigationOptions: { headerShown: false } },
-    Home: { screen: Home, navigationOptions: { headerShown: false} },
+    SampleForm: { screen: SampleForm, navigationOptions:  { headerShown: false} },
+    Home: { screen: Home, navigationOptions: { title: "Home"}},
     // Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
     // Register: { screen: Register, navigationOptions: { title: "Register" } },
     // Welcome: { screen: Welcome, navigationOptions: { title: "Welcome" } },
@@ -38,10 +39,7 @@ const AppNavigator = createStackNavigator(
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
-    SampleForm: {
-      screen: SampleForm,
-      navigationOptions: { title: "Sample Form" },
-    },
+    
   },
   {
     defaultNavigationOptions: stackNavigatorOptions,

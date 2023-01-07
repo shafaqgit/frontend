@@ -32,7 +32,7 @@ export const AuthProvider = ({children}) =>{
         
       });
 
-    });
+    },[onlineUser]);
 
     const login =(email, password)=>{
 
@@ -44,7 +44,7 @@ export const AuthProvider = ({children}) =>{
         .then(res => {
             
       // Decode the base64-encoded image data
-            res.data.user.profilePicture = Buffer.from(res.data.user.profilePicture, 'base64').toString();
+            // res.data.user.profilePicture = Buffer.from(res.data.user.profilePicture, 'base64').toString();
             let userInfo= res.data;
             setUserInfo(userInfo);
             setUserToken(userInfo.token);
