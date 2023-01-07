@@ -15,8 +15,24 @@ export const AuthProvider = ({children}) =>{
     const [isLoading, setIsLoading] = useState(false);
     const [userToken, setUserToken]= useState(null);
     const [userInfo, setUserInfo]= useState(null);
+   
+    const [onlineUser, setOnlineUser] = useState(null);
 
-    
+   useEffect(() => {
+ 
+    socket.on('userConnected', (user) => {
+          const set = new Set(JSON.parse(user));
+          setOnlineUser(set);
+        
+      });
+
+      socket.on('userDisconnected', (user) => {
+        const set = new Set(JSON.parse(user));
+        setOnlineUser(set);
+        
+      });
+
+    });
 
     const login =(email, password)=>{
 
@@ -38,7 +54,7 @@ export const AuthProvider = ({children}) =>{
             console.log(userInfo.user.firstName," joined");
                         
 
-            socket.emit("login", userInfo.user.firstName);
+            socket.emit("login", userInfo.user._id);
             // return true;
         })
         .catch(e => {
@@ -62,7 +78,7 @@ export const AuthProvider = ({children}) =>{
         AsyncStorage.removeItem('userInfo');
         setIsLoading(false);
         console.log("Clicked the logged-out");
-        socket.emit("logout", userInfo.user.firstName);
+        socket.emit("logout", userInfo.user._id);
     }
 
     const isLoggedIn = async() => {
@@ -88,7 +104,7 @@ export const AuthProvider = ({children}) =>{
         isLoggedIn();
     }, []);
     return(
-        <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo,serverUrl, serverPort,socketPort }}>
+        <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo,serverUrl, serverPort,socketPort,onlineUser }}>
             {children}
         </AuthContext.Provider>
 

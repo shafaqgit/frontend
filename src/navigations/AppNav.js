@@ -19,10 +19,10 @@ const AppNav = () => {
     );
   }
   if(userToken !== null){
-    console.log("Token is not null");
+    // console.log("Token is not null");
     return <Navigation />
   }else{
-    console.log("Token is ZERO");
+    // console.log("Token is ZERO");
    return <AuthStack />
   }
   

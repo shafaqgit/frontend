@@ -37,32 +37,33 @@ const Home = ({ navigation }) => {
 
   const [imageUri, setImageUri] = React.useState(null);
   // console.log(userInfo.user.profilePicture);
-  const decoded = userInfo.user.profilePicture;
-  React.useEffect(() => {
-    async function decodeAndDisplay() {
+
+  // const decoded = userInfo.user.profilePicture;
+  // React.useEffect(() => {
+  //   async function decodeAndDisplay() {
      
-      // Write the decoded image data to a file
-      const fileName = 'image.jpg';
-      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
-      await FileSystem.writeAsStringAsync(fileUri, decoded, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+  //     // Write the decoded image data to a file
+  //     const fileName = 'image.jpg';
+  //     const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+  //     await FileSystem.writeAsStringAsync(fileUri, decoded, {
+  //       encoding: FileSystem.EncodingType.Base64,
+  //     });
 
-      // Set the image URI
-      setImageUri(fileUri);
-    }
+  //     // Set the image URI
+  //     setImageUri(fileUri);
+  //   }
 
-    decodeAndDisplay();
-  }, []);
+  //   decodeAndDisplay();
+  // }, []);
 
   return (
     <NativeBaseProvider>
-       <Image
+       {/* <Image
           style={styles.Image}
           source={{ uri: imageUri }}
           resizeMode="contain"
           alt = "Profile Picture"
-        />    
+        />     */}
 
       <Box bg={"orange.200"} flex={1}>
               

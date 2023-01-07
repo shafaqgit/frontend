@@ -21,11 +21,12 @@ import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 import { AuthContext } from "../context/AuthContext";
 //import { flexbox } from "native-base/lib/typescript/theme/styled-system";
 import axios from "axios";
+
 const ITEM_MARGIN_BOTTOM = 20;
 
 const Friends = () => {
   
-  const {serverUrl, serverPort, userInfo}= useContext(AuthContext);
+  const {serverUrl, serverPort, userInfo, socketPort,onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
@@ -39,8 +40,11 @@ const Friends = () => {
   let prevOpenedRow;
   const profPic = require("../../assets/images/profile.jpg");
 
+  // console.log("List of online users:",onlineUser);
+  // if(onlineUser!==null)
+  // console.log("User present:",onlineUser.has("6373a5ed0e628115fcc3f8ac"));
+  // Array.from(onlineUser).includes(userId)
 
-  
   const handleRemoveReq = (id) => {
    
 
@@ -112,7 +116,7 @@ const Friends = () => {
        
           <View style={styles.item}>
             <View style={{ flexDirection: "row" }}>
-            <OnlineStatus color={color} />
+            {onlineUser!==null ? ( onlineUser.has(item._id) ? ( <OnlineStatus color={true} /> ) : (<OnlineStatus color={false} />)) :(<OnlineStatus color={false} />)}
               <Image
                 style={styles.Image}
                 source={ profPic }
