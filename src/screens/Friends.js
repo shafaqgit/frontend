@@ -20,6 +20,7 @@ import { Button, NativeBaseProvider, Heading } from "native-base";
 import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 import { AuthContext } from "../context/AuthContext";
 //import { flexbox } from "native-base/lib/typescript/theme/styled-system";
+import axios from "axios";
 const ITEM_MARGIN_BOTTOM = 20;
 
 const Friends = () => {
@@ -31,9 +32,41 @@ const Friends = () => {
   const [key, setKey] = useState(null);
   const [color, setColor] = useState(false);
   const [anyFriends, setAnyFriends] = useState(false);
+  const [isSent, setIsSent] = useState([]);
+  const [activeButtons, setActiveButtons] = useState([]);
+
   let row = [];
   let prevOpenedRow;
   const profPic = require("../../assets/images/profile.jpg");
+
+
+  
+  const handleRemoveReq = (id) => {
+   
+
+    // PUT request using axios with error handling
+    setIsSent((isSent) => [...isSent, id]);
+
+    const axios_body = { "userId": userInfo.user._id };
+    console.log("Axios body is: ", axios_body);
+    axios.put(`${baseUrl}/api/${id}/unfriend`, axios_body)
+        .then(response => {
+         console.log( response.data )
+         setActiveButtons((activeButtons) => [...activeButtons, id]);
+       })
+        .catch(error => {
+            console.log({ errorMessage: error });
+            console.error('There was an error!', error);
+        })
+        .finally(() => {
+         
+         setIsSent((isSent) => isSent.filter((i) => i !== id));
+       });
+
+   console.log("User-Id is: ", id)
+   
+   
+ };
 
   const getListPhotos = () => {
 
@@ -93,7 +126,66 @@ const Friends = () => {
             <View
               style={{ flexDirection: "row", marginLeft: 90, marginTop: 10 }}
             >
-                  
+
+            <TouchableOpacity>
+            {isSent.includes(item._id) ? 
+            (
+              <Button
+              style={{
+                width: 130,
+                height: 35,
+                top: 5,
+                padding: 10,
+                justifyContent: "center",
+                marginRight: 5,
+                backgroundColor: "red",
+              }}
+              
+            >
+               <ActivityIndicator size="small" color="#333" />
+
+            </Button>
+            ) : (
+
+              activeButtons.includes(item._id) ? (
+                <Text
+                  style={{
+                    
+                    paddingTop: 15,
+                    marginRight: 50,
+                  }}
+                >
+                 Friend Removed
+                </Text>
+              ) : (
+
+            <Button
+                    style={{
+                      width: 130,
+                      height: 35,
+                      top: 5,
+                      padding: 10,
+                      justifyContent: "center",
+                      marginRight: 5,
+                      backgroundColor: "red",
+
+                    }}
+                    onPress={() => {
+                      handleRemoveReq(item._id);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontStyle: "Roboto-Black",
+                        color: "white",
+                      }}
+                    >
+                      Remove Friend
+                    </Text>
+                  </Button>
+            ))}
+            </TouchableOpacity>      
             </View>
           </View>
         

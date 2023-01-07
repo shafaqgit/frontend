@@ -23,10 +23,13 @@ import axios from "axios";
 //import { flexbox } from "native-base/lib/typescript/theme/styled-system";
 const ITEM_MARGIN_BOTTOM = 20;
 
-const NonFriends = () => {
+const RequestPage = () => {
   const [friend, setFriend] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
   const [isSent, setIsSent] = useState([]);
+  const [activeButtonsR, setActiveButtonsR] = useState([]);
+  const [isRem, setIsRem] = useState([]);
+
   const {serverUrl, serverPort, userInfo}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
   const [data, setData] = useState([]);
@@ -38,7 +41,7 @@ const NonFriends = () => {
   let prevOpenedRow;
   const profPic = require("../../assets/images/profile.jpg");
 
-  const handleSentReq = (index,id) => {
+  const handleAcceptReq = (index,id) => {
    
 
      // PUT request using axios with error handling
@@ -46,7 +49,7 @@ const NonFriends = () => {
 
      const axios_body = { "userId": userInfo.user._id };
      console.log("Axios body is: ", axios_body);
-     axios.put(`${baseUrl}/api/${id}/request`, axios_body)
+     axios.put(`${baseUrl}/api/${id}/accept`, axios_body)
          .then(response => {
           console.log( response.data )
           setActiveButtons((activeButtons) => [...activeButtons, id]);
@@ -65,9 +68,37 @@ const NonFriends = () => {
     
   };
 
+
+  const handleDeclineReq = (id) => {
+   
+
+    // PUT request using axios with error handling
+    setIsRem((isRem) => [...isRem, id]);
+
+    const axios_body = { "userId": userInfo.user._id };
+    console.log("Axios body is: ", axios_body);
+    axios.put(`${baseUrl}/api/${id}/decline`, axios_body)
+        .then(response => {
+         console.log( response.data )
+         setActiveButtonsR((activeButtonsR) => [...activeButtonsR, id]);
+       })
+        .catch(error => {
+            console.log({ errorMessage: error });
+            console.error('There was an error!', error);
+        })
+        .finally(() => {
+         
+         setIsRem((isRem) => isRem.filter((i) => i !== id));
+       });
+
+   console.log("User-Id is: ", id)
+   
+   
+ };
+
   const getListPhotos = () => {
 
-    const apiURL = baseUrl+"/api/nonFriends/"+userInfo.user._id;
+    const apiURL = baseUrl+"/api/friendRequests/"+userInfo.user._id;
   
     // const axios_body = { "userId": userInfo.user._id };
     fetch(apiURL)
@@ -102,33 +133,11 @@ const NonFriends = () => {
     prevOpenedRow = row[index];
   };
 
-  const renderRightActions = (progress, dragX, onClick) => {
-    return (
-      <View>
-        <Button
-          // style={styles.item}
-          borderRadius={10}
-          height="90%"
-          style={{ backgroundColor: "red" }}
-          onPress={onClick}
-          title="DELETE"
-        >
-          DELETE
-        </Button>
-      </View>
-    );
-  };
+
   const renderItem = ({ item, index }, onClick) => {
     return (
       <NativeBaseProvider>
-        <Swipeable
-          renderRightActions={(progress, dragX) =>
-            renderRightActions(progress, dragX, onClick)
-          }
-          onSwipeableOpen={() => closeRow(index)}
-          ref={(ref) => (row[index] = ref)}
-          rightOpenValue={-100}
-        >
+      
           <View style={styles.item}>
             <View style={{ flexDirection: "row" }}>
             
@@ -157,7 +166,7 @@ const NonFriends = () => {
                       justifyContent: "center",
                       marginRight: 5,
                     }}
-                   
+                    
                   >
                      <ActivityIndicator size="small" color="#333" />
 
@@ -171,7 +180,7 @@ const NonFriends = () => {
                       marginRight: 50,
                     }}
                   >
-                   Request Sent
+                   Request Accepted
                   </Text>
                 ) : (
                   <Button
@@ -182,9 +191,10 @@ const NonFriends = () => {
                       padding: 10,
                       justifyContent: "center",
                       marginRight: 5,
+
                     }}
                     onPress={() => {
-                      handleSentReq(index,item._id);
+                      handleAcceptReq(index,item._id);
                     }}
                   >
                     <Text
@@ -194,35 +204,71 @@ const NonFriends = () => {
                         color: "white",
                       }}
                     >
-                      Add Friend
+                      Accept 
                     </Text>
                   </Button>
                 ))}
 
               </TouchableOpacity>
+
+              <TouchableOpacity>
+              {isRem.includes(item._id) ? 
+              (
+                <Button
+                    style={{
+                      width: 130,
+                      height: 35,
+                      top: 5,
+                      padding: 10,
+                      justifyContent: "center",
+                      marginRight: 5,
+                      backgroundColor: "red",
+                    }}
+                    
+                  >
+                     <ActivityIndicator size="small" color="#333" />
+
+                  </Button>
+              ) : (
+                activeButtonsR.includes(item._id) ? (
+                    <Text
+                      style={{
+                        
+                        paddingTop: 15,
+                        marginRight: 50,
+                      }}
+                    >
+                     Request Rejected
+                    </Text>
+                  ) : (
               <Button
                 style={{
-                  width: 130,
-                  height: 35,
-                  top: 5,
-                  padding: 10,
-                  marginRight: 5,
-                  backgroundColor: "#2b692d",
+                    width: 130,
+                    height: 35,
+                    top: 5,
+                    padding: 10,
+                    marginRight: 5,
+                    backgroundColor: "red",
                 }}
-              >
+                onPress={() => {
+                    handleDeclineReq(item._id);
+                }}
+                >
                 <Text
                   style={{
-                    fontWeight: "bold",
-                    fontStyle: "Roboto-Black",
-                    color: "white",
-                  }}
-                >
-                  View Profile
+                      fontWeight: "bold",
+                      fontStyle: "Roboto-Black",
+                      color: "white",
+                    }}
+                    >
+                  Decline 
                 </Text>
               </Button>
+              ))}
+            </TouchableOpacity>
             </View>
           </View>
-        </Swipeable>
+     
 
       
       </NativeBaseProvider>
@@ -258,7 +304,7 @@ const NonFriends = () => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>There's no any User</Text>
+          <Text style={styles.text}>You have no any Friend Requests</Text>
           </View>
         )
       )}
@@ -304,4 +350,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NonFriends;
+export default RequestPage;

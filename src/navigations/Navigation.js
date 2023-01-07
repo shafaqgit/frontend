@@ -12,6 +12,7 @@ import Assess from "../screens/Assess";
 import Xyz from "../screens/Xyz";
 import NonFriends from "../screens/NonFriends";
 import Friends from "../screens/Friends";
+import RequestPage from "../screens/RequestPage";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -31,6 +32,7 @@ const AppNavigator = createStackNavigator(
     // Welcome: { screen: Welcome, navigationOptions: { title: "Welcome" } },
     List: { screen: List, navigationOptions: { title: "Topic List" } },
     NonFriends: { screen: NonFriends, navigationOptions: { title: "NonFriends" } },
+    RequestPage: { screen: RequestPage, navigationOptions: { title: "RequestPage" } },
     Friends: { screen: Friends, navigationOptions: { title: "Friends" } },
     Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },

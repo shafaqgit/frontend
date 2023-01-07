@@ -137,9 +137,9 @@ const Home = ({ navigation }) => {
       </Button>
       <Button
         style={{ backgroundColor: "#A66117" }}
-        onPress={() => navigation.navigate("Edit")}
+        onPress={() => navigation.navigate("RequestPage")}
       >
-        Edit
+        Friend Requests
       </Button>
       <Button
         style={{ backgroundColor: "#A66117" }}
