@@ -102,38 +102,26 @@ const Friends = () => {
               style={{ flexDirection: "row", marginLeft: 90, marginTop: 10 }}
             >
               <TouchableOpacity>
-                {friend !== item.title ? (
-                  <Button
-                    style={{
-                      width: 130,
-                      height: 35,
-                      top: 5,
-                      padding: 10,
-                      justifyContent: "center",
-                      marginRight: 5,
-                    }}
-                    onClick={handleFriend(item.title)}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        fontStyle: "Roboto-Black",
-                        color: "white",
-                      }}
-                    >
-                      Add Friend
-                    </Text>
-                  </Button>
-                ) : (
+                <Button
+                  style={{
+                    width: 130,
+                    height: 35,
+                    top: 5,
+                    padding: 10,
+                    justifyContent: "center",
+                    marginRight: 5,
+                  }}
+                >
                   <Text
                     style={{
-                      paddingTop: 15,
-                      marginRight: 50,
+                      fontWeight: "bold",
+                      fontStyle: "Roboto-Black",
+                      color: "white",
                     }}
                   >
-                    Request Sent
+                    Add Friend
                   </Text>
-                )}
+                </Button>
               </TouchableOpacity>
               <Button
                 style={{
