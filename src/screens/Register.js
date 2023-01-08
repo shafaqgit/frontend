@@ -229,7 +229,7 @@
 // export default Register;
 
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as ImagePicker from "expo-image-picker";
 import {
   Center,
@@ -247,8 +247,14 @@ import {
   NativeBaseProvider,
 } from "native-base";
 import { Alert, View, Toast } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
-const Register = () => {
+
+const Register = ({navigation}) => {
+  
+const {serverUrl, serverPort} = useContext(AuthContext);
+const baseUrl= serverUrl + serverPort;
+
   const [email, setEmail] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -266,12 +272,30 @@ const Register = () => {
       Alert.alert("Email is required.");
     } else if (!regEmail.test(email)) {
       Alert.alert("Invalid Email");
-    } else if (!password) {
-      Alert.alert("Password is required.");
-    } else if (!confirm) {
-      Alert.alert("Confirm Password is required.");
-    } else if (password !== confirm) {
-      Alert.alert("Password and Confirm password mismatch");
+    } 
+    else{
+
+      fetch(`${baseUrl}/api/signup`,{
+      method:"post",
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        "firstName":fname,
+        "lastName":lname,
+        "email":email,
+      })
+    })
+    .then(res=>{
+      res.json()
+      navigation.navigate("Login")
+      })
+    .then(data=>{
+      console.log(data)
+    })
+    .catch(error => {
+      console.error(error);
+    });
     }
   };
 
@@ -299,7 +323,8 @@ const Register = () => {
             // marginBottom: 10,
           }}
           source={require("../../assets/images/coding.png")}
-        ></Image>
+          alt="App Logo"
+         ></Image>
         {/* <Image
           style={{
             height: 100,
@@ -364,35 +389,7 @@ const Register = () => {
                 />
               </FormControl>
 
-              <FormControl>
-                <FormControl.Label>Password</FormControl.Label>
-                <Input
-                  type="password"
-                  value={confirm}
-                  onChangeText={(text) => setConfirm(text)}
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormControl.Label>Confirm Password</FormControl.Label>
-                <Input
-                  type="password"
-                  value={password}
-                  maxLength={6}
-                  onChangeText={(text) => setPassword(text)}
-                />
-                {/* <Link
-                  _text={{
-                    fontSize: "xs",
-                    fontWeight: "500",
-                    color: "indigo.500",
-                  }}
-                  alignSelf="flex-end"
-                  mt="1"
-                >
-                  Forget Password?
-                </Link> */}
-              </FormControl>
+              
 
               <Button
                 onPress={() => {
@@ -419,7 +416,7 @@ const Register = () => {
                     fontWeight: "medium",
                     fontSize: "sm",
                   }}
-                  href="#"
+                  onPress={() => navigation.navigate("Login")}
                 >
                   Sign in
                 </Link>

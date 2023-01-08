@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Timer from "../components/Timer";
 import {
   SafeAreaView,
@@ -21,6 +21,7 @@ import {
   Progress,
   NativeBaseProvider,
 } from "native-base";
+import { AuthContext } from "../context/AuthContext";
 
 LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
@@ -33,13 +34,17 @@ const Xyz = ({ navigation }) => {
   const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
 
+  const {serverUrl, serverPort}=useContext(AuthContext);
+  
+  const baseUrl = serverUrl+serverPort;
+
   const getListPhotos = () => {
-    const apiURL = "http://192.168.10.6:3000/api/questions";
+    const apiURL = baseUrl+"/api/questions";
     fetch(apiURL)
       .then((res) => res.json())
       .then((resJSON) => {
         setData(resJSON);
-        console.log(resJSON);
+        // console.log(resJSON);
       })
       .catch((error) => {
         console.log("API ERROR", error);
@@ -92,7 +97,7 @@ const Xyz = ({ navigation }) => {
                     marginTop={"5%"}
                     marginRight={"5%"}
                   >
-                    <Button justifyContent={"left"}> {i}</Button>
+                    <Button justifyContent={"center"}> {i}</Button>
                   </Box>
                 );
               })}

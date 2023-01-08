@@ -26,10 +26,10 @@ const SampleForm = ({ navigation }) => {
   const handleClick = (count) => {
     setSelected(count);
     switch (count) {
-      case 0:
-        navigation.navigate("Home");
+      // case 0:
+      //   navigation.navigate("Home");
 
-        break;
+      //   break;
       case 1:
         setSelected(1);
         navigation.navigate("NonFriends");
@@ -42,9 +42,9 @@ const SampleForm = ({ navigation }) => {
         setSelected(3);
         navigation.navigate("Edit");
         break;
-      default:
-        setSelected(0);
-        navigation.navigate("Home");
+      // default:
+        // setSelected(0);
+        // navigation.navigate("Home");
     }
   };
 

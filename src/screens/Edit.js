@@ -1,6 +1,7 @@
 import React, { useState , useContext} from "react";
 import { View, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from 'expo-file-system';
 // import Ionicons from "@expo/vector-icons/Ionicons";
 import { LogBox } from "react-native";
 import axios from "axios";
@@ -17,22 +18,38 @@ import {
 import { AuthContext } from "../context/AuthContext";
 // import SampleForm from "./SampleForm";
 LogBox.ignoreAllLogs();
-const Edit = () => {
+const Edit = ({navigation}) => {
   const {serverUrl,serverPort}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
 
-  const {userInfo} = useContext(AuthContext);
+  const {userInfo,setUserInfo} = useContext(AuthContext);
 
   const [formData, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [image, setImage] = useState(null);
 
+
+  const downloadImage = async (imageUrl) => {
+    // console.log("Image Url is: ", imageUrl);
+    const fileName = imageUrl.split('/').pop();
+    const newPath = `${FileSystem.documentDirectory}${fileName}`;
+  
+    try {
+      await FileSystem.downloadAsync(imageUrl, newPath);
+      return newPath;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+ 
   const validate = () => {
-    if (formData.name === undefined) {
-      setErrors({ ...errors, name: "Name is required" });
+    if (formData.OldPassword === undefined) {
+      setErrors({ ...errors, OldPassword: "Previous Password is required" });
       return false;
-    } else if (formData.name.length < 3) {
-      setErrors({ ...errors, name: "Name is too short" });
+    } 
+    if (formData.NewPassword === undefined) {
+      setErrors({ ...errors, NewPassword: "New Password is required" });
       return false;
     }
 
@@ -41,21 +58,14 @@ const Edit = () => {
       return false;
     }
 
-    if (formData.lastName === undefined) {
-      setErrors({ ...errors, lastName: "Last Name is required" });
-      return false;
-    } else if (formData.lastName.length < 3) {
-      setErrors({ ...errors, name: "Last Name is too short" });
-      return false;
-    }
-
-    if (formData.email === undefined) {
-      setErrors({ ...errors, email: "Email is required" });
-      return false;
-    } else if (formData.email.length < 3) {
-      setErrors({ ...errors, email: "Email is too short" });
-      return false;
-    }
+    // if (formData.lastName === undefined) {
+    //   setErrors({ ...errors, lastName: "Last Name is required" });
+    //   return false;
+    // } else if (formData.lastName.length < 3) {
+    //   setErrors({ ...errors, name: "Last Name is too short" });
+    //   return false;
+    // }
+ 
 
     return true;
   };
@@ -63,9 +73,10 @@ const Edit = () => {
   const onSubmit = async() => {
     validate() ? console.log("Submitted") : console.log("Validation Failed");
     var UserData = new FormData();
-    UserData.append('firstName',formData.name);
-    UserData.append('lastName',formData.lastName);
-    UserData.append('email',formData.email);
+    UserData.append('OldPassword',formData.OldPassword);
+    UserData.append('NewPassword',formData.NewPassword);
+    // UserData.append('lastName',formData.lastName);
+    // UserData.append('email',formData.email);
     
     UserData.append('UserImage', {
       name: userInfo.user._id +'_profile'+'.jpeg',
@@ -87,8 +98,20 @@ const Edit = () => {
     });
 
     if (res.data) {
-      console.log(res.data);
+      console.log("Updated Picture (response): ",res.data.profilePicture);
+      
+     await setUserInfo(userInfo => ({
+        ...userInfo,
+        user: {
+          ...userInfo.user,
+          profilePicture: res.data.profilePicture
+        }
+      }));
+      
+      console.log("Updated Picture: ",userInfo.user.profilePicture);
+      await downloadImage(baseUrl+'/api/Image/'+res.data.profilePicture);
       console.log("Updated");
+      navigation.navigate("Profile")
     }
    
     // axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData)
@@ -159,74 +182,53 @@ const Edit = () => {
                 )}
               </FormControl>
 
-              <FormControl isRequired isInvalid={"name" in errors}>
+              <FormControl isRequired isInvalid={"OldPassword" in errors}>
                 <FormControl.Label
                   _text={{
                     bold: true,
                   }}
                 >
-                  Name
+                 Old Password
                 </FormControl.Label>
                 <Input
-                  placeholder="John"
+                  placeholder="********"
                   onChangeText={(value) =>
-                    setData({ ...formData, name: value })
+                    setData({ ...formData, OldPassword: value })
                   }
                 />
-                {"name" in errors ? (
+                {"OldPassword" in errors ? (
                   <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
                 ) : (
                   <FormControl.HelperText>
-                    Name should contain atleast 3 character.
+                    This field cannot be empty
                   </FormControl.HelperText>
                 )}
               </FormControl>
 
-              <FormControl isRequired isInvalid={"lastName" in errors}>
-                <FormControl.Label
-                  _text={{
-                    bold: true,
-                  }}
-                >
-                  Last Name
-                </FormControl.Label>
-                <Input
-                  placeholder="Carbera"
-                  onChangeText={(value) =>
-                    setData({ ...formData, lastName: value })
-                  }
-                />
-                {"email" in errors ? (
-                  <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
-                ) : (
-                  <FormControl.HelperText>
-                    Invalid Last Name
-                  </FormControl.HelperText>
-                )}
-              </FormControl>
 
-              <FormControl isRequired isInvalid={"email" in errors}>
+              <FormControl isRequired isInvalid={"NewPassword" in errors}>
                 <FormControl.Label
                   _text={{
                     bold: true,
                   }}
                 >
-                  Email
+                New Password
                 </FormControl.Label>
                 <Input
-                  placeholder="myemail@gmail.com"
+                  placeholder="********"
                   onChangeText={(value) =>
-                    setData({ ...formData, email: value })
+                    setData({ ...formData, NewPassword: value })
                   }
                 />
-                {"email" in errors ? (
+                {"NewPassword" in errors ? (
                   <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
                 ) : (
                   <FormControl.HelperText>
-                    Invalid Email Address
+                    This field cannot be empty
                   </FormControl.HelperText>
                 )}
               </FormControl>
+             
 
               <Button onPress={onSubmit} mt="5" colorScheme="cyan">
                 Submit

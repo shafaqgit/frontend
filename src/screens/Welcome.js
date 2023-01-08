@@ -3,7 +3,15 @@ import { Text, View, StyleSheet, Pressable, SafeAreaView } from "react-native";
 import { Heading, NativeBaseProvider, Button } from "native-base";
 import * as Animatable from "react-native-animatable";
 
+// import { validate } from 'deep-email-validator'
+
+
+
+ 
 const Welcome = ({ navigation }) => {
+
+  
+
   return (
     <NativeBaseProvider>
       <SafeAreaView style={styles.container}>

@@ -81,7 +81,7 @@ const Home = (props) => {
       
     };
     loadImage();
-  }, []);
+  }, [image]);
 
 
   return (
@@ -93,11 +93,11 @@ const Home = (props) => {
           alt = "Profile Picture"
         />     */}
 
-        <Image
+        {/* <Image
       style={{ width: 200, height: 200 }}
       source={image ? { uri: image } : null}
       alt="Profile Picture"
-    />
+    /> */}
 
       <Box bg={"orange.200"} flex={1}>
               

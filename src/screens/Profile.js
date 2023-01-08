@@ -42,6 +42,7 @@ const Profile = ({ navigation }) => {
   const [count, setCount] = useState(1);
   const [isLoading, setisLoading] = useState(true);
 
+  // const [oneTimeLoad, setOneTimeLoad]= useState(false);
 
   const downloadImage = async (imageUrl) => {
     console.log("Image Url is: ", imageUrl);
@@ -65,7 +66,8 @@ const Profile = ({ navigation }) => {
       
     };
     loadImage();
-  }, []);
+    // setOneTimeLoad(true);
+  }, [image]);
 
   useEffect(() => {
     getListPhotos();
@@ -118,6 +120,24 @@ const Profile = ({ navigation }) => {
     /> */}
         {item.id == count && (
           <Box flexDirection={"row"} marginTop={"5%"}>
+             {userInfo.user.profilePicture=="" ? (
+              <Image
+              size={150}
+              marginTop={"5%"}
+              marginRight={"5%"}
+              borderWidth={1}
+              borderColor="#3F778E"
+              alt="fallback text"
+              borderRadius={100}
+             
+              source={require("../../assets/images/profile.jpg")}
+              fallbackSource={
+                // uri: "https://www.w3schools.com/css/img_lights.jpg",
+                require("../../assets/images/profile.jpg")
+              }
+            />
+              
+              ) : (
             <Image
               size={150}
               marginTop={"5%"}
@@ -126,11 +146,14 @@ const Profile = ({ navigation }) => {
               borderColor="#3F778E"
               alt="fallback text"
               borderRadius={100}
+             
               source={{ uri: image }}
-              fallbackSource={{
-                uri: "https://www.w3schools.com/css/img_lights.jpg",
-              }}
+              fallbackSource={
+                // uri: "https://www.w3schools.com/css/img_lights.jpg",
+                require("../../assets/images/profile.jpg")
+              }
             />
+            )}
             <Box flexDirection={"column"}>
               <Heading
                 paddingTop={"10%"}

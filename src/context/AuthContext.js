@@ -45,6 +45,7 @@ export const AuthProvider = ({children}) =>{
             
       // Decode the base64-encoded image data
             // res.data.user.profilePicture = Buffer.from(res.data.user.profilePicture, 'base64').toString();
+            // res.data.user.profilePicture = res.data.user._id+"_profile.jpeg"
             let userInfo= res.data;
             setUserInfo(userInfo);
             setUserToken(userInfo.token);
@@ -104,7 +105,7 @@ export const AuthProvider = ({children}) =>{
         isLoggedIn();
     }, []);
     return(
-        <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo,serverUrl, serverPort,socketPort,onlineUser }}>
+        <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo,serverUrl, serverPort,socketPort,onlineUser,setUserInfo }}>
             {children}
         </AuthContext.Provider>
 

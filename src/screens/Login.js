@@ -184,7 +184,7 @@ import {
 import { Alert, View, Toast } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
-const Login = () => {
+const Login = ({navigation}) => {
   const {login} = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -264,7 +264,8 @@ const Login = () => {
                 <Input
                   type="password"
                   value={password}
-                  maxLength={6}
+                  minLength={3}
+                  maxLength={50}
                   onChangeText={(text) => setPassword(text)}
                 />
                 <Link
@@ -305,7 +306,7 @@ const Login = () => {
                     fontWeight: "medium",
                     fontSize: "sm",
                   }}
-                  href="#"
+                  onPress={() => navigation.navigate("Register")}
                 >
                   Sign Up
                 </Link>
