@@ -13,14 +13,14 @@ import {
   IContainerProps,
   Text,
 } from "native-base";
-// import Ionicons from "@expo/vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, Dimensions } from "react-native";
 import { AuthContext } from "../context/AuthContext.js";
 
 // import Navigation from "../navigations/Navigation";
 
 const SampleForm = ({ navigation }) => {
-  const {logout} = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const [selected, setSelected] = useState(0);
   const windowWidth = Dimensions.get("window");
   const handleClick = (count) => {
@@ -43,8 +43,8 @@ const SampleForm = ({ navigation }) => {
         navigation.navigate("Edit");
         break;
       // default:
-        // setSelected(0);
-        // navigation.navigate("Home");
+      // setSelected(0);
+      // navigation.navigate("Home");
     }
   };
 
@@ -52,7 +52,7 @@ const SampleForm = ({ navigation }) => {
     <NativeBaseProvider>
       <Home nav={navigation} />
       <HStack
-        bg="#A66117"
+        bg="#172f38"
         alignItems="center"
         // safeAreaBottom
         shadow={6}
@@ -67,10 +67,10 @@ const SampleForm = ({ navigation }) => {
             handleClick(0);
           }}
           //  {...(selected === 0 && navigation.navigate("Home"))}
-         >
+        >
           <Center>
-            {/* <Ionicons name="home" color="white" size="20px" /> */}
-            <Text color="white" fontSize="12">
+            <Ionicons name="home" color="white" size="20px" />
+            <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Home
             </Text>
           </Center>
@@ -82,10 +82,10 @@ const SampleForm = ({ navigation }) => {
           flex={1}
           onPress={() => handleClick(1)}
           // {...(selected == 1 && navigation.navigate("List"))}
-         >
+        >
           <Center>
-            {/* <Ionicons mb="1" name="person-add" color="white" size="20px" /> */}
-            <Text color="white" fontSize="12">
+            <Ionicons mb="1" name="person-add" color="white" size="20px" />
+            <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Suggestions
             </Text>
           </Center>
@@ -97,10 +97,10 @@ const SampleForm = ({ navigation }) => {
           flex={1}
           onPress={() => handleClick(2)}
           //{...(selected === 2 && navigation.navigate("Profile"))}
-         >
+        >
           <Center>
-            {/* <Ionicons mb="1" name="eye" color="white" size="20px" /> */}
-            <Text color="white" fontSize="12">
+            <Ionicons mb="1" name="eye" color="white" size="20px" />
+            <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Profile
             </Text>
           </Center>
@@ -114,10 +114,10 @@ const SampleForm = ({ navigation }) => {
             logout();
           }}
           // {...(selected === 3 && navigation.navigate("Edit"))}
-         >
+        >
           <Center>
-            {/* <Ionicons mb="1" name="power" color="white" size="20px" /> */}
-            <Text color="white" fontSize="12">
+            <Ionicons mb="1" name="power" color="white" size="20px" />
+            <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Sign off
             </Text>
           </Center>

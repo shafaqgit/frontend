@@ -43,7 +43,7 @@
 //     <NativeBaseProvider>
 //       <View style={styles.container}>
 //         <Text style={styles.textStyle}>WELCOME</Text>
-       
+
 //         <Animated.Image
 //           style={{
 //             width: 200,
@@ -110,8 +110,6 @@
 //         <Text style={styles.buttonTextStyle}>Start Image Rotate Function</Text>
 //       </TouchableHighlight> */}
 
-
-
 //       </View>
 //     </NativeBaseProvider>
 //   );
@@ -162,10 +160,7 @@
 
 // export default Login;
 
-
-
-
-import React, { useState , useContext} from "react";
+import React, { useState, useContext } from "react";
 import {
   Center,
   Box,
@@ -184,23 +179,23 @@ import {
 import { Alert, View, Toast } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
-const Login = ({navigation}) => {
-  const {login} = useContext(AuthContext)
+const Login = ({ navigation }) => {
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hasShownAlert, setHasShownAlert] = useState(false);
   const [emailError, setemailError] = useState();
   // let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  let regEmail =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  let regEmail =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   const handleSubmit = () => {
     console.log(email);
     if (!email) {
       Alert.alert("Email is required.");
-    }  else if (!password) {
+    } else if (!password) {
       Alert.alert("Password is required.");
-    }
-    else if (!regEmail.test(email)) {
+    } else if (!regEmail.test(email)) {
       Alert.alert("Invalid Email");
     }
     // else{
@@ -208,13 +203,13 @@ const Login = ({navigation}) => {
     //     Alert.alert("Invalid Email or Password.");
     //   }
     // }
-    else{
+    else {
       login(email, password);
     }
   };
   return (
     <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
-      <View style={{ backgroundColor: "#D2822D", flex: 1 }}>
+      <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
         <Image
           style={{
             height: 100,
@@ -231,7 +226,7 @@ const Login = ({navigation}) => {
             <Heading
               size="lg"
               fontWeight="600"
-              color="coolGray.800"
+              color="warmGray.800"
               _dark={{
                 color: "warmGray.50",
               }}
@@ -243,7 +238,7 @@ const Login = ({navigation}) => {
               _dark={{
                 color: "warmGray.200",
               }}
-              color="coolGray.600"
+              color="white"
               fontWeight="medium"
               size="xs"
             >
@@ -252,7 +247,9 @@ const Login = ({navigation}) => {
 
             <VStack space={3} mt="5">
               <FormControl>
-                <FormControl.Label>Email ID</FormControl.Label>
+                <FormControl.Label>
+                  <Text color="white">Email ID</Text>
+                </FormControl.Label>
                 <Input
                   type="email"
                   value={email}
@@ -260,7 +257,9 @@ const Login = ({navigation}) => {
                 />
               </FormControl>
               <FormControl>
-                <FormControl.Label>Password</FormControl.Label>
+                <FormControl.Label>
+                  <Text color="white">Password</Text>
+                </FormControl.Label>
                 <Input
                   type="password"
                   value={password}
@@ -272,7 +271,7 @@ const Login = ({navigation}) => {
                   _text={{
                     fontSize: "xs",
                     fontWeight: "500",
-                    color: "indigo.500",
+                    color: "indigo.250",
                   }}
                   alignSelf="flex-end"
                   mt="1"
@@ -293,7 +292,7 @@ const Login = ({navigation}) => {
               <HStack mt="6" justifyContent="center">
                 <Text
                   fontSize="sm"
-                  color="coolGray.600"
+                  color="white"
                   _dark={{
                     color: "warmGray.200",
                   }}
@@ -302,9 +301,9 @@ const Login = ({navigation}) => {
                 </Text>
                 <Link
                   _text={{
-                    color: "indigo.500",
-                    fontWeight: "medium",
                     fontSize: "sm",
+                    fontWeight: "500",
+                    color: "indigo.350",
                   }}
                   onPress={() => navigation.navigate("Register")}
                 >

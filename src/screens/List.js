@@ -62,7 +62,7 @@ const List = () => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <View style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+        <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
           <FlatList
             data={data}
             keyExtractor={(item) => `key-${item.id}`}

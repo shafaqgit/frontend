@@ -34,12 +34,12 @@ const Xyz = ({ navigation }) => {
   const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
 
-  const {serverUrl, serverPort}=useContext(AuthContext);
-  
-  const baseUrl = serverUrl+serverPort;
+  const { serverUrl, serverPort } = useContext(AuthContext);
+
+  const baseUrl = serverUrl + serverPort;
 
   const getListPhotos = () => {
-    const apiURL = baseUrl+"/api/questions";
+    const apiURL = baseUrl + "/api/questions";
     fetch(apiURL)
       .then((res) => res.json())
       .then((resJSON) => {
@@ -57,7 +57,7 @@ const Xyz = ({ navigation }) => {
     getListPhotos();
     return () => {};
   }, []);
- const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <NativeBaseProvider>
         {index == count && (
@@ -97,7 +97,14 @@ const Xyz = ({ navigation }) => {
                     marginTop={"5%"}
                     marginRight={"5%"}
                   >
-                    <Button justifyContent={"center"}> {i}</Button>
+                    <Button
+                      justifyContent={"center"}
+                      borderRadius="20"
+                      size="sm"
+                    >
+                      {" "}
+                      {i}
+                    </Button>
                   </Box>
                 );
               })}
@@ -157,7 +164,7 @@ const Xyz = ({ navigation }) => {
               Start Assessment
             </Button>
           ) : (
-            <Box style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+            <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
               <Timer check={check} func={setCheck} />
               {/* <Center w="100%">
                 <View>
@@ -255,4 +262,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Xyz
+export default Xyz;

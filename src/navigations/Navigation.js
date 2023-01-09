@@ -17,7 +17,7 @@ import RequestPage from "../screens/RequestPage";
 const stackNavigatorOptions = {
   headerShown: true,
   headerStyle: {
-    backgroundColor: "#A66117",
+    backgroundColor: "#172f38",
   },
   headerTintColor: "white",
   title: false,
@@ -26,20 +26,28 @@ const stackNavigatorOptions = {
 const AppNavigator = createStackNavigator(
   {
     // Login: { screen: Login, navigationOptions: { headerShown: false } },
-    SampleForm: { screen: SampleForm, navigationOptions:  { headerShown: false} },
-    Home: { screen: Home, navigationOptions: { title: "Home"}},
+    SampleForm: {
+      screen: SampleForm,
+      navigationOptions: { headerShown: false },
+    },
+    Home: { screen: Home, navigationOptions: { title: "Home" } },
     // Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
     // Register: { screen: Register, navigationOptions: { title: "Register" } },
     // Welcome: { screen: Welcome, navigationOptions: { title: "Welcome" } },
     List: { screen: List, navigationOptions: { title: "Topic List" } },
-    NonFriends: { screen: NonFriends, navigationOptions: { title: "NonFriends" } },
-    RequestPage: { screen: RequestPage, navigationOptions: { title: "RequestPage" } },
+    NonFriends: {
+      screen: NonFriends,
+      navigationOptions: { title: "NonFriends" },
+    },
+    RequestPage: {
+      screen: RequestPage,
+      navigationOptions: { title: "RequestPage" },
+    },
     Friends: { screen: Friends, navigationOptions: { title: "Friends" } },
     Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
-    
   },
   {
     defaultNavigationOptions: stackNavigatorOptions,

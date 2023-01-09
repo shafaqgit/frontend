@@ -1,5 +1,5 @@
-import React, { useState, useEffect , useContext} from "react";
-import * as FileSystem from 'expo-file-system';
+import React, { useState, useEffect, useContext } from "react";
+import * as FileSystem from "expo-file-system";
 import {
   SafeAreaView,
   View,
@@ -34,10 +34,8 @@ const cardGap = 16;
 const cardWidth = (Dimensions.get("window").width - cardGap * 3) / 2;
 
 const Profile = ({ navigation }) => {
-
-
-  const {userInfo,serverUrl, serverPort}=useContext(AuthContext);
-  const baseUrl = serverUrl+serverPort;
+  const { userInfo, serverUrl, serverPort } = useContext(AuthContext);
+  const baseUrl = serverUrl + serverPort;
   const [data, setData] = useState([]);
   const [count, setCount] = useState(1);
   const [isLoading, setisLoading] = useState(true);
@@ -46,9 +44,9 @@ const Profile = ({ navigation }) => {
 
   const downloadImage = async (imageUrl) => {
     console.log("Image Url is: ", imageUrl);
-    const fileName = imageUrl.split('/').pop();
+    const fileName = imageUrl.split("/").pop();
     const newPath = `${FileSystem.documentDirectory}${fileName}`;
-  
+
     try {
       await FileSystem.downloadAsync(imageUrl, newPath);
       return newPath;
@@ -61,9 +59,10 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     const loadImage = async () => {
-      const imagePath = await downloadImage(baseUrl+'/api/Image/'+userInfo.user.profilePicture);
+      const imagePath = await downloadImage(
+        baseUrl + "/api/Image/" + userInfo.user.profilePicture
+      );
       setImage(imagePath);
-      
     };
     loadImage();
     // setOneTimeLoad(true);
@@ -73,7 +72,7 @@ const Profile = ({ navigation }) => {
     getListPhotos();
     return () => {};
   }, []);
- const getCards = (marginRight) => {
+  const getCards = (marginRight) => {
     return (
       <View
         style={{
@@ -87,14 +86,14 @@ const Profile = ({ navigation }) => {
           justifyContent: "center",
           alignItems: "center",
         }}
-       >
+      >
         <TouchableOpacity>
           <Text>Hi</Text>
         </TouchableOpacity>
       </View>
     );
   };
- const getListPhotos = () => {
+  const getListPhotos = () => {
     const apiURL = "https://jsonplaceholder.typicode.com/photos";
     fetch(apiURL)
       .then((res) => res.json())
@@ -108,51 +107,46 @@ const Profile = ({ navigation }) => {
         setisLoading(false);
       });
   };
- const renderItem = ({ item, index }) => {
-  
+  const renderItem = ({ item, index }) => {
     return (
       <NativeBaseProvider>
-
-{/* <Image
+        {/* <Image
       style={{ width: 200, height: 200 }}
       source={image ? { uri: image } : null}
       alt="Profile Picture"
     /> */}
         {item.id == count && (
           <Box flexDirection={"row"} marginTop={"5%"}>
-             {userInfo.user.profilePicture=="" ? (
+            {userInfo.user.profilePicture == "" ? (
               <Image
-              size={150}
-              marginTop={"5%"}
-              marginRight={"5%"}
-              borderWidth={1}
-              borderColor="#3F778E"
-              alt="fallback text"
-              borderRadius={100}
-             
-              source={require("../../assets/images/profile.jpg")}
-              fallbackSource={
-                // uri: "https://www.w3schools.com/css/img_lights.jpg",
-                require("../../assets/images/profile.jpg")
-              }
-            />
-              
-              ) : (
-            <Image
-              size={150}
-              marginTop={"5%"}
-              marginRight={"5%"}
-              borderWidth={1}
-              borderColor="#3F778E"
-              alt="fallback text"
-              borderRadius={100}
-             
-              source={{ uri: image }}
-              fallbackSource={
-                // uri: "https://www.w3schools.com/css/img_lights.jpg",
-                require("../../assets/images/profile.jpg")
-              }
-            />
+                size={150}
+                marginTop={"5%"}
+                marginRight={"5%"}
+                borderWidth={1}
+                borderColor="#3F778E"
+                alt="fallback text"
+                borderRadius={100}
+                source={require("../../assets/images/profile.jpg")}
+                fallbackSource={
+                  // uri: "https://www.w3schools.com/css/img_lights.jpg",
+                  require("../../assets/images/profile.jpg")
+                }
+              />
+            ) : (
+              <Image
+                size={150}
+                marginTop={"5%"}
+                marginRight={"5%"}
+                borderWidth={1}
+                borderColor="#3F778E"
+                alt="fallback text"
+                borderRadius={100}
+                source={{ uri: image }}
+                fallbackSource={
+                  // uri: "https://www.w3schools.com/css/img_lights.jpg",
+                  require("../../assets/images/profile.jpg")
+                }
+              />
             )}
             <Box flexDirection={"column"}>
               <Heading
@@ -161,7 +155,7 @@ const Profile = ({ navigation }) => {
                 size="md"
                 fontSize={35}
                 bold
-               >
+              >
                 Welcome
               </Heading>
               <Heading
@@ -172,7 +166,6 @@ const Profile = ({ navigation }) => {
                 bold
               >
                 {userInfo.user.firstName}
-                
               </Heading>
             </Box>
           </Box>
@@ -191,7 +184,7 @@ const Profile = ({ navigation }) => {
     );
   };
   return (
-    <View backgroundColor="#E79E4F" flex={1}>
+    <View backgroundColor="#2d596b" flex={1}>
       {/* <ImageBackground
         source={require("/Users/user/Desktop/frontend/FYP/assets/images/profile.jpg")}
         style={StyleSheet.absoluteFillObject}
@@ -262,7 +255,7 @@ const Profile = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate("Edit");
                 }}
-               >
+              >
                 <View
                   style={{
                     marginTop: cardGap,
@@ -362,7 +355,7 @@ const Profile = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate("RequestPage");
                 }}
-               >
+              >
                 <View
                   style={{
                     marginTop: cardGap,
@@ -398,7 +391,7 @@ const Profile = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate("Friends");
                 }}
-                >
+              >
                 <View
                   style={{
                     marginTop: cardGap,

@@ -1,8 +1,8 @@
 import React from "react";
 // import RNFS from 'react-native-fs';
 // import RNFetchBlob from 'rn-fetch-blob'
-import * as FileSystem from 'expo-file-system';
-import { useState, useContext , useEffect} from "react";
+import * as FileSystem from "expo-file-system";
+import { useState, useContext, useEffect } from "react";
 import {
   VStack,
   FormControl,
@@ -23,18 +23,14 @@ import {
   NativeBaseProvider,
   Input,
 } from "native-base";
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 import { AuthContext } from "../context/AuthContext";
-
-
 
 // const Home = ({ navigation }) => {
 const Home = (props) => {
-
   const { logout, userInfo, serverUrl, serverPort } = useContext(AuthContext);
-  const baseUrl = serverUrl+serverPort;
+  const baseUrl = serverUrl + serverPort;
   // const {newFilePath, setNewFilePath} = useState(null);
-
 
   // const [imageUri, setImageUri] = React.useState(null);
   // console.log(userInfo.user.profilePicture);
@@ -42,7 +38,7 @@ const Home = (props) => {
   // const decoded = userInfo.user.profilePicture;
   // React.useEffect(() => {
   //   async function decodeAndDisplay() {
-     
+
   //     // Write the decoded image data to a file
   //     const fileName = 'image.jpg';
   //     const fileUri = `${FileSystem.documentDirectory}${fileName}`;
@@ -57,13 +53,13 @@ const Home = (props) => {
   //   decodeAndDisplay();
   // }, []);
 
-//----------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------
 
   const downloadImage = async (imageUrl) => {
     console.log("Image Url is: ", imageUrl);
-    const fileName = imageUrl.split('/').pop();
+    const fileName = imageUrl.split("/").pop();
     const newPath = `${FileSystem.documentDirectory}${fileName}`;
-  
+
     try {
       await FileSystem.downloadAsync(imageUrl, newPath);
       return newPath;
@@ -76,38 +72,37 @@ const Home = (props) => {
 
   useEffect(() => {
     const loadImage = async () => {
-      const imagePath = await downloadImage(baseUrl+'/api/Image/'+userInfo.user.profilePicture);
+      const imagePath = await downloadImage(
+        baseUrl + "/api/Image/" + userInfo.user.profilePicture
+      );
       setImage(imagePath);
-      
     };
     loadImage();
   }, [image]);
 
-
   return (
     <NativeBaseProvider>
-       {/* <Image
+      {/* <Image
           style={styles.Image}
           source={{ uri: imageUri }}
           resizeMode="contain"
           alt = "Profile Picture"
         />     */}
 
-        {/* <Image
+      {/* <Image
       style={{ width: 200, height: 200 }}
       source={image ? { uri: image } : null}
       alt="Profile Picture"
     /> */}
 
-      <Box bg={"orange.200"} flex={1}>
-              
+      <Box bg={"#2d596b"} flex={1}>
         <Box
           bg="white"
           shadow={5}
           rounded="lg"
           maxWidth="90%"
           margin={5}
-          marginTop={"30%"}
+          marginTop={"40%"}
           // justifyContent={"center"}
         >
           <Image
@@ -124,7 +119,7 @@ const Home = (props) => {
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
             <Button
-              style={{ backgroundColor: "#A66117" }}
+              style={{ backgroundColor: "#172f38" }}
               onPress={() => props.nav.navigate("Xyz")}
             >
               Practice Mode
@@ -155,7 +150,7 @@ const Home = (props) => {
             NEWS
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
-            <Button style={{ backgroundColor: "#A66117" }}>
+            <Button style={{ backgroundColor: "#172f38" }}>
               Challenge Mode
             </Button>
           </Stack>
@@ -163,8 +158,6 @@ const Home = (props) => {
 
         {/* ; } */}
       </Box>
-
-      
     </NativeBaseProvider>
   );
 };

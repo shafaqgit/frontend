@@ -1,7 +1,7 @@
-import React, { useState , useContext} from "react";
+import React, { useState, useContext } from "react";
 import { View, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from "expo-file-system";
 // import Ionicons from "@expo/vector-icons/Ionicons";
 import { LogBox } from "react-native";
 import axios from "axios";
@@ -18,22 +18,21 @@ import {
 import { AuthContext } from "../context/AuthContext";
 // import SampleForm from "./SampleForm";
 LogBox.ignoreAllLogs();
-const Edit = ({navigation}) => {
-  const {serverUrl,serverPort}= useContext(AuthContext);
-  const baseUrl = serverUrl+serverPort;
+const Edit = ({ navigation }) => {
+  const { serverUrl, serverPort } = useContext(AuthContext);
+  const baseUrl = serverUrl + serverPort;
 
-  const {userInfo,setUserInfo} = useContext(AuthContext);
+  const { userInfo, setUserInfo } = useContext(AuthContext);
 
   const [formData, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [image, setImage] = useState(null);
 
-
   const downloadImage = async (imageUrl) => {
     // console.log("Image Url is: ", imageUrl);
-    const fileName = imageUrl.split('/').pop();
+    const fileName = imageUrl.split("/").pop();
     const newPath = `${FileSystem.documentDirectory}${fileName}`;
-  
+
     try {
       await FileSystem.downloadAsync(imageUrl, newPath);
       return newPath;
@@ -42,12 +41,11 @@ const Edit = ({navigation}) => {
     }
   };
 
- 
   const validate = () => {
     if (formData.OldPassword === undefined) {
       setErrors({ ...errors, OldPassword: "Previous Password is required" });
       return false;
-    } 
+    }
     if (formData.NewPassword === undefined) {
       setErrors({ ...errors, NewPassword: "New Password is required" });
       return false;
@@ -65,55 +63,62 @@ const Edit = ({navigation}) => {
     //   setErrors({ ...errors, name: "Last Name is too short" });
     //   return false;
     // }
- 
 
     return true;
   };
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     validate() ? console.log("Submitted") : console.log("Validation Failed");
     var UserData = new FormData();
-    UserData.append('OldPassword',formData.OldPassword);
-    UserData.append('NewPassword',formData.NewPassword);
+    UserData.append("OldPassword", formData.OldPassword);
+    UserData.append("NewPassword", formData.NewPassword);
     // UserData.append('lastName',formData.lastName);
     // UserData.append('email',formData.email);
-    
-    UserData.append('UserImage', {
-      name: userInfo.user._id +'_profile'+'.jpeg',
+
+    UserData.append("UserImage", {
+      name: userInfo.user._id + "_profile" + ".jpeg",
       uri: image,
-      type: 'image/jpg',
+      type: "image/jpg",
     });
 
     console.log(UserData);
 
-    console.log("Going to edit the profile of: "+userInfo.user._id +" , "+ userInfo.user.firstName);
+    console.log(
+      "Going to edit the profile of: " +
+        userInfo.user._id +
+        " , " +
+        userInfo.user.firstName
+    );
 
-
-    const res = await axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-        // authorization: `JWT ${token}`,
-      },
-    });
+    const res = await axios.post(
+      `${baseUrl}/api/${userInfo.user._id}/edit`,
+      UserData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          // authorization: `JWT ${token}`,
+        },
+      }
+    );
 
     if (res.data) {
-      console.log("Updated Picture (response): ",res.data.profilePicture);
-      
-     await setUserInfo(userInfo => ({
+      console.log("Updated Picture (response): ", res.data.profilePicture);
+
+      await setUserInfo((userInfo) => ({
         ...userInfo,
         user: {
           ...userInfo.user,
-          profilePicture: res.data.profilePicture
-        }
+          profilePicture: res.data.profilePicture,
+        },
       }));
-      
-      console.log("Updated Picture: ",userInfo.user.profilePicture);
-      await downloadImage(baseUrl+'/api/Image/'+res.data.profilePicture);
+
+      console.log("Updated Picture: ", userInfo.user.profilePicture);
+      await downloadImage(baseUrl + "/api/Image/" + res.data.profilePicture);
       console.log("Updated");
-      navigation.navigate("Profile")
+      navigation.navigate("Profile");
     }
-   
+
     // axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData)
     //     .then(response => console.log({ response }))
     //     .catch(error => {
@@ -142,12 +147,12 @@ const Edit = ({navigation}) => {
 
   return (
     <NativeBaseProvider>
-      <Box style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+      <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
         <Center flex={1}>
           <Card
             backgroundColor={"white"}
-            height={"95%"}
-            width={"95%"}
+            height={"80%"}
+            width={"85%"}
             borderRadius={20}
           >
             <VStack width="90%" mx="3" maxW="300px">
@@ -188,7 +193,7 @@ const Edit = ({navigation}) => {
                     bold: true,
                   }}
                 >
-                 Old Password
+                  Old Password
                 </FormControl.Label>
                 <Input
                   placeholder="********"
@@ -205,14 +210,13 @@ const Edit = ({navigation}) => {
                 )}
               </FormControl>
 
-
               <FormControl isRequired isInvalid={"NewPassword" in errors}>
                 <FormControl.Label
                   _text={{
                     bold: true,
                   }}
                 >
-                New Password
+                  New Password
                 </FormControl.Label>
                 <Input
                   placeholder="********"
@@ -228,7 +232,6 @@ const Edit = ({navigation}) => {
                   </FormControl.HelperText>
                 )}
               </FormControl>
-             
 
               <Button onPress={onSubmit} mt="5" colorScheme="cyan">
                 Submit

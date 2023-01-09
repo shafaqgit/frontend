@@ -5,13 +5,7 @@ import * as Animatable from "react-native-animatable";
 
 // import { validate } from 'deep-email-validator'
 
-
-
- 
 const Welcome = ({ navigation }) => {
-
-  
-
   return (
     <NativeBaseProvider>
       <SafeAreaView style={styles.container}>
@@ -29,7 +23,9 @@ const Welcome = ({ navigation }) => {
           />
         </Animatable.View>
 
-        <Heading marginBottom={"10%"}>Programmers' Battle</Heading>
+        <Heading marginBottom={"10%"} color="white">
+          Programmers' Battle
+        </Heading>
 
         <Button
           style={styles.buttonStyle}
@@ -38,8 +34,6 @@ const Welcome = ({ navigation }) => {
         >
           LOGIN
         </Button>
-
-       
 
         <Button
           style={styles.buttonStyle}
@@ -105,7 +99,9 @@ const styles = StyleSheet.create({
   container: {
     fontFamily: "Roboto-Black",
     flex: 1,
-    backgroundColor: "#D2822D",
+    // backgroundColor: "#D2822D",
+    backgroundColor: "#2d596b",
+
     alignItems: "center",
     justifyContent: "center",
   },

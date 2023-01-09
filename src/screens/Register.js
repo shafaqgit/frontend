@@ -228,7 +228,6 @@
 
 // export default Register;
 
-
 import React, { useState, useContext } from "react";
 import * as ImagePicker from "expo-image-picker";
 import {
@@ -249,11 +248,9 @@ import {
 import { Alert, View, Toast } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
-
-const Register = ({navigation}) => {
-  
-const {serverUrl, serverPort} = useContext(AuthContext);
-const baseUrl= serverUrl + serverPort;
+const Register = ({ navigation }) => {
+  const { serverUrl, serverPort } = useContext(AuthContext);
+  const baseUrl = serverUrl + serverPort;
 
   const [email, setEmail] = useState("");
   const [fname, setFname] = useState("");
@@ -272,30 +269,28 @@ const baseUrl= serverUrl + serverPort;
       Alert.alert("Email is required.");
     } else if (!regEmail.test(email)) {
       Alert.alert("Invalid Email");
-    } 
-    else{
-
-      fetch(`${baseUrl}/api/signup`,{
-      method:"post",
-      headers: {
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        "firstName":fname,
-        "lastName":lname,
-        "email":email,
+    } else {
+      fetch(`${baseUrl}/api/signup`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: fname,
+          lastName: lname,
+          email: email,
+        }),
       })
-    })
-    .then(res=>{
-      res.json()
-      navigation.navigate("Login")
-      })
-    .then(data=>{
-      console.log(data)
-    })
-    .catch(error => {
-      console.error(error);
-    });
+        .then((res) => {
+          res.json();
+          navigation.navigate("Login");
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
 
@@ -313,7 +308,7 @@ const baseUrl= serverUrl + serverPort;
   };
   return (
     <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
-      <View style={{ backgroundColor: "#D2822D", flex: 1 }}>
+      <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
         <Image
           style={{
             height: 100,
@@ -324,7 +319,7 @@ const baseUrl= serverUrl + serverPort;
           }}
           source={require("../../assets/images/coding.png")}
           alt="App Logo"
-         ></Image>
+        ></Image>
         {/* <Image
           style={{
             height: 100,
@@ -341,7 +336,7 @@ const baseUrl= serverUrl + serverPort;
               <Heading
                 size="lg"
                 fontWeight="600"
-                color="coolGray.800"
+                color="warmGrey.800"
                 _dark={{
                   color: "warmGray.50",
                 }}
@@ -354,7 +349,7 @@ const baseUrl= serverUrl + serverPort;
               _dark={{
                 color: "warmGray.200",
               }}
-              color="coolGray.600"
+              color="white"
               fontWeight="medium"
               size="xs"
             >
@@ -363,7 +358,9 @@ const baseUrl= serverUrl + serverPort;
 
             <VStack space={3} mt="5">
               <FormControl>
-                <FormControl.Label>First Name</FormControl.Label>
+                <FormControl.Label>
+                  <Text color="white">First Name</Text>
+                </FormControl.Label>
                 <Input
                   type="text"
                   value={fname}
@@ -372,7 +369,9 @@ const baseUrl= serverUrl + serverPort;
               </FormControl>
 
               <FormControl>
-                <FormControl.Label>Last Name</FormControl.Label>
+                <FormControl.Label>
+                  <Text color="white">Last Name</Text>
+                </FormControl.Label>
                 <Input
                   type="text"
                   value={lname}
@@ -381,15 +380,15 @@ const baseUrl= serverUrl + serverPort;
               </FormControl>
 
               <FormControl>
-                <FormControl.Label>Email ID</FormControl.Label>
+                <FormControl.Label>
+                  <Text color="white">Email ID</Text>
+                </FormControl.Label>
                 <Input
                   type="email"
                   value={email}
                   onChangeText={(text) => setEmail(text)}
                 />
               </FormControl>
-
-              
 
               <Button
                 onPress={() => {
@@ -403,7 +402,7 @@ const baseUrl= serverUrl + serverPort;
               <HStack mt="6" justifyContent="center">
                 <Text
                   fontSize="sm"
-                  color="coolGray.600"
+                  color="white"
                   _dark={{
                     color: "warmGray.200",
                   }}
@@ -412,9 +411,9 @@ const baseUrl= serverUrl + serverPort;
                 </Text>
                 <Link
                   _text={{
-                    color: "indigo.500",
-                    fontWeight: "medium",
                     fontSize: "sm",
+                    fontWeight: "500",
+                    color: "indigo.350",
                   }}
                   onPress={() => navigation.navigate("Login")}
                 >
