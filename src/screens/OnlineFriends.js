@@ -22,10 +22,11 @@ import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 import { AuthContext } from "../context/AuthContext";
 //import { flexbox } from "native-base/lib/typescript/theme/styled-system";
 import axios from "axios";
+import io from "socket.io-client";
 
 const ITEM_MARGIN_BOTTOM = 20;
 
-const Friends = () => {
+const OnlineFriends = () => {
   
   const {serverUrl, serverPort, userInfo, socketPort,onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
@@ -33,11 +34,11 @@ const Friends = () => {
   const [isLoading, setisLoading] = useState(true);
   const [key, setKey] = useState(null);
   const [color, setColor] = useState(false);
-  const [anyFriends, setAnyFriends] = useState(false);
+  const [anyOnlineFriends, setAnyOnlineFriends] = useState(false);
   const [isSent, setIsSent] = useState([]);
   const [activeButtons, setActiveButtons] = useState([]);
 
-
+  const socket = io(serverUrl + socketPort);
   
   const downloadImage = async (imageUrl) => {
     // console.log("Image Url is: ", imageUrl);
@@ -75,36 +76,16 @@ const Friends = () => {
   // console.log("User present:",onlineUser.has("6373a5ed0e628115fcc3f8ac"));
   // Array.from(onlineUser).includes(userId)
 
-  const handleRemoveReq = (id) => {
+  const sendChallengeRequest = (challenger,challengee) => {
    
-
-    // PUT request using axios with error handling
-    setIsSent((isSent) => [...isSent, id]);
-
-    const axios_body = { "userId": userInfo.user._id };
-    console.log("Axios body is: ", axios_body);
-    axios.put(`${baseUrl}/api/${id}/unfriend`, axios_body)
-        .then(response => {
-         console.log( response.data )
-         setActiveButtons((activeButtons) => [...activeButtons, id]);
-       })
-        .catch(error => {
-            console.log({ errorMessage: error });
-            console.error('There was an error!', error);
-        })
-        .finally(() => {
-         
-         setIsSent((isSent) => isSent.filter((i) => i !== id));
-       });
-
-   console.log("User-Id is: ", id)
-   
+    socket.emit('sendChallengeRequest', { challenger, challengee });
    
  };
 
   const getListPhotos = () => {
 
-    const apiURL = baseUrl+"/api/friends/"+userInfo.user._id;
+    if (onlineUser){
+    const apiURL = baseUrl+"/api/onlineFriends/"+userInfo.user._id+"/"+JSON.stringify([...onlineUser]);
   
     // const axios_body = { "userId": userInfo.user._id };
     fetch(apiURL)
@@ -120,7 +101,7 @@ const Friends = () => {
           //   console.log(images);
           // });
 
-          setAnyFriends(true);
+          setAnyOnlineFriends(true);
         }
         // console.log(resJSON);
       })
@@ -130,7 +111,10 @@ const Friends = () => {
       .finally(() => {
         setisLoading(false);
       });
-
+    }
+    else{
+        setisLoading(false);
+    }
   };
 
   
@@ -139,13 +123,13 @@ const Friends = () => {
     return () => {};
   }, []);
 
-  // const closeRow = (index) => {
-  //   console.log("closerow");
-  //   if (prevOpenedRow && prevOpenedRow !== row[index]) {
-  //     prevOpenedRow.close();
-  //   }
-  //   prevOpenedRow = row[index];
-  // };
+//   const closeRow = (index) => {
+//     console.log("closerow");
+//     if (prevOpenedRow && prevOpenedRow !== row[index]) {
+//       prevOpenedRow.close();
+//     }
+//     prevOpenedRow = row[index];
+//   };
 
   
   const renderItem = ({ item, index }, onClick) => {
@@ -198,7 +182,7 @@ const Friends = () => {
                     marginRight: 50,
                   }}
                 >
-                 Friend Removed
+                  Challenge Sent
                 </Text>
               ) : (
 
@@ -210,11 +194,11 @@ const Friends = () => {
                       padding: 10,
                       justifyContent: "center",
                       marginRight: 5,
-                      backgroundColor: "red",
+                      backgroundColor: "green",
 
                     }}
                     onPress={() => {
-                      handleRemoveReq(item._id);
+                        sendChallengeRequest(userInfo.user._id,item._id);
                     }}
                   >
                     <Text
@@ -224,7 +208,7 @@ const Friends = () => {
                         color: "white",
                       }}
                     >
-                      Remove Friend
+                       Challenge
                     </Text>
                   </Button>
             ))}
@@ -242,7 +226,7 @@ const Friends = () => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-         anyFriends ? (
+         anyOnlineFriends ? (
         <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
           <FlatList
             data={data}
@@ -258,7 +242,7 @@ const Friends = () => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>You have no any friends</Text>
+          <Text style={styles.text}>No any friend is online at the moment</Text>
           </View>
         )
       )}
@@ -309,4 +293,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Friends;
+export default OnlineFriends;

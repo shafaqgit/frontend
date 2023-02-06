@@ -289,7 +289,7 @@ const RequestPage = () => {
         <ActivityIndicator />
       ) : (
         anyUser ? (
-        <View style={{ backgroundColor: "#E79E4F", flex: 1 }}>
+        <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
           <FlatList
             data={data}
             keyExtractor={(item) => `key-${item._id}`}

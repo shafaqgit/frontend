@@ -213,9 +213,9 @@ const Profile = ({ navigation }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("List");
-                }}
+                // onPress={() => {
+                //   navigation.navigate("List");
+                // }}
               >
                 <View
                   style={{

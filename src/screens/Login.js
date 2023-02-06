@@ -267,7 +267,7 @@ const Login = ({ navigation }) => {
                   maxLength={50}
                   onChangeText={(text) => setPassword(text)}
                 />
-                <Link
+                {/* <Link
                   _text={{
                     fontSize: "xs",
                     fontWeight: "500",
@@ -277,7 +277,7 @@ const Login = ({ navigation }) => {
                   mt="1"
                 >
                   Forget Password?
-                </Link>
+                </Link> */}
               </FormControl>
 
               <Button

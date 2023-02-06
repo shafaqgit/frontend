@@ -23,13 +23,13 @@ import {
 } from "native-base";
 import { AuthContext } from "../context/AuthContext";
 
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
 const Xyz = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [timeLeft, setTimeLeft] = useState(60);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(0);
   const [nexted, setNext] = useState(0);
   const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -125,10 +125,10 @@ const Xyz = ({ navigation }) => {
     }, 1000);
   };
 
-  useEffect(() => {
-    startTimer();
-    return () => clearTimeout(timer);
-  });
+  // useEffect(() => {
+  //   startTimer();
+  //   return () => clearTimeout(timer);
+  // });
 
   const prev = () => {
     setCount(count - 1);
@@ -174,7 +174,7 @@ const Xyz = ({ navigation }) => {
 
               <FlatList
                 data={data}
-                keyExtractor={(item) => `key-${item.id}`}
+                keyExtractor={(item) => `key-${item._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{ padding: 10 }}
               />

@@ -13,6 +13,7 @@ import Xyz from "../screens/Xyz";
 import NonFriends from "../screens/NonFriends";
 import Friends from "../screens/Friends";
 import RequestPage from "../screens/RequestPage";
+import OnlineFriends from "../screens/OnlineFriends";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -37,7 +38,7 @@ const AppNavigator = createStackNavigator(
     List: { screen: List, navigationOptions: { title: "Topic List" } },
     NonFriends: {
       screen: NonFriends,
-      navigationOptions: { title: "NonFriends" },
+      navigationOptions: { title: "All Users" },
     },
     RequestPage: {
       screen: RequestPage,
@@ -48,6 +49,7 @@ const AppNavigator = createStackNavigator(
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
+    OnlineFriends: { screen: OnlineFriends, navigationOptions: { title: "Online Users" } },
   },
   {
     defaultNavigationOptions: stackNavigatorOptions,

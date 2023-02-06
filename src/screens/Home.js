@@ -25,11 +25,14 @@ import {
 } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../context/AuthContext";
+import io from "socket.io-client";
 
 // const Home = ({ navigation }) => {
 const Home = (props) => {
-  const { logout, userInfo, serverUrl, serverPort } = useContext(AuthContext);
+  
+  const {serverUrl, serverPort, userInfo, socketPort,onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
+  const socket = io(serverUrl + socketPort);
   // const {newFilePath, setNewFilePath} = useState(null);
 
   // const [imageUri, setImageUri] = React.useState(null);
@@ -54,6 +57,20 @@ const Home = (props) => {
   // }, []);
 
   //----------------------------------------------------------------------------------------
+  const [challengeRequest, setChallengeRequest] = useState(null);
+  
+  useEffect(() => {
+    socket.on('challengeRequest', (data) => {
+      setChallengeRequest(data);
+      console.log("Got a challenge!",data);
+    });
+  
+    return () => {
+      socket.off('challengeRequest');
+    };
+  }, []);
+
+
 
   const downloadImage = async (imageUrl) => {
     console.log("Image Url is: ", imageUrl);
@@ -150,7 +167,9 @@ const Home = (props) => {
             NEWS
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
-            <Button style={{ backgroundColor: "#172f38" }}>
+            <Button style={{ backgroundColor: "#172f38" }}
+            onPress={() => props.nav.navigate("OnlineFriends")}
+            >
               Challenge Mode
             </Button>
           </Stack>
@@ -158,6 +177,9 @@ const Home = (props) => {
 
         {/* ; } */}
       </Box>
+      
+      {challengeRequest ? <Text>Someone Sent a challenge</Text> : <Text>No any Requests</Text>}
+     
     </NativeBaseProvider>
   );
 };
