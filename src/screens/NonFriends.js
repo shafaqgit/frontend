@@ -38,6 +38,7 @@ const NonFriends = () => {
   let prevOpenedRow;
   const profPic = require("../../assets/images/profile.jpg");
 
+
   const handleSentReq = (index, id) => {
     // PUT request using axios with error handling
     setIsSent((isSent) => [...isSent, id]);

@@ -26,13 +26,16 @@ import {
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import io from "socket.io-client";
+import  socket  from "../service/socket";
 
 // const Home = ({ navigation }) => {
+
 const Home = (props) => {
-  
-  const {serverUrl, serverPort, userInfo, socketPort,onlineUser}= useContext(AuthContext);
+
+  const {serverUrl, serverPort, userInfo, onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
-  const socket = io(serverUrl + socketPort);
+  // const socket = io(serverUrl + socketPort);
+
   // const {newFilePath, setNewFilePath} = useState(null);
 
   // const [imageUri, setImageUri] = React.useState(null);
@@ -65,9 +68,9 @@ const Home = (props) => {
       console.log("Got a challenge!",data);
     });
   
-    return () => {
-      socket.off('challengeRequest');
-    };
+    // return () => {
+    //   socket.off('challengeRequest');
+    // };
   }, []);
 
 

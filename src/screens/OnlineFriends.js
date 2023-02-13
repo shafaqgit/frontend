@@ -24,11 +24,13 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import io from "socket.io-client";
 
+import  socket  from "../service/socket";
+
 const ITEM_MARGIN_BOTTOM = 20;
 
 const OnlineFriends = () => {
   
-  const {serverUrl, serverPort, userInfo, socketPort,onlineUser}= useContext(AuthContext);
+  const {serverUrl, serverPort, userInfo,onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
@@ -38,7 +40,7 @@ const OnlineFriends = () => {
   const [isSent, setIsSent] = useState([]);
   const [activeButtons, setActiveButtons] = useState([]);
 
-  const socket = io(serverUrl + socketPort);
+  // const socket = io(serverUrl + socketPort);
   
   const downloadImage = async (imageUrl) => {
     // console.log("Image Url is: ", imageUrl);

@@ -17,7 +17,9 @@ import {
 } from "native-base";
 import { AuthContext } from "../context/AuthContext";
 // import SampleForm from "./SampleForm";
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
+
+
 const Edit = ({ navigation }) => {
   const { serverUrl, serverPort } = useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;

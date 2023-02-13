@@ -25,9 +25,10 @@ import axios from "axios";
 
 const ITEM_MARGIN_BOTTOM = 20;
 
+
 const Friends = () => {
   
-  const {serverUrl, serverPort, userInfo, socketPort,onlineUser}= useContext(AuthContext);
+  const {serverUrl, serverPort, userInfo,onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
