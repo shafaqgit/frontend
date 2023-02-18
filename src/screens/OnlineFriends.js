@@ -13,9 +13,11 @@ import {
   Text,
   StatusBar,
   FlatList,
+  Modal,
   ActivityIndicator,
   Alert,
 } from "react-native";
+// import ChallengeCard from "../components/ChallengeCard";
 
 import { Button, NativeBaseProvider, Heading } from "native-base";
 import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
@@ -29,6 +31,7 @@ import  socket  from "../service/socket";
 const ITEM_MARGIN_BOTTOM = 20;
 
 const OnlineFriends = () => {
+
   
   const {serverUrl, serverPort, userInfo,onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
@@ -200,7 +203,7 @@ const OnlineFriends = () => {
 
                     }}
                     onPress={() => {
-                        sendChallengeRequest(userInfo.user._id,item._id);
+                        sendChallengeRequest(userInfo,item._id);
                     }}
                   >
                     <Text
@@ -223,6 +226,7 @@ const OnlineFriends = () => {
   };
 
   return (
+    
     <View style={styles.container}>
       
       {isLoading ? (
@@ -248,7 +252,11 @@ const OnlineFriends = () => {
           </View>
         )
       )}
+
+      
+      
     </View>
+    
   );
 };
 

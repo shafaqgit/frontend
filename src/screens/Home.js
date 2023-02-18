@@ -1,4 +1,5 @@
 import React from "react";
+// import Modal from "react-native-modal";
 // import RNFS from 'react-native-fs';
 // import RNFetchBlob from 'rn-fetch-blob'
 import * as FileSystem from "expo-file-system";
@@ -18,22 +19,26 @@ import {
   Image,
   Stack,
   Heading,
+  Modal,
   //   errors,
   Card,
   NativeBaseProvider,
   Input,
 } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet,View,TouchableOpacity,ActivityIndicator } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import io from "socket.io-client";
 import  socket  from "../service/socket";
+import ChallengeCard from "../components/ChallengeCard";
 
 // const Home = ({ navigation }) => {
 
-const Home = (props) => {
+const Home = (props,{ navigation }) => {
 
   const {serverUrl, serverPort, userInfo, onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
+
+  
   // const socket = io(serverUrl + socketPort);
 
   // const {newFilePath, setNewFilePath} = useState(null);
@@ -61,16 +66,38 @@ const Home = (props) => {
 
   //----------------------------------------------------------------------------------------
   const [challengeRequest, setChallengeRequest] = useState(null);
+  const [acceptChallenge, setAcceptChallenge] = useState(null);
+
+  const [vis,setVis]=useState(false)
   
   useEffect(() => {
     socket.on('challengeRequest', (data) => {
       setChallengeRequest(data);
-      console.log("Got a challenge!",data);
+      setVis(true);
+      console.log("Got a challenge!");
     });
   
     // return () => {
     //   socket.off('challengeRequest');
     // };
+  }, []);
+
+  useEffect(() => {
+    socket.on('startGame', (data) => {
+      setAcceptChallenge(data);
+
+      console.log("Your Challenge has Accepted");
+    });
+  
+  }, []);
+
+  useEffect(() => {
+    socket.on('startGame', (data) => {
+      if(acceptChallenge){
+       navigation.navigate("OnlineGamePage")
+      }
+    });
+  
   }, []);
 
 
@@ -180,8 +207,28 @@ const Home = (props) => {
 
         {/* ; } */}
       </Box>
+
+      {/* <Button title="Show Popup" onPress={() => setVis(true)} /> */}
+
+      <Modal isOpen={vis} onClose={() => {
+        setChallengeRequest(null)
+        setVis(false)}}>
+        <View style={{ backgroundColor: 'white', padding: 16 }}>
+
+          {/* --------------------------------------------------------------------------------------------- */}
+
+            <ChallengeCard item={challengeRequest}/>
+            
+            {/* -------------------------------------------------------------------------------------------------- */}
+          <Button title="Close" onPress={() => {
+            setChallengeRequest(null)
+            setVis(false)}} />
+
+        </View>
+      </Modal>
       
-      {challengeRequest ? <Text>Someone Sent a challenge</Text> : <Text>No any Requests</Text>}
+      
+      {challengeRequest ? <Text>{challengeRequest.challenger.user.firstName} Sent a challenge</Text> : <Text>No any Requests</Text>}
      
     </NativeBaseProvider>
   );

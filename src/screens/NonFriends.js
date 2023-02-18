@@ -188,8 +188,8 @@ const NonFriends = () => {
                     </Text>
                   </Button>
                 )}
-              </TouchableOpacity>
-              <Button
+               </TouchableOpacity>
+               <Button
                 style={{
                   width: 130,
                   height: 35,
@@ -198,7 +198,7 @@ const NonFriends = () => {
                   marginRight: 5,
                   backgroundColor: "#2b692d",
                 }}
-              >
+               >
                 <Text
                   style={{
                     fontWeight: "bold",

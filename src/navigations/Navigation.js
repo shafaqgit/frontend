@@ -14,6 +14,7 @@ import NonFriends from "../screens/NonFriends";
 import Friends from "../screens/Friends";
 import RequestPage from "../screens/RequestPage";
 import OnlineFriends from "../screens/OnlineFriends";
+import OnlineGamePage from "../screens/OnlineGamePage";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -50,6 +51,7 @@ const AppNavigator = createStackNavigator(
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
     OnlineFriends: { screen: OnlineFriends, navigationOptions: { title: "Online Users" } },
+    OnlineGamePage: { screen: OnlineGamePage, navigationOptions: { title: "Online Mode" } },
   },
   {
     defaultNavigationOptions: stackNavigatorOptions,
