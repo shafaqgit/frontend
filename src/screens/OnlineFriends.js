@@ -83,6 +83,7 @@ const OnlineFriends = () => {
 
   const sendChallengeRequest = (challenger,challengee) => {
    
+    setIsSent((isSent) => [...isSent, challengee]);
     socket.emit('sendChallengeRequest', { challenger, challengee });
    
  };
@@ -162,25 +163,22 @@ const OnlineFriends = () => {
             <TouchableOpacity>
             {isSent.includes(item._id) ? 
             (
-              <Button
-              style={{
-                width: 130,
-                height: 35,
-                top: 5,
-                padding: 10,
-                justifyContent: "center",
-                marginRight: 5,
-                backgroundColor: "red",
-              }}
+            //   <Button
+            //   style={{
+            //     width: 130,
+            //     height: 35,
+            //     top: 5,
+            //     padding: 10,
+            //     justifyContent: "center",
+            //     marginRight: 5,
+            //     backgroundColor: "red",
+            //   }}
               
-            >
-               <ActivityIndicator size="small" color="#333" />
+            // >
+            //    <ActivityIndicator size="small" color="#333" />
 
-            </Button>
-            ) : (
-
-              activeButtons.includes(item._id) ? (
-                <Text
+            // </Button>
+            <Text
                   style={{
                     
                     paddingTop: 15,
@@ -189,7 +187,19 @@ const OnlineFriends = () => {
                 >
                   Challenge Sent
                 </Text>
-              ) : (
+            ) : (
+
+              // activeButtons.includes(item._id) ? (
+              //   <Text
+              //     style={{
+                    
+              //       paddingTop: 15,
+              //       marginRight: 50,
+              //     }}
+              //   >
+              //     Challenge Sent
+              //   </Text>
+              // ) : (
 
             <Button
                     style={{
@@ -216,7 +226,7 @@ const OnlineFriends = () => {
                        Challenge
                     </Text>
                   </Button>
-            ))}
+            )}
             </TouchableOpacity>      
             </View>
           </View>

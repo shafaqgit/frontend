@@ -29,9 +29,11 @@ let timer = () => {};
 const OnlineGamePage = ({ navigation }) => {
  
   return (
+    <NativeBaseProvider>
     <View style={styles.container}>
       <Text>Game is going to Start</Text>
     </View>
+    </NativeBaseProvider>
   );
 };
 

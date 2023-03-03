@@ -10,14 +10,16 @@ import {
 
   
 
-const ChallengeCard = (props,{navigation}) => {
+const ChallengeCard = (props) => {
     const profPic = require("../../assets/images/profile.jpg");
 
 
-    const acceptChallengeRequest = (gameFrom,gameWith) => {
+    const acceptChallengeRequest = (gameWith,gameFrom) => {
    
         socket.emit('acceptChallenge', {gameFrom, gameWith });
-        navigation.navigate("OnlineGamePage");
+        // navigation.navigate("OnlineGamePage");
+        props.setVis(false);
+        // props.scr.navigate("OnlineGamePage") 
      };
  
   return(  <View style={styles.item}>
@@ -30,7 +32,7 @@ const ChallengeCard = (props,{navigation}) => {
         alt="User Profile"
       />
       <View style={styles.wrapText}>
-        <Text style={styles.textStyle}> {props.item.challenger.user.firstName}  {props.item.challenger.user.lastName}</Text>
+        {/* <Text style={styles.textStyle}> {props.item.challenger.user.firstName}  {props.item.challenger.user.lastName}</Text> */}
       </View>
     </View>
 
@@ -82,9 +84,9 @@ const ChallengeCard = (props,{navigation}) => {
               backgroundColor: "red",
 
              }}
-            // onPress={() => {
-            //   handleRemoveReq(item._id);
-            // }}
+            onPress={() => {
+              props.setVis(false);
+            }}
            >
             <Text
               style={{

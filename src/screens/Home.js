@@ -33,7 +33,7 @@ import ChallengeCard from "../components/ChallengeCard";
 
 // const Home = ({ navigation }) => {
 
-const Home = (props,{ navigation }) => {
+const Home = (props) => {
 
   const {serverUrl, serverPort, userInfo, onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
@@ -83,49 +83,53 @@ const Home = (props,{ navigation }) => {
   }, []);
 
   useEffect(() => {
-    socket.on('startGame', (data) => {
-      setAcceptChallenge(data);
+    socket.on('startGame', (gameData) => {
+      // setAcceptChallenge(data);
 
-      console.log("Your Challenge has Accepted");
-    });
-  
-  }, []);
-
-  useEffect(() => {
-    socket.on('startGame', (data) => {
-      if(acceptChallenge){
-       navigation.navigate("OnlineGamePage")
-      }
+      console.log("Challenge Accepted.. Game Going to start: ");
+       props.nav.navigate("OnlineGamePage") 
+      // navigation.navigate("OnlineGamePage")
     });
   
   }, []);
 
 
 
-  const downloadImage = async (imageUrl) => {
-    console.log("Image Url is: ", imageUrl);
-    const fileName = imageUrl.split("/").pop();
-    const newPath = `${FileSystem.documentDirectory}${fileName}`;
+  // useEffect(() => {
 
-    try {
-      await FileSystem.downloadAsync(imageUrl, newPath);
-      return newPath;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     if(acceptChallenge){
+  //       // props.nav.navigate("OnlineFriends")
+  //      navigation.navigate("OnlineGamePage")
+  //     }
+  
+  // }, []);
+
+
+
+  // const downloadImage = async (imageUrl) => {
+  //   console.log("Image Url is: ", imageUrl);
+  //   const fileName = imageUrl.split("/").pop();
+  //   const newPath = `${FileSystem.documentDirectory}${fileName}`;
+
+  //   try {
+  //     await FileSystem.downloadAsync(imageUrl, newPath);
+  //     return newPath;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    const loadImage = async () => {
-      const imagePath = await downloadImage(
-        baseUrl + "/api/Image/" + userInfo.user.profilePicture
-      );
-      setImage(imagePath);
-    };
-    loadImage();
-  }, [image]);
+  // useEffect(() => {
+  //   const loadImage = async () => {
+  //     const imagePath = await downloadImage(
+  //       baseUrl + "/api/Image/" + userInfo.user.profilePicture
+  //     );
+  //     setImage(imagePath);
+  //   };
+  //   loadImage();
+  // }, [image]);
 
   return (
     <NativeBaseProvider>
@@ -167,7 +171,10 @@ const Home = (props,{ navigation }) => {
           <Stack space={4} p={[4, 4, 8]}>
             <Button
               style={{ backgroundColor: "#172f38" }}
+              
+              // onPress={() => navigation.navigate("Xyz")}
               onPress={() => props.nav.navigate("Xyz")}
+              
             >
               Practice Mode
             </Button>
@@ -198,7 +205,9 @@ const Home = (props,{ navigation }) => {
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
             <Button style={{ backgroundColor: "#172f38" }}
+            // onPress={() => navigation.navigate("OnlineFriends")}
             onPress={() => props.nav.navigate("OnlineFriends")}
+            
             >
               Challenge Mode
             </Button>
@@ -209,6 +218,7 @@ const Home = (props,{ navigation }) => {
       </Box>
 
       {/* <Button title="Show Popup" onPress={() => setVis(true)} /> */}
+     
 
       <Modal isOpen={vis} onClose={() => {
         setChallengeRequest(null)
@@ -217,18 +227,18 @@ const Home = (props,{ navigation }) => {
 
           {/* --------------------------------------------------------------------------------------------- */}
 
-            <ChallengeCard item={challengeRequest}/>
+            <ChallengeCard item={challengeRequest} scr={props.nav} setVis={setVis}/>
             
             {/* -------------------------------------------------------------------------------------------------- */}
-          <Button title="Close" onPress={() => {
+          {/* <Button title="Close" onPress={() => {
             setChallengeRequest(null)
-            setVis(false)}} />
+            setVis(false)}} /> */}
 
         </View>
       </Modal>
       
       
-      {challengeRequest ? <Text>{challengeRequest.challenger.user.firstName} Sent a challenge</Text> : <Text>No any Requests</Text>}
+      {/* {challengeRequest ? <Text>{challengeRequest.challenger.user.firstName} Sent a challenge</Text> : <Text>No any Requests</Text>} */}
      
     </NativeBaseProvider>
   );
