@@ -6,7 +6,7 @@ import io from "socket.io-client";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = "http://192.168.8.109";
+  const serverUrl = "http://192.168.10.3";
   const serverPort = ":3000";
   const socketPort = ":8080";
   const baseUrl = serverUrl + serverPort;
@@ -94,9 +94,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    isLoggedIn();
-  }, []);
+  // useEffect(() => {
+  //   isLoggedIn();
+  // }, []);
   return (
     <AuthContext.Provider
       value={{

@@ -35,6 +35,8 @@ const Welcome = ({ navigation }) => {
           LOGIN
         </Button>
 
+       
+
         <Button
           style={styles.buttonStyle}
           size={"sm"}

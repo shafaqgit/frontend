@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect, useContext } from "react";
-import Timer from "../components/Timer";
+import Timer from "./Timer";
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,7 +27,7 @@ import { AuthContext } from "../context/AuthContext";
 // LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
-const Xyz = (props) => {
+const PracticeScreen = () => {
   const [data, setData] = useState([]);
   const [data1, setData1] = useState(null);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -34,78 +35,14 @@ const Xyz = (props) => {
   const [nexted, setNext] = useState(0);
   const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
-  // const [booleanOption, setBooleanOption] = useState({});
-  const [booleanOption, setBooleanOption] = useState({});
-  const [res, setRes]= useState([]);
-  const [color, setColor]=useState("blue");
-  const [score, setScore] = useState(0);
+  const [marks, setMarks]=useState(0);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
+  // const [result, setResult] = useState(null);
+
   const { serverUrl, serverPort } = useContext(AuthContext);
-  
+
   const baseUrl = serverUrl + serverPort;
 
-
-  // Call the callback function passed in through the navigation parameters with the data you want to pass back
-  const handleData = (data) => {
-
-    props.navigation.getParam('onResult')(data);
-    setData1(data);
-    console.log(res)
-    
-    props.navigation.navigate('Topics')
-  };
-  const handleOptions=(key, value)=>{
-
-    setBooleanOption(prevBooleanOption => ({
-      ...prevBooleanOption,
-      [question]: option
-    }));
-    // setBooleanOption({
-    //   ...booleanOption, // Spread operator to copy existing key-value pairs
-    //   [key]: value, // Set the new value for the specified key
-    // });
-  }
-  const handleButtonClick = (question,option) => {
-    setBooleanOption({
-      ...booleanOption,
-      [question]: option
-
-    });
-    console.log(booleanOption[question])
-  };
-
-  const makeResult=(ques_id, answer, selected)=>{
-    const newObj = { id: ques_id, ans: booleanOption[ques_id], check:selected };
-
-    const index = res.findIndex(obj => obj.id === newObj.id);
-
-    if (index === -1) {
-      setRes([...res, newObj]);
-    } else {
-      setRes([...res.slice(0, index), newObj, ...res.slice(index + 1)]);
-    }
-
-  }
-  useEffect(() => {
-    console.log("Score updated: ", score);
-  }, [score]);
-  
-  const calculateScore = () => {
-    let newScore = 0;
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      
-      const selectedAnswerIndex = booleanOption[item._id];
-      console.log("my answer",selectedAnswerIndex)
-      if (item.options[selectedAnswerIndex] === item.correctAnswer) {
-        
-        newScore++;
-        console.log("hhhh",newScore)
-      }
-    }
-    
-    setScore(newScore)
-    console.log(score)
-  };
   const getListPhotos = () => {
     const apiURL = baseUrl + "/api/questions";
     fetch(apiURL)
@@ -121,6 +58,15 @@ const Xyz = (props) => {
         setisLoading(false);
       });
   };
+  const handlePress = () => {
+    // props.setResult(1);
+  };
+
+  const handleData = (data) => {
+    props.navigation.getParam('onResult')(data);
+    setData1(data);
+  };
+
   useEffect(() => {
     getListPhotos();
     return () => {};
@@ -152,14 +98,12 @@ const Xyz = (props) => {
                   {/* {item.id == { count } && item.questionContent} */}
 
                   {item.questionContent}
-                 
                 </Text>
               </Card>
             </Box>
 
             <Box>
-              {item.options.map((i,ans) => {
-                 
+              {item.options.map((i) => {
                 return (
                   <Box
                     flexDirection={"column"}
@@ -171,34 +115,11 @@ const Xyz = (props) => {
                       justifyContent={"center"}
                       borderRadius="20"
                       size="sm"
-                      // backgroundColor={selectedAnswerIndex[i] === i ? "green.400" : "gray.200"}
-                      // onPress={() => handleOptions(i)}
-                      // backgroundColor={color}
-                      onPress={() => {
-                        handleButtonClick(item._id, ans)
-                        makeResult(item._id, ans, false)
-                      }
-                      }
-                      
-                     
-                      style={{
-                        backgroundColor:
-                          
-                        booleanOption[item._id] === ans ? "green" : color,
-                      }}
-
-                      
-                    // onPress={() => handleButtonClick(item.questionContent,i)}
-
-                      
-                      // style={{
-                      //   backgroundColor: booleanOption[item.questionContent] === i ? 'green' : 'blue',
-                        
-                      // }}
+                      backgroundColor={selectedAnswerIndex === i ? "green.400" : "gray.200"}
+                      onPress={() => setSelectedAnswerIndex(i)}
                     >
                       {" "}
                       {i}
-                     
                     </Button>
                   </Box>
                 );
@@ -253,7 +174,6 @@ const Xyz = (props) => {
           {check == false ? (
             <Button
               onPress={() => {
-                // calculateScore()
                 setCheck(true);
               }}
             >
@@ -307,10 +227,10 @@ const Xyz = (props) => {
                       <Button
                         style={{ width: "100%", color: "green" }}
                         onPress={() => {
-                          calculateScore()
-                         
+                          // setResult(1);
+                          // props.setResult(1);
+                          handleData(1)
                           setCheck(false);
-                          handleData(1);
                         }}
                       >
                         <Text style={{ paddingLeft: 0 }}>Submit</Text>
@@ -361,4 +281,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Xyz;
+
+
+export default PracticeScreen;

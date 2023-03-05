@@ -30,6 +30,7 @@ import { AuthContext } from "../context/AuthContext";
 const Home = (props) => {
   const { logout, userInfo, serverUrl, serverPort } = useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
+ 
   // const {newFilePath, setNewFilePath} = useState(null);
 
   // const [imageUri, setImageUri] = React.useState(null);
@@ -95,7 +96,7 @@ const Home = (props) => {
       alt="Profile Picture"
     /> */}
 
-      <Box bg={"#2d596b"} flex={1}>
+     
         <Box
           bg="white"
           shadow={5}
@@ -105,6 +106,15 @@ const Home = (props) => {
           marginTop={"40%"}
           // justifyContent={"center"}
         >
+
+<Box bg={"#2d596b"} flex={1}>
+      <Button
+  style={styles.buttonStyle}
+  size={"sm"}
+  onPress={() => props.nav.navigate("Topics")}
+>
+ Topics
+</Button>
           <Image
             source={{
               uri: "https://i.pinimg.com/originals/54/e3/7d/54e37d8074ebcde1d96c77d7b2a7f310.gif",
