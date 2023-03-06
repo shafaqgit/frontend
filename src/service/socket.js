@@ -20,4 +20,4 @@ class socket {
   }
 }
 
-export default new socket('http://10.54.3.202:8080');
+export default new socket('http://192.168.10.12:8080');

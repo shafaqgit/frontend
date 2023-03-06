@@ -1,34 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, Button } from "react-native";
 import { Center, Progress, Card, Box, NativeBaseProvider } from "native-base";
 
-let timer = () => {};
 const Assess = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [count, setCount] = useState(0);
 
-  
+  const timerRef = useRef();
+
   const startTimer = () => {
-    timer = setTimeout(() => {
-      if (timeLeft <= 0) {
-        clearTimeout(timer);
-        return false;
-      }
-      setTimeLeft(timeLeft - 1);
+    timerRef.current = setTimeout(() => {
+      setTimeLeft((timeLeft) => timeLeft - 1);
     }, 1000);
   };
 
   useEffect(() => {
     startTimer();
-    return () => clearTimeout(timer);
-  });
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
-  const next = () => {
-    setCount(count + 1);
+  const handleNext = () => {
+    setCount((count) => count + 1);
   };
-  const start = () => {
+
+  const handleStart = () => {
     setTimeLeft(50);
-    clearTimeout(timer);
+    clearTimeout(timerRef.current);
     startTimer();
   };
 
@@ -38,11 +35,11 @@ const Assess = () => {
         <View>
           <Text>{timeLeft}</Text>
         </View>
-        
 
         <View>
-          <Button onPress={next} title="Next" />
+          <Button onPress={handleNext} title="Next" />
         </View>
+
         <Box w="90%" maxW="400">
           <Progress value={count} mx="4" />
         </Box>

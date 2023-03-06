@@ -74,7 +74,7 @@ const Home = (props) => {
     socket.on('challengeRequest', (data) => {
       setChallengeRequest(data);
       setVis(true);
-      console.log("Got a challenge!");
+      // console.log("Got a challenge!");
     });
   
     // return () => {
@@ -87,7 +87,7 @@ const Home = (props) => {
       // setAcceptChallenge(data);
 
       console.log("Challenge Accepted.. Game Going to start: ");
-       props.nav.navigate("OnlineGamePage") 
+       props.nav.navigate("OnlineGamePage", { gameData });
       // navigation.navigate("OnlineGamePage")
     });
   

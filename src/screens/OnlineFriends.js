@@ -88,6 +88,26 @@ const OnlineFriends = () => {
    
  };
 
+ useEffect(() => {
+  socket.on('challengeDenied', (gameData) => {
+    // setAcceptChallenge(data);
+
+    // console.log("Challenge Denied ");
+
+    setIsSent((isSent) => isSent.filter((item) => item !== gameData.gameWith));
+  });
+
+}, []);
+
+useEffect(() => {
+  socket.on('inProgress', (gameData) => {
+    
+
+    setIsSent((isSent) => isSent.filter((item) => item !== gameData.gameWith));
+  });
+
+}, []);
+
   const getListPhotos = () => {
 
     if (onlineUser){

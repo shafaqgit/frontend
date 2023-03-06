@@ -17,10 +17,15 @@ const ChallengeCard = (props) => {
     const acceptChallengeRequest = (gameWith,gameFrom) => {
    
         socket.emit('acceptChallenge', {gameFrom, gameWith });
-        // navigation.navigate("OnlineGamePage");
         props.setVis(false);
-        // props.scr.navigate("OnlineGamePage") 
      };
+
+
+     const rejectChallengeRequest = (gameWith,gameFrom) => {
+   
+      socket.emit('rejectChallenge', {gameFrom, gameWith });
+
+   };
  
   return(  <View style={styles.item}>
     <View style={{ flexDirection: "row" }}>
@@ -32,7 +37,7 @@ const ChallengeCard = (props) => {
         alt="User Profile"
       />
       <View style={styles.wrapText}>
-        {/* <Text style={styles.textStyle}> {props.item.challenger.user.firstName}  {props.item.challenger.user.lastName}</Text> */}
+        <Text style={styles.textStyle}> {props.item.challenger.user.firstName}  {props.item.challenger.user.lastName}</Text>
       </View>
     </View>
 
@@ -41,37 +46,7 @@ const ChallengeCard = (props) => {
     >
 
     <TouchableOpacity>
-    {/* {isSent.includes(item._id) ? 
-    (
-      <Button
-      style={{
-        width: 130,
-        height: 35,
-        top: 5,
-        padding: 10,
-        justifyContent: "center",
-        marginRight: 5,
-        backgroundColor: "red",
-      }}
-      
-    >
-       <ActivityIndicator size="small" color="#333" />
-
-    </Button> */}
-
-    {/* ) : (
-
-      activeButtons.includes(item._id) ? (
-        <Text
-          style={{
-            
-            paddingTop: 15,
-            marginRight: 50,
-          }}
-        >
-         Friend Removed
-        </Text>
-      ) : ( */}
+    
 
         <Button
             style={{
@@ -86,6 +61,7 @@ const ChallengeCard = (props) => {
              }}
             onPress={() => {
               props.setVis(false);
+              rejectChallengeRequest(props.item.challengee,props.item.challenger.user._id);
             }}
            >
             <Text
