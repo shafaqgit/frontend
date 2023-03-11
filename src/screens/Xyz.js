@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Timer from "../components/Timer";
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -39,15 +40,31 @@ const Xyz = (props) => {
   const [res, setRes]= useState([]);
   const [color, setColor]=useState("blue");
   const [score, setScore] = useState(0);
+  const { userInfo, setUserInfo } = useContext(AuthContext);
   const { serverUrl, serverPort } = useContext(AuthContext);
   
   const baseUrl = serverUrl + serverPort;
-
-
+ 
+  
   // Call the callback function passed in through the navigation parameters with the data you want to pass back
   const handleData = (data) => {
+    setUserInfo((userInfo) => ({
+      ...userInfo,
+      user: {
+        ...userInfo.user,
+        personalTopics: [
+          ...userInfo.user.personalTopics.slice(0, props.navigation.state.params.index),
+          {
+            ...userInfo.user.personalTopics[props.navigation.state.params.index],
+            assessmentCompleted: true
+          },
+          ...userInfo.user.personalTopics.slice(props.navigation.state.params.index + 1)
+        ]
+      }
+    }));
 
-    props.navigation.getParam('onResult')(data);
+    console.log("my topics",userInfo.user)
+    // props.navigation.getParam('onResult')(data);
     setData1(data);
     console.log(res)
     
@@ -70,13 +87,30 @@ const Xyz = (props) => {
       [question]: option
 
     });
-    console.log(booleanOption[question])
+    // console.log("ibtisam",booleanOption[question])
   };
 
-  const makeResult=(ques_id, answer, selected)=>{
-    const newObj = { id: ques_id, ans: booleanOption[ques_id], check:selected };
+  const makeResult=(ques_id, answer)=>{
+  
+    let newObj={}
+  
+    data.map(item => {
+      
+      if(item._id===ques_id){
+        console.log("mein agyaaa")
+        if (answer === item.correctAnswer) {
+          newObj = { question_id: ques_id, selected: answer, IsCorrect:true };
+          
+        }
+        else{
+          newObj = { question_id: ques_id, selected: answer, IsCorrect:false };
+        }
 
-    const index = res.findIndex(obj => obj.id === newObj.id);
+      }
+      
+    });
+    const index = res.findIndex(obj => obj.id === newObj.question_id);
+
 
     if (index === -1) {
       setRes([...res, newObj]);
@@ -94,13 +128,16 @@ const Xyz = (props) => {
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
       
-      const selectedAnswerIndex = booleanOption[item._id];
-      console.log("my answer",selectedAnswerIndex)
-      if (item.options[selectedAnswerIndex] === item.correctAnswer) {
+      const selectedAnswer = booleanOption[item._id];
+
+      // console.log("my answer",selectedAnswerIndex)
+      // item.options[selectedAnswerIndex]
+      if ( selectedAnswer === item.correctAnswer) {
         
         newScore++;
         console.log("hhhh",newScore)
       }
+      
     }
     
     setScore(newScore)
@@ -175,8 +212,8 @@ const Xyz = (props) => {
                       // onPress={() => handleOptions(i)}
                       // backgroundColor={color}
                       onPress={() => {
-                        handleButtonClick(item._id, ans)
-                        makeResult(item._id, ans, false)
+                        handleButtonClick(item._id, i)
+                        makeResult(item._id, i)
                       }
                       }
                       
@@ -184,7 +221,7 @@ const Xyz = (props) => {
                       style={{
                         backgroundColor:
                           
-                        booleanOption[item._id] === ans ? "green" : color,
+                        booleanOption[item._id] === i ? "green" : color,
                       }}
 
                       
@@ -308,9 +345,9 @@ const Xyz = (props) => {
                         style={{ width: "100%", color: "green" }}
                         onPress={() => {
                           calculateScore()
-                         
-                          setCheck(false);
                           handleData(1);
+                          setCheck(false);
+                          
                         }}
                       >
                         <Text style={{ paddingLeft: 0 }}>Submit</Text>

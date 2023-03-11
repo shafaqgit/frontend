@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,ScrollView} from 'react-native';
 import Xyz from './Xyz';
@@ -5,13 +6,19 @@ import { AuthContext } from "../context/AuthContext";
 const Topics = (props) => {
   
   const [result, setResult] = useState(null);
-  const [complete, handleComplete]=useState(null)
-  const { userInfo } = useContext(AuthContext);
+  // const [complete, handleComplete]=useState(null)
   
-  const [topics, setTopics] = useState(userInfo.user.personalTopics);
-
+  
+  const [topics, setTopics] = useState([]);
+  
   const topicsRef = useRef(topics);
+  const { userInfo } = useContext(AuthContext);
 
+  // const { userInfo } = useContext(AuthContext);
+  useEffect(() => {
+    setTopics(userInfo.user.personalTopics);
+  }, [userInfo]);
+  
   const unlockTopic = (index) => {
     setTopics(topics.map((topic, i) => {
       if (i === index) {
@@ -21,30 +28,45 @@ const Topics = (props) => {
       }
     }));
   };
-
+//topic bhejo yahan se 
   const completeAssessment = (index) => {
-    setTopics(topics.map((topic, i) => {
-      if (i === index) {
-        props.navigation.navigate('Xyz', { onResult: handleComplete });
-        console.log(complete)
-        if(complete===1){
-          return { ...topic, assessmentCompleted: true };
-        }
-        else{
-            return{...topic, assessmentCompleted:false}
-        }
-      } else {
-        return topic;
-      }
-    }));
+    props.navigation.navigate('Xyz', { index })
+    // props.navigation.navigate('Xyz', { onResult: (result) => handleComplete(result, index) });
+    // setTopics(topics.map((topic, i) => {
+    //   if (i === index) {
+    //     // props.navigation.navigate('Xyz', { onResult: handleComplete });
+    //     // console.log(complete)
+    //     if(complete===1){
+    //       return { ...topic, assessmentCompleted: true };
+    //     }
+    //     else{
+    //         return{...topic, assessmentCompleted:false}
+    //     }
+    //   } else {
+    //     return topic;
+    //   }
+    // }));
   };
+  // const handleComplete = (result, index) => {
+  //   setResult(result);
+  //   if(result === 1){
+  //     setTopics(topics.map((topic, i) => {
+  //       if (i === index) {
+  //         return { ...topic, assessmentCompleted: true };
+  //       } else {
+  //         return topic;
+  //       }
+  //     }));
+  //   }
+  //   updateTopicLockedStatus();
+  // };
 
   const canUnlockTopic = (index) => {
     if (index === 0) {
       return true; // first topic can always be unlocked
     }
     const prevTopic = topics[index - 1];
-    return prevTopic && (prevTopic.id === 1 || prevTopic.assessmentCompleted);
+    return prevTopic && (prevTopic.index === 1 || prevTopic.assessmentCompleted);
   };
 
   const updateTopicLockedStatus = () => {
@@ -80,6 +102,7 @@ const Topics = (props) => {
               </TouchableOpacity>
             )}
             {!topic.locked && !topic.assessmentCompleted && (
+              
               <TouchableOpacity style={styles.button} onPress={() => completeAssessment(index)}>
                 <Text style={styles.buttonText}>Complete Assessment</Text>
               </TouchableOpacity>
