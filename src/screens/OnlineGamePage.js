@@ -32,7 +32,7 @@ const OnlineGamePage = ({ navigation }) => {
   const data=navigation.state.params.gameData.gameData.questions;
   const sessionId=navigation.state.params.gameData.sessionId;
   
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, setUserInfo } = useContext(AuthContext);
   const currUserId=userInfo.user._id;
 
   const [timeLeft, setTimeLeft] = useState(60);
@@ -52,21 +52,45 @@ const OnlineGamePage = ({ navigation }) => {
      
       console.log("Question Count: ", quesCount.currQues);
       setCurrQues(quesCount.currQues);
+      setNext(nexted + quesCount.currQues*10);
     });
   
   }, []);
 
-  const makeResult=(ques_id, answer, selected)=>{
-    const newObj = { id: ques_id, ans: booleanOption[ques_id], check:selected };
+  const makeResult=(ques_id, answer)=>{
 
-    const index = res.findIndex(obj => obj.id === newObj.id);
+    let newObj={}
+
+    const original_ques = data.find(item => item._id === ques_id);
+    if(original_ques.correctAnswer === answer){
+      newObj = { question_id: ques_id, selected: answer, IsCorrect:true };
+    }
+    else{
+      newObj = { question_id: ques_id, selected: answer, IsCorrect:false };
+    }
+
+    // data.map(item => {
+
+    //   if(item._id===ques_id){
+        
+    //     if (answer === item.correctAnswer) {
+    //       newObj = { question_id: ques_id, selected: answer, IsCorrect:true };
+
+    //     }
+    //     else{
+    //       newObj = { question_id: ques_id, selected: answer, IsCorrect:false };
+    //     }
+
+    //   }
+
+    // });
+    const index = res.findIndex(obj => obj.id === newObj.question_id);
 
     if (index === -1) {
       setRes([...res, newObj]);
     } else {
       setRes([...res.slice(0, index), newObj, ...res.slice(index + 1)]);
     }
-
   }
 
   const handleButtonClick = (question,option) => {
@@ -129,8 +153,8 @@ const OnlineGamePage = ({ navigation }) => {
                       // onPress={() => handleOptions(i)}
                       // backgroundColor={color}
                       onPress={() => {
-                        handleButtonClick(item._id, ans)
-                        makeResult(item._id, ans, false)
+                        handleButtonClick(item._id, i)
+                        makeResult(item._id, i)
                       }
                       }
                       
@@ -138,7 +162,8 @@ const OnlineGamePage = ({ navigation }) => {
                       style={{
                         backgroundColor:
                           
-                        booleanOption[item._id] === ans ? "green" : color,
+                        // booleanOption[item._id] === ans ? "green" : color,
+                        booleanOption[item._id] === i ? "green" : color,
                       }}
 
                       
@@ -169,8 +194,15 @@ const OnlineGamePage = ({ navigation }) => {
     // console.log(res);
     setOptionSelected(false);
     socket.emit('answered', {res, currUserId ,sessionId});
+    
+  };
+
+  const submitRes = () => {
+    // console.log(res);
+    setOptionSelected(false);
+    socket.emit('submit', { currUserId ,sessionId});
     // setCount(count + 1);
-    setNext(nexted + 10);
+    // setNext(nexted + 10);
   };
 
   return (
@@ -218,6 +250,7 @@ const OnlineGamePage = ({ navigation }) => {
                         style={{ width: "100%", color: "green" }}
                         onPress={() => {
                           setCheck(false);
+                          submitRes();
                         }}
                       >
                         <Text style={{ paddingLeft: 0 }}>Submit</Text>
