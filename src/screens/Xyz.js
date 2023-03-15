@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Timer from "../components/Timer";
+import axios from "axios";
 
 import {
   SafeAreaView,
@@ -48,6 +49,8 @@ const Xyz = (props) => {
   
   // Call the callback function passed in through the navigation parameters with the data you want to pass back
   const handleData = (data) => {
+
+    
     setUserInfo((userInfo) => ({
       ...userInfo,
       user: {
@@ -61,12 +64,33 @@ const Xyz = (props) => {
           ...userInfo.user.personalTopics.slice(props.navigation.state.params.index + 1)
         ]
       }
-    }));
 
-    console.log("my topics",userInfo.user)
+    }));
+  
+      const newDataObj = { 
+        player:userInfo.user._id,
+        optionsRes: res,
+        stage: "S1"
+      };
+     console.log("mera data", newDataObj)
+    // const newDataObj = { data: newData };
+    // this.data.push(newDataObj);
+    const apiURL = baseUrl + "/api/AddResult";
+    axios.post( apiURL , newDataObj)
+      .then(response => {
+        console.log('Result added:', response.data);
+      })
+      .catch(error => {
+        console.error('Error adding result:', error);
+      });
+  
+
+
+
+    // console.log("my topics",userInfo.user)
     // props.navigation.getParam('onResult')(data);
     setData1(data);
-    console.log(res)
+    // console.log(res)
     
     props.navigation.navigate('Topics')
   };
@@ -90,7 +114,7 @@ const Xyz = (props) => {
     // console.log("ibtisam",booleanOption[question])
   };
 
-  const makeResult=(ques_id, answer)=>{
+  const makeResult=(ques_id, answer, difficulty)=>{
   
     let newObj={}
   
@@ -99,13 +123,13 @@ const Xyz = (props) => {
       if(item._id===ques_id){
         console.log("mein agyaaa")
         if (answer === item.correctAnswer) {
-          newObj = { question_id: ques_id, selected: answer, IsCorrect:true };
+          newObj = { question_id: ques_id, selected: answer, difficulty:difficulty, IsCorrect:true };
           
         }
         else{
-          newObj = { question_id: ques_id, selected: answer, IsCorrect:false };
+          newObj = { question_id: ques_id, selected: answer, difficulty:difficulty, IsCorrect:false };
         }
-
+ 
       }
       
     });
@@ -121,28 +145,10 @@ const Xyz = (props) => {
   }
   useEffect(() => {
     console.log("Score updated: ", score);
+    
   }, [score]);
   
-  const calculateScore = () => {
-    let newScore = 0;
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      
-      const selectedAnswer = booleanOption[item._id];
-
-      // console.log("my answer",selectedAnswerIndex)
-      // item.options[selectedAnswerIndex]
-      if ( selectedAnswer === item.correctAnswer) {
-        
-        newScore++;
-        console.log("hhhh",newScore)
-      }
-      
-    }
-    
-    setScore(newScore)
-    console.log(score)
-  };
+  
   const getListPhotos = () => {
     const apiURL = baseUrl + "/api/questions";
     fetch(apiURL)
@@ -213,7 +219,7 @@ const Xyz = (props) => {
                       // backgroundColor={color}
                       onPress={() => {
                         handleButtonClick(item._id, i)
-                        makeResult(item._id, i)
+                        makeResult(item._id, i, item.difficulty)
                       }
                       }
                       
@@ -344,7 +350,7 @@ const Xyz = (props) => {
                       <Button
                         style={{ width: "100%", color: "green" }}
                         onPress={() => {
-                          calculateScore()
+                          
                           handleData(1);
                           setCheck(false);
                           
