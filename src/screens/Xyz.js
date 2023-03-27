@@ -29,6 +29,9 @@ import { AuthContext } from "../context/AuthContext";
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
 const Xyz = (props) => {
+
+  
+  // const route = useRoute();
   const [data, setData] = useState([]);
   const [data1, setData1] = useState(null);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -43,15 +46,47 @@ const Xyz = (props) => {
   const [score, setScore] = useState(0);
   const { userInfo, setUserInfo } = useContext(AuthContext);
   const { serverUrl, serverPort } = useContext(AuthContext);
-  
+  const [skillLevel, setSkillLevel] = useState(1);
   const baseUrl = serverUrl + serverPort;
  
+  const {index}=props;
+
   
   // Call the callback function passed in through the navigation parameters with the data you want to pass back
   const handleData = (data) => {
-
+    
+    
+    if (userInfo && userInfo.user && userInfo.user.personalTopics) {
+      const topicIndex = props.navigation.state.params.index;
+    
+      if (topicIndex !== -1) {
+        // create a new personal topics array with the updated personal topic
+        const updatedPersonalTopics = userInfo.user.personalTopics.map((topic, index) => {
+          if (index === topicIndex) {
+            return {
+              ...topic,
+              skillLevel: skillLevel
+            };
+          }
+          return topic;
+        });
+    
+        // update the user object with the new personal topics array
+        setUserInfo((userInfo) => ({
+          ...userInfo,
+          user: {
+            ...userInfo.user,
+            personalTopics: updatedPersonalTopics
+          }
+        }));
+      }
+    }
+    
+    
+    
     
     setUserInfo((userInfo) => ({
+
       ...userInfo,
       user: {
         ...userInfo.user,
@@ -59,30 +94,44 @@ const Xyz = (props) => {
           ...userInfo.user.personalTopics.slice(0, props.navigation.state.params.index),
           {
             ...userInfo.user.personalTopics[props.navigation.state.params.index],
-            assessmentCompleted: true
+            assessmentCompleted: true,
           },
+          // ...userInfo.user.personalTopics.map((topic) => ({ ...topic, skillLevel: userInfo.user.level }))
+          
           ...userInfo.user.personalTopics.slice(props.navigation.state.params.index + 1)
         ]
       }
 
-    }));
-  
+    })
+    
+    
+    );
+     
       const newDataObj = { 
         player:userInfo.user._id,
         optionsRes: res,
-        stage: "S1"
+        stage: "S1",
+        topicid:userInfo.user.personalTopics[props.navigation.state.params.index]._id
       };
      console.log("mera data", newDataObj)
     // const newDataObj = { data: newData };
     // this.data.push(newDataObj);
     const apiURL = baseUrl + "/api/AddResult";
-    axios.post( apiURL , newDataObj)
+      axios.post( apiURL , newDataObj)
       .then(response => {
-        console.log('Result added:', response.data);
+        setUserInfo((userInfo) => ({
+          ...userInfo,
+          user: response.data
+        }));
+      
+
+        console.log('Result added:', userInfo);
       })
       .catch(error => {
         console.error('Error adding result:', error);
       });
+
+      
   
 
 

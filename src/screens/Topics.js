@@ -1,7 +1,23 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,ScrollView} from 'react-native';
 import Xyz from './Xyz';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from "../context/AuthContext";
+
+const RatingStars = ({ skillLevel }) => {
+  return (
+    <View style={styles.ratingContainer}>
+      {[1, 2, 3].map((i) => (
+        <Ionicons
+          key={i}
+          name={i <= skillLevel ? "star" : "star-outline"}
+          size={20}
+          color={i <= skillLevel ? "gold" : "gray"}
+        />
+      ))}
+    </View>
+  );
+};
 const Topics = (props) => {
   
   const [result, setResult] = useState(null);
@@ -29,36 +45,13 @@ const Topics = (props) => {
   };
 //topic bhejo yahan se 
   const completeAssessment = (index) => {
-    props.navigation.navigate('Xyz', { index })
-    // props.navigation.navigate('Xyz', { onResult: (result) => handleComplete(result, index) });
-    // setTopics(topics.map((topic, i) => {
-    //   if (i === index) {
-    //     // props.navigation.navigate('Xyz', { onResult: handleComplete });
-    //     // console.log(complete)
-    //     if(complete===1){
-    //       return { ...topic, assessmentCompleted: true };
-    //     }
-    //     else{
-    //         return{...topic, assessmentCompleted:false}
-    //     }
-    //   } else {
-    //     return topic;
-    //   }
-    // }));
+    const topicId = topics[index]._id; // Assuming the topic object has an `id` property
+
+    props.navigation.navigate('Xyz', { index})
+    console.log(topicId)
+    
   };
-  // const handleComplete = (result, index) => {
-  //   setResult(result);
-  //   if(result === 1){
-  //     setTopics(topics.map((topic, i) => {
-  //       if (i === index) {
-  //         return { ...topic, assessmentCompleted: true };
-  //       } else {
-  //         return topic;
-  //       }
-  //     }));
-  //   }
-  //   updateTopicLockedStatus();
-  // };
+  
 
   const canUnlockTopic = (index) => {
     if (index === 0) {
@@ -108,10 +101,19 @@ const Topics = (props) => {
             )}
 
             {!topic.locked && topic.assessmentCompleted && index !== topics.length - 1 && (
+              <View style={{ flexDirection: 'row'}}>
               <TouchableOpacity style={styles.button} onPress={() => canUnlockTopic(index + 1) && unlockTopic(index + 1)}>
                 <Text style={styles.buttonText}>Unlock Next Topic</Text>
-              </TouchableOpacity>
+                
+              </TouchableOpacity >
+               <TouchableOpacity style={styles.button} onPress={() => completeAssessment(index)}>
+               <Text style={styles.buttonText} >Complete Assessment</Text>
+             </TouchableOpacity>
+             </View>
             )}
+
+            <RatingStars skillLevel={topic.skillLevel} />
+            {/* <RatingStars skillLevel={1} /> */}
           </View>
         ))}
       </View>
@@ -134,6 +136,12 @@ const styles = StyleSheet.create({
       height: 10,
     },
   },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
   lockedCard:{
     backgroundColor: 'pink'
   },
@@ -152,6 +160,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: 'green',
     padding: 10,
+    marginLeft:10,
     borderRadius: 5,
     marginTop: 10
   },

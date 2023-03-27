@@ -6,7 +6,7 @@ import io from "socket.io-client";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = "http://192.168.10.12";
+  const serverUrl = "http://192.168.10.4";
   const serverPort = ":3000";
   const socketPort = ":8080";
   const baseUrl = serverUrl + serverPort;
