@@ -14,6 +14,7 @@ import NonFriends from "../screens/NonFriends";
 import Friends from "../screens/Friends";
 import RequestPage from "../screens/RequestPage";
 import Topics from "../screens/Topics";
+import Result from "../screens/Result";
 const stackNavigatorOptions = {
   headerShown: true,
   headerStyle: {
@@ -33,6 +34,10 @@ const AppNavigator = createStackNavigator(
     Topics: {
       screen: Topics,
       navigationOptions: { title: "Topics" },
+    },
+    Result: {
+      screen: Result,
+      navigationOptions: { title: "Result" },
     },
 
     

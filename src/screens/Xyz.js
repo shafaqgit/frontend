@@ -54,58 +54,7 @@ const Xyz = (props) => {
   
   // Call the callback function passed in through the navigation parameters with the data you want to pass back
   const handleData = (data) => {
-    
-    
-    if (userInfo && userInfo.user && userInfo.user.personalTopics) {
-      const topicIndex = props.navigation.state.params.index;
-    
-      if (topicIndex !== -1) {
-        // create a new personal topics array with the updated personal topic
-        const updatedPersonalTopics = userInfo.user.personalTopics.map((topic, index) => {
-          if (index === topicIndex) {
-            return {
-              ...topic,
-              skillLevel: skillLevel
-            };
-          }
-          return topic;
-        });
-    
-        // update the user object with the new personal topics array
-        setUserInfo((userInfo) => ({
-          ...userInfo,
-          user: {
-            ...userInfo.user,
-            personalTopics: updatedPersonalTopics
-          }
-        }));
-      }
-    }
-    
-    
-    
-    
-    setUserInfo((userInfo) => ({
-
-      ...userInfo,
-      user: {
-        ...userInfo.user,
-        personalTopics: [
-          ...userInfo.user.personalTopics.slice(0, props.navigation.state.params.index),
-          {
-            ...userInfo.user.personalTopics[props.navigation.state.params.index],
-            assessmentCompleted: true,
-          },
-          // ...userInfo.user.personalTopics.map((topic) => ({ ...topic, skillLevel: userInfo.user.level }))
-          
-          ...userInfo.user.personalTopics.slice(props.navigation.state.params.index + 1)
-        ]
-      }
-
-    })
-    
-    
-    );
+  
      
       const newDataObj = { 
         player:userInfo.user._id,
@@ -113,7 +62,7 @@ const Xyz = (props) => {
         stage: "S1",
         topicid:userInfo.user.personalTopics[props.navigation.state.params.index]._id
       };
-     console.log("mera data", newDataObj)
+    //  console.log("mera data", newDataObj)
     // const newDataObj = { data: newData };
     // this.data.push(newDataObj);
     const apiURL = baseUrl + "/api/AddResult";
@@ -121,17 +70,27 @@ const Xyz = (props) => {
       .then(response => {
         setUserInfo((userInfo) => ({
           ...userInfo,
-          user: response.data
+          user: response.data.U_player
         }));
       
-
-        console.log('Result added:', userInfo);
+        
+        let percentageScore=response.data.P_score
+        let obtainedScore=response.data.T_score
+        let totalScore=response.data.Totalmarks
+        let count=response.data.T_count
+        props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count})
+        // console.log('Percentage Score:', response.data.P_score);
+        // console.log('Total added:', response.data.T_score);
+        // console.log("TotalMarks:", response.data.Totalmarks)
+        // console.log("Total Count :", response.data.T_count)
       })
       .catch(error => {
         console.error('Error adding result:', error);
       });
 
-      
+     
+
+    
   
 
 
