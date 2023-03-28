@@ -4,7 +4,7 @@ import Constants from "expo-constants";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 
 const Timer = (props) => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  // const [isPlaying, setIsPlaying] = useState(true);
   const timerProps = {
     isPlaying: true,
     size: 120,
@@ -15,20 +15,31 @@ const Timer = (props) => {
     <View marginTop={10} marginLeft={10}>
       <CountdownCircleTimer
         size={100}
-        isPlaying={isPlaying}
-        duration={60}
+        isPlaying={props.isPlaying}
+        duration={10}
         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-        colorsTime={[60, 50, 30, 10]}
+        colorsTime={[10, 5, 3, 1]}
         //   colors="#A30000"
         onComplete={() => {
-          setIsPlaying(false);
+          props.setIsPlaying(false);
           props.func(false);
+          props.nextQues();
           // do your stuff here
           return { shouldRepeat: false, delay: 1.5 }; // repeat animation in 1.5 seconds
         }}
+        onElapsed={() => props.setCurrTime(0)}
+        // Update remaining time every time the CountdownCircleTimer is updated
+        onUpdate={(elapsedTime) => {
+          // props.setCurrTime( elapsedTime);
+          props.remainingTime.current =  elapsedTime;
+        }}
       >
-        {({ remainingTime, color }) => (
+        {/* {({ remainingTime, color }) => (
           <Text style={{ color, fontSize: 15 }}>{remainingTime}</Text>
+          
+        )} */}
+        {({ color }) => (
+          <Text style={{ color, fontSize: 15 }}>{ props.remainingTime.current}</Text>
         )}
       </CountdownCircleTimer>
     </View>
@@ -36,27 +47,7 @@ const Timer = (props) => {
     <View></View>
   );
 
-  // <View>
-  //   <CountdownCircleTimer
-  //     isPlaying={isPlaying}
-  //     duration={30}
-  //     colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-  //     colorsTime={[0, 10, 5, 0]}
-  //     onComplete={() => ({ shouldRepeat: true, delay: 2 })}
-  //     updateInterval={1}
-  //   >
-  //     {({ remainingTime, color }) => (
-  //       <Text style={{ color, fontSize: 15 }}>{remainingTime}</Text>
-  //     )}
-  //   </CountdownCircleTimer>
-  //   <Button
-  //     marginTop={5}
-  //     title="Toggle Playing"
-  //     onPress={() => setIsPlaying((prev) => !prev)}
-  //   >
-  //     Start Assessment
-  //   </Button>
-  // </View>
+ 
 };
 const styles = StyleSheet.create({
   container2: {
@@ -69,3 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 export default Timer;
+

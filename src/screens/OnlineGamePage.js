@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { AntDesign } from "@expo/vector-icons";
 import Timer from "../components/Timer";
 import {
   SafeAreaView,
@@ -11,6 +12,7 @@ import {
   StatusBar,
   FlatList,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import {
   Box,
@@ -27,10 +29,11 @@ import  socket  from "../service/socket";
 // LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
-const OnlineGamePage = ({ navigation }) => {
+const OnlineGamePage = ( { navigation }) => {
   
   const data=navigation.state.params.gameData.gameData.questions;
   const sessionId=navigation.state.params.gameData.sessionId;
+
   
   const { userInfo, setUserInfo } = useContext(AuthContext);
   const currUserId=userInfo.user._id;
@@ -38,35 +41,55 @@ const OnlineGamePage = ({ navigation }) => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [count, setCount] = useState(0);
   const [nexted, setNext] = useState(0);
-  const [check, setCheck] = useState(false);
+  const [check, setCheck] = useState(true);
   const [currQues, setCurrQues]=useState(0);
   const [booleanOption, setBooleanOption] = useState({});
   const [res, setRes]= useState([]);
   const [color, setColor]=useState("blue");
   const [optionSelected, setOptionSelected]=useState(false);
-
+  const [isPlaying, setIsPlaying] = useState(true);
+  // const [currTime, setCurrTime] = useState(0);
+  const remainingTime = useRef(0);
+  const [clickNext, setClickNext] = useState(0);
 
 
   useEffect(() => {
     socket.on('nextQues', (quesCount) => {
-     
-      console.log("Question Count: ", quesCount.currQues);
+      setCheck(false);
+      // setCurrTime(0);
+      setClickNext(0);
       setCurrQues(quesCount.currQues);
-      setNext(nexted + quesCount.currQues*10);
+      setNext(nexted + quesCount.currQues*(100/data.length));
+      console.log("progress: ", quesCount.currQues*(100/data.length));
+      if(quesCount.currQues*(100/data.length)>=100){
+        let leftGame=false;
+        socket.emit('submit', { currUserId ,sessionId,leftGame});
+      }
+      setCheck(true);
+      setIsPlaying(true);
     });
+
+    socket.on('FinalResult', (res) => {
+      setCheck(false);
+      setOptionSelected(false);
+      // props.nav.navigate("MultiplayerResultScreen", { res });
+      navigation.navigate("MultiplayerResultScreen",  res );
+    });
+  
   
   }, []);
 
-  const makeResult=(ques_id, answer)=>{
+  const makeResult=(ques_id,difficulty, answer)=>{
 
     let newObj={}
+    let  timeTaken = 10 - remainingTime.current
 
     const original_ques = data.find(item => item._id === ques_id);
     if(original_ques.correctAnswer === answer){
-      newObj = { question_id: ques_id, selected: answer, IsCorrect:true };
+      newObj = { question_id: ques_id, selected: answer,difficulty: difficulty, IsCorrect:true, timeTaken: timeTaken };
     }
     else{
-      newObj = { question_id: ques_id, selected: answer, IsCorrect:false };
+      newObj = { question_id: ques_id, selected: answer,difficulty: difficulty, IsCorrect:false, timeTaken: timeTaken };
     }
 
     // data.map(item => {
@@ -136,7 +159,7 @@ const OnlineGamePage = ({ navigation }) => {
             </Box>
 
             <Box>
-              {item.options.map((i,ans) => {
+              {item.options[0].map((i,ans) => {
               
                  return (
                   <Box
@@ -154,7 +177,7 @@ const OnlineGamePage = ({ navigation }) => {
                       // backgroundColor={color}
                       onPress={() => {
                         handleButtonClick(item._id, i)
-                        makeResult(item._id, i)
+                        makeResult(item._id, item.difficulty,i)
                       }
                       }
                       
@@ -189,30 +212,63 @@ const OnlineGamePage = ({ navigation }) => {
     );
   };
 
+  
  
   const next = () => {
-    // console.log(res);
+   
+    console.log(res)
     setOptionSelected(false);
+  //  console.log("Time to click: ", remainingTime.current)
+  //  let  timeTaken = 10 - remainingTime.current
     socket.emit('answered', {res, currUserId ,sessionId});
     
   };
 
-  const submitRes = () => {
+  // const timeout = () => {
+  //   // console.log(res);
+  //   setOptionSelected(false);
+  //   socket.emit('timeout', {res, currUserId ,sessionId});
+    
+  // };
+
+  // useEffect(() => {
+  //  if(!check){
+  //   next();
+  //  }
+  
+  // }, [check]);
+  
+
+  const submitRes = (leftGame) => {
     // console.log(res);
     setOptionSelected(false);
-    socket.emit('submit', { currUserId ,sessionId});
+    socket.emit('submit', { currUserId ,sessionId, leftGame});
     // setCount(count + 1);
     // setNext(nexted + 10);
   };
 
+  const handleLeaveGame = () => {
+    setOptionSelected(false);
+    let leftGame=true;
+    socket.emit('submit', { currUserId ,sessionId, leftGame});
+  };
+
   return (
-    <View style={styles.container}>
+  <View style={styles.container}>
      
       
         <NativeBaseProvider>
           
             <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
-              <Timer check={check} func={setCheck} />
+
+                    
+            <TouchableOpacity onPress={handleLeaveGame}  style={styles.leaveButtonContainer}>
+               <AntDesign name="close" size={24} color="white" />
+                </TouchableOpacity>
+
+              <Timer check={check} func={setCheck} isPlaying={isPlaying} setIsPlaying={setIsPlaying} nextQues={next} remainingTime={remainingTime} />
+
+             
               
               <FlatList
                 data={data}
@@ -222,13 +278,16 @@ const OnlineGamePage = ({ navigation }) => {
               />
               <Center marginBottom={"15%"}>
                 <Box>
-                  {nexted !== 100 ? (
+                  {nexted < 100 ? (
                     <View flexDirection="row" justifyContent="center">
                       
+             
 
                     {optionSelected ? (
                     <Button style={{ width: "40%" }} onPress={next}> <Text style={{ paddingRight: 10 }}>Next</Text>
                       </Button>
+
+                      
                       ):(
                         <Button style={{ width: "40%" }} > <Text style={{ paddingRight: 10 }}>Next</Text>
                       </Button>
@@ -250,7 +309,7 @@ const OnlineGamePage = ({ navigation }) => {
                         style={{ width: "100%", color: "green" }}
                         onPress={() => {
                           setCheck(false);
-                          submitRes();
+                          submitRes(false);
                         }}
                       >
                         <Text style={{ paddingLeft: 0 }}>Submit</Text>
@@ -262,7 +321,7 @@ const OnlineGamePage = ({ navigation }) => {
             </Box>
           
         </NativeBaseProvider>
-    </View>
+      </View>
   );
  
 };
@@ -270,6 +329,14 @@ const OnlineGamePage = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  leaveButtonContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "red",
+    borderRadius: 20,
+    padding: 5,
   },
 
   textStyle: {

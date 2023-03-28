@@ -173,7 +173,7 @@ const Home = (props) => {
               style={{ backgroundColor: "#172f38" }}
               
               // onPress={() => navigation.navigate("Xyz")}
-              onPress={() => props.nav.navigate("Xyz")}
+              onPress={() => props.nav.navigate("Topics")}
               
             >
               Practice Mode

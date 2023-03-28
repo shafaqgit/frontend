@@ -15,6 +15,9 @@ import Friends from "../screens/Friends";
 import RequestPage from "../screens/RequestPage";
 import OnlineFriends from "../screens/OnlineFriends";
 import OnlineGamePage from "../screens/OnlineGamePage";
+import MultiplayerResultScreen from "../screens/MultiplayerResultScreen";
+import Topics from "../screens/Topics";
+import Result from "../screens/Result";
 
 const stackNavigatorOptions = {
   headerShown: true,
@@ -41,17 +44,32 @@ const AppNavigator = createStackNavigator(
       screen: NonFriends,
       navigationOptions: { title: "All Users" },
     },
+    Result: {
+      screen: Result,
+      navigationOptions: { title: "Result" },
+    },
     RequestPage: {
       screen: RequestPage,
       navigationOptions: { title: "RequestPage" },
     },
     Friends: { screen: Friends, navigationOptions: { title: "Friends" } },
+    Topics: { screen: Topics, navigationOptions: { title: "Topics" } },
     Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
     Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
-    OnlineFriends: { screen: OnlineFriends, navigationOptions: { title: "Online Users" } },
-    OnlineGamePage: { screen: OnlineGamePage, navigationOptions: { title: "Online Mode" } },
+    OnlineFriends: {
+      screen: OnlineFriends,
+      navigationOptions: { title: "Online Users" },
+    },
+    OnlineGamePage: {
+      screen: OnlineGamePage,
+      navigationOptions: { headerShown: false },
+    },
+    MultiplayerResultScreen: {
+      screen: MultiplayerResultScreen,
+      navigationOptions: { title: "Final Result" },
+    },
   },
   {
     defaultNavigationOptions: stackNavigatorOptions,

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Timer from "../components/Timer";
+import axios from "axios";
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,18 +28,135 @@ import { AuthContext } from "../context/AuthContext";
 // LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
-const Xyz = ({ navigation }) => {
+const Xyz = (props) => {
+
+  
+  // const route = useRoute();
   const [data, setData] = useState([]);
+  const [data1, setData1] = useState(null);
   const [timeLeft, setTimeLeft] = useState(60);
   const [count, setCount] = useState(0);
   const [nexted, setNext] = useState(0);
   const [check, setCheck] = useState(false);
   const [isLoading, setisLoading] = useState(true);
-
+  // const [booleanOption, setBooleanOption] = useState({});
+  const [booleanOption, setBooleanOption] = useState({});
+  const [res, setRes]= useState([]);
+  const [color, setColor]=useState("blue");
+  const [score, setScore] = useState(0);
+  const { userInfo, setUserInfo } = useContext(AuthContext);
   const { serverUrl, serverPort } = useContext(AuthContext);
-
+  const [skillLevel, setSkillLevel] = useState(1);
   const baseUrl = serverUrl + serverPort;
+ 
+  const {index}=props;
 
+  
+  // Call the callback function passed in through the navigation parameters with the data you want to pass back
+  const handleData = (data) => {
+  
+     
+      const newDataObj = { 
+        player:userInfo.user._id,
+        optionsRes: res,
+        stage: "S1",
+        topicid:userInfo.user.personalTopics[props.navigation.state.params.index]._id
+      };
+    //  console.log("mera data", newDataObj)
+    // const newDataObj = { data: newData };
+    // this.data.push(newDataObj);
+    const apiURL = baseUrl + "/api/AddResult";
+      axios.post( apiURL , newDataObj)
+      .then(response => {
+        setUserInfo((userInfo) => ({
+          ...userInfo,
+          user: response.data.U_player
+        }));
+      
+        
+        let percentageScore=response.data.P_score
+        let obtainedScore=response.data.T_score
+        let totalScore=response.data.Totalmarks
+        let count=response.data.T_count
+        props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count})
+        // console.log('Percentage Score:', response.data.P_score);
+        // console.log('Total added:', response.data.T_score);
+        // console.log("TotalMarks:", response.data.Totalmarks)
+        // console.log("Total Count :", response.data.T_count)
+      })
+      .catch(error => {
+        console.error('Error adding result:', error);
+      });
+
+     
+
+    
+  
+
+
+
+    // console.log("my topics",userInfo.user)
+    // props.navigation.getParam('onResult')(data);
+    setData1(data);
+    // console.log(res)
+    
+    props.navigation.navigate('Topics')
+  };
+  const handleOptions=(key, value)=>{
+
+    setBooleanOption(prevBooleanOption => ({
+      ...prevBooleanOption,
+      [question]: option
+    }));
+    // setBooleanOption({
+    //   ...booleanOption, // Spread operator to copy existing key-value pairs
+    //   [key]: value, // Set the new value for the specified key
+    // });
+  }
+  const handleButtonClick = (question,option) => {
+    setBooleanOption({
+      ...booleanOption,
+      [question]: option
+
+    });
+    // console.log("ibtisam",booleanOption[question])
+  };
+
+  const makeResult=(ques_id, answer, difficulty)=>{
+  
+    let newObj={}
+  
+    data.map(item => {
+      
+      if(item._id===ques_id){
+        console.log("mein agyaaa")
+        if (answer === item.correctAnswer) {
+          newObj = { question_id: ques_id, selected: answer, difficulty:difficulty, IsCorrect:true };
+          
+        }
+        else{
+          newObj = { question_id: ques_id, selected: answer, difficulty:difficulty, IsCorrect:false };
+        }
+ 
+      }
+      
+    });
+    const index = res.findIndex(obj => obj.id === newObj.question_id);
+
+
+    if (index === -1) {
+      setRes([...res, newObj]);
+    } else {
+      setRes([...res.slice(0, index), newObj, ...res.slice(index + 1)]);
+    }
+
+  }
+  useEffect(() => {
+    console.log("Score updated: ", score);
+    
+  }, [score]);
+  
+  
   const getListPhotos = () => {
     const apiURL = baseUrl + "/api/questions";
     fetch(apiURL)
@@ -84,12 +203,14 @@ const Xyz = ({ navigation }) => {
                   {/* {item.id == { count } && item.questionContent} */}
 
                   {item.questionContent}
+                 
                 </Text>
               </Card>
             </Box>
 
             <Box>
-              {item.options.map((i) => {
+              {item.options.map((i,ans) => {
+                 
                 return (
                   <Box
                     flexDirection={"column"}
@@ -101,9 +222,34 @@ const Xyz = ({ navigation }) => {
                       justifyContent={"center"}
                       borderRadius="20"
                       size="sm"
+                      // backgroundColor={selectedAnswerIndex[i] === i ? "green.400" : "gray.200"}
+                      // onPress={() => handleOptions(i)}
+                      // backgroundColor={color}
+                      onPress={() => {
+                        handleButtonClick(item._id, i)
+                        makeResult(item._id, i, item.difficulty)
+                      }
+                      }
+                      
+                     
+                      style={{
+                        backgroundColor:
+                          
+                        booleanOption[item._id] === i ? "green" : color,
+                      }}
+
+                      
+                    // onPress={() => handleButtonClick(item.questionContent,i)}
+
+                      
+                      // style={{
+                      //   backgroundColor: booleanOption[item.questionContent] === i ? 'green' : 'blue',
+                        
+                      // }}
                     >
                       {" "}
                       {i}
+                     
                     </Button>
                   </Box>
                 );
@@ -158,6 +304,7 @@ const Xyz = ({ navigation }) => {
           {check == false ? (
             <Button
               onPress={() => {
+                // calculateScore()
                 setCheck(true);
               }}
             >
@@ -211,7 +358,10 @@ const Xyz = ({ navigation }) => {
                       <Button
                         style={{ width: "100%", color: "green" }}
                         onPress={() => {
+                          
+                          handleData(1);
                           setCheck(false);
+                          
                         }}
                       >
                         <Text style={{ paddingLeft: 0 }}>Submit</Text>

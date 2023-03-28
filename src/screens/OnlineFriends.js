@@ -93,6 +93,7 @@ const OnlineFriends = () => {
     // setAcceptChallenge(data);
 
     // console.log("Challenge Denied ");
+    alert(`Challenge Rejected`)
 
     setIsSent((isSent) => isSent.filter((item) => item !== gameData.gameWith));
   });
@@ -278,7 +279,7 @@ useEffect(() => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>No any friend is online at the moment</Text>
+          <Text style={styles.text}>No online friend at the moment</Text>
           </View>
         )
       )}
