@@ -7,14 +7,15 @@ import { AuthContext } from "../context/AuthContext";
 const RatingStars = ({ skillLevel }) => {
   return (
     <View style={styles.ratingContainer}>
-      {[1, 2, 3].map((i) => (
+      {/* {[1, 2, 3].map((i) => (
         <Ionicons
           key={i}
           name={i <= skillLevel ? "star" : "star-outline"}
           size={20}
           color={i <= skillLevel ? "gold" : "gray"}
         />
-      ))}
+      ))} */}
+      
     </View>
   );
 };
@@ -174,4 +175,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Topics;
+export default Topics;

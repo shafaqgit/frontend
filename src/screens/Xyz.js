@@ -78,6 +78,7 @@ const Xyz = (props) => {
         let obtainedScore=response.data.T_score
         let totalScore=response.data.Totalmarks
         let count=response.data.T_count
+        
         props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count})
         // console.log('Percentage Score:', response.data.P_score);
         // console.log('Total added:', response.data.T_score);
@@ -412,4 +413,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Xyz;
+export default Xyz;

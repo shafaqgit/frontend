@@ -261,10 +261,13 @@ const OnlineGamePage = ( { navigation }) => {
           
             <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
 
+            <Button size="sm"  onPress={handleLeaveGame} variant="outline" colorScheme="secondary" style={styles.leaveButtonContainer}>
+            Leave
+          </Button>
                     
-            <TouchableOpacity onPress={handleLeaveGame}  style={styles.leaveButtonContainer}>
+            {/* <TouchableOpacity onPress={handleLeaveGame}  style={styles.leaveButtonContainer}>
                <AntDesign name="close" size={24} color="white" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
               <Timer check={check} func={setCheck} isPlaying={isPlaying} setIsPlaying={setIsPlaying} nextQues={next} remainingTime={remainingTime} />
 
@@ -337,6 +340,7 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 20,
     padding: 5,
+    color: "white"
   },
 
   textStyle: {
