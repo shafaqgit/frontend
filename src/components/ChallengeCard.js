@@ -36,9 +36,9 @@ const ChallengeCard = (props) => {
         resizeMode="contain"
         alt="User Profile"
       />
-      <View style={styles.wrapText}>
+      {/* <View style={styles.wrapText}>
         <Text style={styles.textStyle}> {props.item.challenger.user.firstName}  {props.item.challenger.user.lastName}</Text>
-      </View>
+      </View> */}
     </View>
 
     <View

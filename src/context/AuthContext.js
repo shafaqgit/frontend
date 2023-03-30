@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useState, useEffect } from "react";
+import { Permissions } from 'expo-permissions';
 import { Buffer } from "buffer";
 import axios from "axios";
 import io from "socket.io-client";
@@ -7,7 +8,7 @@ import  socket  from "../service/socket";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = "http://192.168.10.34";
+  const serverUrl = "http://192.168.10.4";
   const serverPort = ":3000";
   const socketPort = ":8080";
   const baseUrl = serverUrl + serverPort;
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [onlineUser, setOnlineUser] = useState(null);
 
   const [challengeRequest,setChallengeRequest]=useState(null);
-
+ 
 
   // useEffect(() => {
   //   socket.on('challengeRequest', (data) => {
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 
 
   useEffect(() => {
+  
     socket.on("userConnected", (user) => {
       const set = new Set(JSON.parse(user));
       setOnlineUser(set);
@@ -59,6 +61,8 @@ export const AuthProvider = ({ children }) => {
   }, [onlineUser]);
 
   const login = (email, password) => {
+
+
     setIsLoading(true);
     axios
       .post(`${baseUrl}/api/player/signin`, {
@@ -69,6 +73,14 @@ export const AuthProvider = ({ children }) => {
         // Decode the base64-encoded image data
         // res.data.user.profilePicture = Buffer.from(res.data.user.profilePicture, 'base64').toString();
         // res.data.user.profilePicture = res.data.user._id+"_profile.jpeg"
+        // Permissions.getAsync(Permissions.CAMERA_ROLL)
+        // .then((result) => {
+        //   if (result.status === 'granted') {
+        //     console.log('Permission granted');
+        //   } else {
+        //     console.log('Permission not granted');
+        //   }
+        // });
         let userInfo = res.data;
         setUserInfo(userInfo);
         setUserToken(userInfo.token);

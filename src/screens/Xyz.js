@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import Timer from "../components/Timer";
+import Timer from "../components/PTimer";
 import axios from "axios";
 
 import {

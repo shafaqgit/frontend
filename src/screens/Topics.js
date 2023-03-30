@@ -7,14 +7,14 @@ import { AuthContext } from "../context/AuthContext";
 const RatingStars = ({ skillLevel }) => {
   return (
     <View style={styles.ratingContainer}>
-      {/* {[1, 2, 3].map((i) => (
+      {[1, 2, 3].map((i) => (
         <Ionicons
           key={i}
           name={i <= skillLevel ? "star" : "star-outline"}
           size={20}
           color={i <= skillLevel ? "gold" : "gray"}
         />
-      ))} */}
+      ))}
       
     </View>
   );
@@ -68,8 +68,9 @@ const Topics = (props) => {
         const nextTopic = prevTopics[index + 1];
         if (canUnlockTopic(index) && (!nextTopic || !nextTopic.locked)) {
           return { ...topic, locked: false };
-        } else {
-          return { ...topic, locked: true };
+        } 
+        else {
+          return { ...topic};
         }
       });
   
@@ -79,9 +80,9 @@ const Topics = (props) => {
     });
   };
 
-  useEffect(() => {
-    updateTopicLockedStatus();
-  }, []);
+  // useEffect(() => {
+  //   updateTopicLockedStatus();
+  // }, []);
   
   return (
     <ScrollView>
@@ -89,11 +90,11 @@ const Topics = (props) => {
         {topics.map((topic, index) => (
           <View key={index} style={[styles.card, topic.locked && styles.lockedCard]}>
             <Text style={styles.title}>{topic.tName}</Text>
-            {topic.locked && (
+            {/* {topic.locked && (
               <TouchableOpacity style={styles.button} onPress={() => canUnlockTopic(index) && unlockTopic(index)}>
                 <Text style={styles.buttonText}>Unlock</Text>
               </TouchableOpacity>
-            )}
+            )} */}
             {!topic.locked && !topic.assessmentCompleted && (
               
               <TouchableOpacity style={styles.button} onPress={() => completeAssessment(index)}>
@@ -103,10 +104,10 @@ const Topics = (props) => {
 
             {!topic.locked && topic.assessmentCompleted && index !== topics.length - 1 && (
               <View style={{ flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.button} onPress={() => canUnlockTopic(index + 1) && unlockTopic(index + 1)}>
+              {/* <TouchableOpacity style={styles.button} onPress={() => canUnlockTopic(index + 1) && unlockTopic(index + 1)}>
                 <Text style={styles.buttonText}>Unlock Next Topic</Text>
                 
-              </TouchableOpacity >
+              </TouchableOpacity > */}
                <TouchableOpacity style={styles.button} onPress={() => completeAssessment(index)}>
                <Text style={styles.buttonText} >Complete Assessment</Text>
              </TouchableOpacity>
