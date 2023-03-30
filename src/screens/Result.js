@@ -17,6 +17,11 @@ const Result = ({navigation}) => {
       <Text style={styles.score}>
         Your total score is {navigation.state.params.percentageScore}%.
       </Text>
+
+      <Text style={styles.elapsedTime}>
+        Time Elapsed {navigation.state.params.elapsedTime} Seconds.
+      </Text>
+
       {score < 50 ? (
       <ConfettiCannon
         count={300}
@@ -62,6 +67,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  elapsedTime: {
+    fontSize: 16,
+    color: '#777',
+    marginTop: 8,
+  }
 });
 
 export default Result;

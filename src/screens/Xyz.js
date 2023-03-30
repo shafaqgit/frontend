@@ -47,15 +47,21 @@ const Xyz = (props) => {
   const { userInfo, setUserInfo } = useContext(AuthContext);
   const { serverUrl, serverPort } = useContext(AuthContext);
   const [skillLevel, setSkillLevel] = useState(1);
+
+  const [startTime, setStartTime] = useState(null);
+  const [time, setTime] = useState(new Date());
+
+
   const baseUrl = serverUrl + serverPort;
  
   const {index}=props;
-
+ 
   
   // Call the callback function passed in through the navigation parameters with the data you want to pass back
   const handleData = (data) => {
   
-     
+    const elapsedTime = ((new Date() - startTime)/1000).toFixed(2);
+    console.log("Time taken:", elapsedTime);
       const newDataObj = { 
         player:userInfo.user._id,
         optionsRes: res,
@@ -78,8 +84,10 @@ const Xyz = (props) => {
         let obtainedScore=response.data.T_score
         let totalScore=response.data.Totalmarks
         let count=response.data.T_count
+
         
-        props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count})
+        
+        props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count, elapsedTime})
         // console.log('Percentage Score:', response.data.P_score);
         // console.log('Total added:', response.data.T_score);
         // console.log("TotalMarks:", response.data.Totalmarks)
@@ -164,6 +172,8 @@ const Xyz = (props) => {
       .then((res) => res.json())
       .then((resJSON) => {
         setData(resJSON);
+        const x= new Date()
+        setStartTime(x)
         // console.log(resJSON);
       })
       .catch((error) => {
@@ -263,6 +273,7 @@ const Xyz = (props) => {
   };
 
   const startTimer = () => {
+    
     timer = setTimeout(() => {
       if (timeLeft <= 0) {
         clearTimeout(timer);
@@ -313,7 +324,12 @@ const Xyz = (props) => {
             </Button>
           ) : (
             <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
-              <Timer check={check} func={setCheck} />
+              {/* <Timer check={check} func={setCheck} /> */}
+              
+              {/* <Text>Time: {time.toLocaleString('en-US', { minute: 'numeric', second: 'numeric' })}</Text> */}
+
+              {/* <Text>Time: {new Date(startTime * 1000).toLocaleString('en-US', { minute: 'numeric', second: 'numeric' })}</Text> */}
+
               {/* <Center w="100%">
                 <View>
                   <Text>{timeLeft}</Text>

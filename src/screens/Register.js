@@ -58,9 +58,15 @@ const Register = ({ navigation }) => {
     navigation.navigate("Login");
   })
   .catch((error) => {
-    alert("Registration Failed");
-    isReg(false);
     // console.error(error);
+  if (error.response && error.response.data && error.response.data.message) {
+    // extract the error message from the error object
+    const errorMessage = error.response.data.message;
+    // display the error message in an alert
+    Alert.alert(errorMessage);
+  } else {
+    Alert.alert("Registration Failed");
+  }
   })
 }
   }

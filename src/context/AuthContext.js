@@ -94,9 +94,18 @@ export const AuthProvider = ({ children }) => {
         
         // return true;
       })
-      .catch((e) => {
-        console.log(`Login error ${e}`);
-        alert('Login failed. Please check your email and password.');
+      .catch((error) => {
+        console.log(`Login error ${error}`);
+        if (error.response && error.response.data && error.response.data.message) {
+          // extract the error message from the error object
+          const errorMessage = error.response.data.message;
+          // display the error message in an alert
+          alert(errorMessage);
+        } else {
+          alert("Login Failed");
+        }
+        
+        
         
       })
       .finally(() => {
