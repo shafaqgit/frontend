@@ -51,6 +51,7 @@ const Result = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#594057",
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -58,14 +59,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color:"white"
   },
   subtitle: {
     fontSize: 18,
     marginBottom: 8,
+    color:"white"
   },
   score: {
     fontSize: 24,
     fontWeight: 'bold',
+    color:"white"
   },
   elapsedTime: {
     fontSize: 16,

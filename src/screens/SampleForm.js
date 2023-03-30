@@ -203,6 +203,7 @@
 
 import { React, useState, useContext } from "react";
 import Home from "./Home.js";
+import { Ionicons } from "@expo/vector-icons";
 
 import {
   NativeBaseProvider,
@@ -255,7 +256,7 @@ const SampleForm = ({ navigation }) => {
     <NativeBaseProvider>
       <Home nav={navigation} />
       <HStack
-        bg="#172f38"
+        bg="#36162e"
         alignItems="center"
         // safeAreaBottom
         shadow={6}
@@ -272,7 +273,7 @@ const SampleForm = ({ navigation }) => {
           //  {...(selected === 0 && navigation.navigate("Home"))}
         >
           <Center>
-            {/* <Ionicons name="home" color="white" size="20px" /> */}
+            <Ionicons name="home" color="white" size="20px" />
             <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Home
             </Text>
@@ -287,9 +288,9 @@ const SampleForm = ({ navigation }) => {
           // {...(selected == 1 && navigation.navigate("List"))}
         >
           <Center>
-            {/* <Ionicons mb="1" name="person-add" color="white" size="20px" /> */}
+            <Ionicons mb="1" name="person-add" color="white" size="20px" />
             <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
-              Suggestions
+              Users
             </Text>
           </Center>
         </Pressable>
@@ -302,7 +303,7 @@ const SampleForm = ({ navigation }) => {
           //{...(selected === 2 && navigation.navigate("Profile"))}
         >
           <Center>
-            {/* <Ionicons mb="1" name="eye" color="white" size="20px" /> */}
+            <Ionicons mb="1" name="eye" color="white" size="20px" />
             <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Profile
             </Text>
@@ -319,7 +320,7 @@ const SampleForm = ({ navigation }) => {
           // {...(selected === 3 && navigation.navigate("Edit"))}
         >
           <Center>
-            {/* <Ionicons mb="1" name="power" color="white" size="20px" /> */}
+            <Ionicons mb="1" name="power" color="white" size="20px" />
             <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Sign off
             </Text>

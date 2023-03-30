@@ -146,7 +146,7 @@ const Home = (props) => {
       alt="Profile Picture"
     /> */}
 
-      <Box bg={"#2d596b"} flex={1}>
+      <Box bg={"#594057"} flex={1}>
         <Box
           bg="white"
           shadow={5}
@@ -170,7 +170,7 @@ const Home = (props) => {
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
             <Button
-              style={{ backgroundColor: "#172f38" }}
+              style={{ backgroundColor: "#b14b4b" }}
               
               // onPress={() => navigation.navigate("Xyz")}
               onPress={() => props.nav.navigate("Topics")}
@@ -204,7 +204,7 @@ const Home = (props) => {
             NEWS
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
-            <Button style={{ backgroundColor: "#172f38" }}
+            <Button style={{ backgroundColor: "#b14b4b" }}
             // onPress={() => navigation.navigate("OnlineFriends")}
             onPress={() => props.nav.navigate("OnlineFriends")}
             

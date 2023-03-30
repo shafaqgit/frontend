@@ -9,7 +9,7 @@ import Welcome from "../screens/Welcome";
 const stackNavigatorOptions = {
   headerShown: true,
   headerStyle: {
-    backgroundColor: "#172f38",
+    backgroundColor: "#36162e",
   },
   headerTintColor: "white",
   title: false,

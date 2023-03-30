@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Timer from "../components/PTimer";
 import axios from "axios";
-
+// import { Ionicons } from "@expo/vector-icons";
 import {
   SafeAreaView,
   StyleSheet,
@@ -24,7 +24,7 @@ import {
   NativeBaseProvider,
 } from "native-base";
 import { AuthContext } from "../context/AuthContext";
-
+LogBox.ignoreAllLogs();
 // LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
@@ -42,7 +42,7 @@ const Xyz = (props) => {
   // const [booleanOption, setBooleanOption] = useState({});
   const [booleanOption, setBooleanOption] = useState({});
   const [res, setRes]= useState([]);
-  const [color, setColor]=useState("blue");
+  const [color, setColor]=useState("#b14b4b");
   const [score, setScore] = useState(0);
   const { userInfo, setUserInfo } = useContext(AuthContext);
   const { serverUrl, serverPort } = useContext(AuthContext);
@@ -323,7 +323,7 @@ const Xyz = (props) => {
               Start Assessment
             </Button>
           ) : (
-            <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
+            <Box style={{ backgroundColor: "#594057", flex: 1 }}>
               {/* <Timer check={check} func={setCheck} /> */}
               
               {/* <Text>Time: {time.toLocaleString('en-US', { minute: 'numeric', second: 'numeric' })}</Text> */}
@@ -354,7 +354,7 @@ const Xyz = (props) => {
                           }
                         }}
                       >
-                        <Text style={{ paddingRight: 10 }}>Prev</Text>
+                        <Text style={{ paddingRight: 10 }}>Back</Text>
                       </Button>
 
                       <Button style={{ width: "40%" }} onPress={next}>

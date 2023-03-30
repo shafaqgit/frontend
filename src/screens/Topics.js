@@ -85,8 +85,8 @@ const Topics = (props) => {
   // }, []);
   
   return (
-    <ScrollView>
-      <View style={{marginTop:20}}>
+    <ScrollView style={{backgroundColor:"#594057"}}>
+      <View style={{marginTop:20, backgroundColor:"#594057"}}>
         {topics.map((topic, index) => (
           <View key={index} style={[styles.card, topic.locked && styles.lockedCard]}>
             <Text style={styles.title}>{topic.tName}</Text>
@@ -98,7 +98,7 @@ const Topics = (props) => {
             {!topic.locked && !topic.assessmentCompleted && (
               
               <TouchableOpacity style={styles.button} onPress={() => completeAssessment(index)}>
-                <Text style={styles.buttonText}>Complete Assessment</Text>
+                <Text style={styles.buttonText}>Begin Assessment</Text>
               </TouchableOpacity>
             )}
 
@@ -109,7 +109,7 @@ const Topics = (props) => {
                 
               </TouchableOpacity > */}
                <TouchableOpacity style={styles.button} onPress={() => completeAssessment(index)}>
-               <Text style={styles.buttonText} >Complete Assessment</Text>
+               <Text style={styles.buttonText} >Begin Assessment</Text>
              </TouchableOpacity>
              </View>
             )}
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   lockedCard:{
-    backgroundColor: 'pink'
+    backgroundColor: '#6f6f6f'
   },
   title: {
     fontSize: 20,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   button: {
-    backgroundColor: 'green',
+    backgroundColor: '#2b692d',
     padding: 10,
     marginLeft:10,
     borderRadius: 5,

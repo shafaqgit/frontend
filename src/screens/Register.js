@@ -86,7 +86,7 @@ const Register = ({ navigation }) => {
   };
   return (
     <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
-      <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
+      <View style={{ backgroundColor: "#594057", flex: 1 }}>
         <Image
           style={{
             height: 100,
@@ -181,6 +181,7 @@ const Register = ({ navigation }) => {
                   handleSubmit();
                 }}
                 mt="2"
+                backgroundColor={"#b14b4b"}
                 colorScheme="indigo"
               >
                 Sign up

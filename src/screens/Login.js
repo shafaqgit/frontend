@@ -47,7 +47,7 @@ const Login =  ({ navigation }) => {
   };
   return (
     <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
-      <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
+      <View style={{ backgroundColor: "#594057", flex: 1 }}>
         <Image
           style={{
             height: 100,
@@ -65,6 +65,7 @@ const Login =  ({ navigation }) => {
               size="lg"
               fontWeight="600"
               color="warmGray.800"
+              
               _dark={{
                 color: "warmGray.50",
               }}
@@ -132,6 +133,7 @@ const Login =  ({ navigation }) => {
                   handleSubmit();
                 }}
                 mt="2"
+                backgroundColor={"#b14b4b"}
                 colorScheme="indigo"
               >
                 Sign in
