@@ -8,7 +8,7 @@ import  socket  from "../service/socket";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = "http://192.168.10.4";
+  const serverUrl = "http://192.168.10.9";
   const serverPort = ":3000";
   const socketPort = ":8080";
   const baseUrl = serverUrl + serverPort;
@@ -91,11 +91,13 @@ export const AuthProvider = ({ children }) => {
        
 
         socket.emit("login", userInfo.user._id);
+        
         // return true;
       })
       .catch((e) => {
         console.log(`Login error ${e}`);
-        // return false;
+        alert('Login failed. Please check your email and password.');
+        
       })
       .finally(() => {
         setIsLoading(false);

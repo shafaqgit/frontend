@@ -43,32 +43,6 @@ const Edit = ({ navigation }) => {
     }
   };
 
-  // const validate = () => {
-  //   if (formData.OldPassword === undefined) {
-  //     setErrors({ ...errors, OldPassword: "Previous Password is required" });
-  //     return false;
-  //   }
-  //   if (formData.NewPassword === undefined) {
-  //     setErrors({ ...errors, NewPassword: "New Password is required" });
-  //     return false;
-  //   }
-
-  //   if (image === undefined) {
-  //     setErrors({ ...errors, image: "Image is required" });
-  //     return false;
-  //   }
-
-  //   // if (formData.lastName === undefined) {
-  //   //   setErrors({ ...errors, lastName: "Last Name is required" });
-  //   //   return false;
-  //   // } else if (formData.lastName.length < 3) {
-  //   //   setErrors({ ...errors, name: "Last Name is too short" });
-  //   //   return false;
-  //   // }
-
-  //   return true;
-  // };
-
   const validate = () => {
     if (formData.OldPassword === undefined) {
       setErrors({ ...errors, OldPassword: "Previous Password is required" });
@@ -78,74 +52,85 @@ const Edit = ({ navigation }) => {
       setErrors({ ...errors, NewPassword: "New Password is required" });
       return false;
     }
-  
+
     if (image === undefined) {
       setErrors({ ...errors, image: "Image is required" });
       return false;
     }
-  
+
+    // if (formData.lastName === undefined) {
+    //   setErrors({ ...errors, lastName: "Last Name is required" });
+    //   return false;
+    // } else if (formData.lastName.length < 3) {
+    //   setErrors({ ...errors, name: "Last Name is too short" });
+    //   return false;
+    // }
+
     return true;
   };
-  
 
- 
-  
   const onSubmit = async () => {
-    // validate form data
-    const isValid = validate();
-    if (!isValid) {
-      return;
-    }
-  
-    // check if image is present
-    if (!image) {
-      setErrors({ ...errors, image: "Image is required" });
-      return;
-    }
-  
-    // create form data
+    validate() ? console.log("Submitted") : console.log("Validation Failed");
     var UserData = new FormData();
+    
     UserData.append("OldPassword", formData.OldPassword);
     UserData.append("NewPassword", formData.NewPassword);
+    console.log("old password", formData.OldPassword)
+
+    // UserData.append('lastName',formData.lastName);
+    // UserData.append('email',formData.email);
+
     UserData.append("UserImage", {
       name: userInfo.user._id + "_profile" + ".jpeg",
       uri: image,
       type: "image/jpg",
     });
-  
-    // send API request
-    try {
-      const res = await axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData, {
+
+    console.log(UserData);
+
+    console.log(
+      "Going to edit the profile of: " +
+        userInfo.user._id +
+        " , " +
+        userInfo.user.firstName
+    );
+
+    const res = await axios.post(
+      `${baseUrl}/api/${userInfo.user._id}/edit`,
+      UserData,
+      {
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
           // authorization: `JWT ${token}`,
         },
-      });
-  
-      // handle response
-      if (res.data) {
-        console.log("Updated Picture (response): ", res.data.profilePicture);
-  
-        await setUserInfo((userInfo) => ({
-          ...userInfo,
-          user: {
-            ...userInfo.user,
-            profilePicture: res.data.profilePicture,
-          },
-        }));
-  
-        console.log("Updated Picture: ", userInfo.user.profilePicture);
-        await downloadImage(baseUrl + "/api/Image/" + res.data.profilePicture);
-        console.log("Updated");
-        navigation.navigate("Profile");
       }
-    } catch (error) {
-      console.error(error);
-      // handle error
+    );
+
+    if (res.data) {
+      console.log("Updated Picture (response): ", res.data.profilePicture);
+
+      await setUserInfo((userInfo) => ({
+        ...userInfo,
+        user: {
+          ...userInfo.user,
+          profilePicture: res.data.profilePicture,
+        },
+      }));
+
+      console.log("Updated Picture: ", userInfo.user.profilePicture);
+      await downloadImage(baseUrl + "/api/Image/" + res.data.profilePicture);
+      console.log("Updated");
+      navigation.navigate("Profile");
     }
+
+    // axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData)
+    //     .then(response => console.log({ response }))
+    //     .catch(error => {
+    //         console.log({ errorMessage: error });
+    //         console.error('There was an error!', error);
+    //     });
   };
-  
 
   const handlePhoto = async () => {
     // No permissions request is necessary for launching the image library

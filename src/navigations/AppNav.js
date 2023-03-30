@@ -12,11 +12,11 @@ const AppNav = () => {
     const {isLoading, userToken} = useContext(AuthContext);
   if(isLoading){
     console.log("Loading...");
-    return(
-    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-      <ActivityIndicator size={'large'}/>
-    </View>
-    );
+    // return(
+    // <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+    //   <ActivityIndicator size={'large'}/>
+    // </View>
+    // );
   }
   if(userToken !== null){
     // console.log("Token is not null");
