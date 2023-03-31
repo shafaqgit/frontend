@@ -264,7 +264,7 @@ useEffect(() => {
         <ActivityIndicator />
       ) : (
          anyOnlineFriends ? (
-        <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
+          <View style={{ backgroundColor: "#594057", flex: 1 }}>
           <FlatList
             data={data}
             keyExtractor={(item) => `key-${item._id}`}
@@ -279,7 +279,7 @@ useEffect(() => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>No online friend at the moment</Text>
+          <Text style={styles.text}>No online friend</Text>
           </View>
         )
       )}

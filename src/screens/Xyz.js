@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import Timer from "../components/Timer";
+import Timer from "../components/PTimer";
 import axios from "axios";
-
+// import { Ionicons } from "@expo/vector-icons";
 import {
   SafeAreaView,
   StyleSheet,
@@ -24,7 +24,7 @@ import {
   NativeBaseProvider,
 } from "native-base";
 import { AuthContext } from "../context/AuthContext";
-
+LogBox.ignoreAllLogs();
 // LogBox.ignoreAllLogs();
 const ITEM_MARGIN_BOTTOM = 20;
 let timer = () => {};
@@ -42,24 +42,31 @@ const Xyz = (props) => {
   // const [booleanOption, setBooleanOption] = useState({});
   const [booleanOption, setBooleanOption] = useState({});
   const [res, setRes]= useState([]);
-  const [color, setColor]=useState("blue");
+  const [color, setColor]=useState("#b14b4b");
   const [score, setScore] = useState(0);
   const { userInfo, setUserInfo } = useContext(AuthContext);
   const { serverUrl, serverPort } = useContext(AuthContext);
   const [skillLevel, setSkillLevel] = useState(1);
+
+  const [startTime, setStartTime] = useState(null);
+  const [time, setTime] = useState(new Date());
+
+
   const baseUrl = serverUrl + serverPort;
  
   const {index}=props;
-
+ 
   
   // Call the callback function passed in through the navigation parameters with the data you want to pass back
   const handleData = (data) => {
   
-     
+    const elapsedTime = ((new Date() - startTime)/1000).toFixed(2);
+    console.log("Time taken:", elapsedTime);
       const newDataObj = { 
         player:userInfo.user._id,
         optionsRes: res,
-        stage: "S1",
+        // stage: "S1",
+        stage: userInfo.user.personalTopics[props.navigation.state.params.index].stage,
         topicid:userInfo.user.personalTopics[props.navigation.state.params.index]._id
       };
     //  console.log("mera data", newDataObj)
@@ -78,8 +85,10 @@ const Xyz = (props) => {
         let obtainedScore=response.data.T_score
         let totalScore=response.data.Totalmarks
         let count=response.data.T_count
+
         
-        props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count})
+        
+        props.navigation.navigate('Result', {percentageScore,obtainedScore,totalScore, count, elapsedTime})
         // console.log('Percentage Score:', response.data.P_score);
         // console.log('Total added:', response.data.T_score);
         // console.log("TotalMarks:", response.data.Totalmarks)
@@ -164,6 +173,8 @@ const Xyz = (props) => {
       .then((res) => res.json())
       .then((resJSON) => {
         setData(resJSON);
+        const x= new Date()
+        setStartTime(x)
         // console.log(resJSON);
       })
       .catch((error) => {
@@ -263,6 +274,7 @@ const Xyz = (props) => {
   };
 
   const startTimer = () => {
+    
     timer = setTimeout(() => {
       if (timeLeft <= 0) {
         clearTimeout(timer);
@@ -312,8 +324,13 @@ const Xyz = (props) => {
               Start Assessment
             </Button>
           ) : (
-            <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
-              <Timer check={check} func={setCheck} />
+            <Box style={{ backgroundColor: "#594057", flex: 1 }}>
+              {/* <Timer check={check} func={setCheck} /> */}
+              
+              {/* <Text>Time: {time.toLocaleString('en-US', { minute: 'numeric', second: 'numeric' })}</Text> */}
+
+              {/* <Text>Time: {new Date(startTime * 1000).toLocaleString('en-US', { minute: 'numeric', second: 'numeric' })}</Text> */}
+
               {/* <Center w="100%">
                 <View>
                   <Text>{timeLeft}</Text>
@@ -338,7 +355,7 @@ const Xyz = (props) => {
                           }
                         }}
                       >
-                        <Text style={{ paddingRight: 10 }}>Prev</Text>
+                        <Text style={{ paddingRight: 10 }}>Back</Text>
                       </Button>
 
                       <Button style={{ width: "40%" }} onPress={next}>
@@ -413,4 +430,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Xyz;
+export default Xyz;

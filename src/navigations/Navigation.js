@@ -1,8 +1,7 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-import Login from "../screens/Login";
-import Register from "../screens/Register";
-import Welcome from "../screens/Welcome";
+import { Button } from 'react-native';
+
 import List from "../screens/List";
 import Edit from "../screens/Edit";
 import SampleForm from "../screens/SampleForm";
@@ -22,7 +21,7 @@ import Result from "../screens/Result";
 const stackNavigatorOptions = {
   headerShown: true,
   headerStyle: {
-    backgroundColor: "#172f38",
+    backgroundColor: "#36162e",
   },
   headerTintColor: "white",
   title: false,
@@ -35,7 +34,7 @@ const AppNavigator = createStackNavigator(
       screen: SampleForm,
       navigationOptions: { headerShown: false },
     },
-    Home: { screen: Home, navigationOptions: { title: "Home" } },
+    
     // Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
     // Register: { screen: Register, navigationOptions: { title: "Register" } },
     // Welcome: { screen: Welcome, navigationOptions: { title: "Welcome" } },
@@ -55,7 +54,24 @@ const AppNavigator = createStackNavigator(
     Friends: { screen: Friends, navigationOptions: { title: "Friends" } },
     Topics: { screen: Topics, navigationOptions: { title: "Topics" } },
     Edit: { screen: Edit, navigationOptions: { title: "Edit" } },
-    Xyz: { screen: Xyz, navigationOptions: { title: "Assessment" } },
+
+    MultiplayerResultScreen: { screen: MultiplayerResultScreen, navigationOptions: (props) => ({
+      title: "Final Result", 
+      headerLeft: () => (
+       <Button
+         title="Back"
+         onPress={() =>props.navigation.pop(2)}
+       />
+     ),
+   })
+  },
+
+  Xyz: {
+    screen: Xyz,
+    navigationOptions: { title: "Assessment" },
+  },
+  Home: { screen: Home, navigationOptions: { title: "Home" } },
+
     Assess: { screen: Assess, navigationOptions: { title: "Assess" } },
     Profile: { screen: Profile, navigationOptions: { title: "Profile" } },
     OnlineFriends: {
@@ -66,10 +82,7 @@ const AppNavigator = createStackNavigator(
       screen: OnlineGamePage,
       navigationOptions: { headerShown: false },
     },
-    MultiplayerResultScreen: {
-      screen: MultiplayerResultScreen,
-      navigationOptions: { title: "Final Result" },
-    },
+    
   },
   {
     defaultNavigationOptions: stackNavigatorOptions,

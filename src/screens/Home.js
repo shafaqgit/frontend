@@ -25,7 +25,7 @@ import {
   NativeBaseProvider,
   Input,
 } from "native-base";
-import { StyleSheet,View,TouchableOpacity,ActivityIndicator } from "react-native";
+import { StyleSheet,View,TouchableOpacity,ActivityIndicator , BackHandler, Alert } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import io from "socket.io-client";
 import  socket  from "../service/socket";
@@ -34,6 +34,27 @@ import ChallengeCard from "../components/ChallengeCard";
 // const Home = ({ navigation }) => {
 
 const Home = (props) => {
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const {serverUrl, serverPort, userInfo, onlineUser}= useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
@@ -146,7 +167,7 @@ const Home = (props) => {
       alt="Profile Picture"
     /> */}
 
-      <Box bg={"#2d596b"} flex={1}>
+        <Box bg={"#594057"} flex={1}>
         <Box
           bg="white"
           shadow={5}
@@ -170,7 +191,7 @@ const Home = (props) => {
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
             <Button
-              style={{ backgroundColor: "#172f38" }}
+              style={{ backgroundColor: "#b14b4b" }}
               
               // onPress={() => navigation.navigate("Xyz")}
               onPress={() => props.nav.navigate("Topics")}
@@ -204,10 +225,34 @@ const Home = (props) => {
             NEWS
           </Text>
           <Stack space={4} p={[4, 4, 8]}>
-            <Button style={{ backgroundColor: "#172f38" }}
-            // onPress={() => navigation.navigate("OnlineFriends")}
+          <Button style={{ backgroundColor: "#b14b4b" }}
             onPress={() => props.nav.navigate("OnlineFriends")}
-            
+            // onPress={() => navigation.navigate("OnlineFriends")}
+          //   onPress={() =>{
+          //     let currId=userInfo.user._id
+          //     var x={
+          //       "percentageScore":20,
+          //       "count":4,
+          //       "gameData": {
+          //         "players": [{
+          //           "64251ec9f0be34cfea261a5e": {
+          //             "Total_Score":0.45
+          //           },
+          //           "2343":{
+
+          //           }
+          //       }]
+          //         ,
+          //         "winner":userInfo.user._id,
+          //         "left":false,
+          //       }
+          //     }
+          //      props.navigation.navigate("MultiplayerResultScreen",{x})
+          //     // var percentageScore=20,obtainedScore=10,totalScore=100, count=7
+          //     // props.nav.navigate('Result', {percentageScore,obtainedScore,totalScore, count})
+               
+          // }
+          // }
             >
               Challenge Mode
             </Button>

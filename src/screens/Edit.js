@@ -14,10 +14,11 @@ import {
   Card,
   NativeBaseProvider,
   Input,
+  SecureEntry
 } from "native-base";
 import { AuthContext } from "../context/AuthContext";
 // import SampleForm from "./SampleForm";
-// LogBox.ignoreAllLogs();
+LogBox.ignoreAllLogs();
 
 
 const Edit = ({ navigation }) => {
@@ -28,7 +29,7 @@ const Edit = ({ navigation }) => {
 
   const [formData, setData] = useState({});
   const [errors, setErrors] = useState({});
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(userInfo.user.profilePicture);
 
   const downloadImage = async (imageUrl) => {
     // console.log("Image Url is: ", imageUrl);
@@ -70,31 +71,40 @@ const Edit = ({ navigation }) => {
   };
 
   const onSubmit = async () => {
-    validate() ? console.log("Submitted") : console.log("Validation Failed");
+    validate() ? console.log("Submitted") : console.log("Failed Updation");
     var UserData = new FormData();
+    var ImageData =new FormData();
+
+    if(formData.OldPassword!==undefined){
     UserData.append("OldPassword", formData.OldPassword);
     UserData.append("NewPassword", formData.NewPassword);
+    console.log("old password", formData.OldPassword)
+
+    axios.post(`${baseUrl}/api/${userInfo.user._id}/update-password`, {
+        OldPassword: formData.OldPassword,
+        NewPassword: formData.NewPassword
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error.response.data);
+      });
+
+    }
+
     // UserData.append('lastName',formData.lastName);
     // UserData.append('email',formData.email);
-
-    UserData.append("UserImage", {
+    if (image !== userInfo.user.profilePicture) {
+    ImageData.append("UserImage", {
       name: userInfo.user._id + "_profile" + ".jpeg",
       uri: image,
       type: "image/jpg",
     });
 
-    console.log(UserData);
-
-    console.log(
-      "Going to edit the profile of: " +
-        userInfo.user._id +
-        " , " +
-        userInfo.user.firstName
-    );
-
-    const res = await axios.post(
-      `${baseUrl}/api/${userInfo.user._id}/edit`,
-      UserData,
+      const res = await axios.post(
+      `${baseUrl}/api/${userInfo.user._id}/update-profile-picture`,
+      ImageData,
       {
         headers: {
           Accept: "application/json",
@@ -102,31 +112,37 @@ const Edit = ({ navigation }) => {
           // authorization: `JWT ${token}`,
         },
       }
-    );
-
-    if (res.data) {
-      console.log("Updated Picture (response): ", res.data.profilePicture);
-
-      await setUserInfo((userInfo) => ({
+    ).then(response=>{
+      setUserInfo((userInfo) => ({
         ...userInfo,
         user: {
           ...userInfo.user,
-          profilePicture: res.data.profilePicture,
+          profilePicture: response.data.profilePicture,
         },
       }));
 
-      console.log("Updated Picture: ", userInfo.user.profilePicture);
-      await downloadImage(baseUrl + "/api/Image/" + res.data.profilePicture);
+    }).catch(error => {
+      console.log(`Login error ${error}`);
+      if (error.response && error.response.data && error.response.data.message) {
+        // extract the error message from the error object
+        const errorMessage = error.response.data.message;
+        // display the error message in an alert
+        alert(errorMessage);
+      } else {
+        alert("Login Failed");
+      }
+        // console.error(error.response.data);
+    });
+
+  }
+
+   
+
+      
+      await downloadImage(baseUrl + "/api/Image/" + userInfo.user.profilePicture);
       console.log("Updated");
       navigation.navigate("Profile");
-    }
-
-    // axios.post(`${baseUrl}/api/${userInfo.user._id}/edit`, UserData)
-    //     .then(response => console.log({ response }))
-    //     .catch(error => {
-    //         console.log({ errorMessage: error });
-    //         console.error('There was an error!', error);
-    //     });
+    
   };
 
   const handlePhoto = async () => {
@@ -149,7 +165,7 @@ const Edit = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
+      <Box style={{ backgroundColor: "#594057", flex: 1 }}>
         <Center flex={1}>
           <Card
             backgroundColor={"white"}
@@ -176,6 +192,7 @@ const Edit = ({ navigation }) => {
               <FormControl isRequired isInvalid={"image" in errors}>
                 <Button
                   marginBottom={10}
+                  backgroundColor={"#b14b4b"}
                   // leftIcon={<Ionicons name="cloud-upload-outline" size="sm" />}
                   onPress={handlePhoto}
                 >
@@ -202,6 +219,7 @@ const Edit = ({ navigation }) => {
                   onChangeText={(value) =>
                     setData({ ...formData, OldPassword: value })
                   }
+                  secureTextEntry // Add this line to hide the password
                 />
                 {"OldPassword" in errors ? (
                   <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
@@ -211,6 +229,7 @@ const Edit = ({ navigation }) => {
                   </FormControl.HelperText>
                 )}
               </FormControl>
+
 
               <FormControl isRequired isInvalid={"NewPassword" in errors}>
                 <FormControl.Label
@@ -225,6 +244,7 @@ const Edit = ({ navigation }) => {
                   onChangeText={(value) =>
                     setData({ ...formData, NewPassword: value })
                   }
+                  secureTextEntry={true}
                 />
                 {"NewPassword" in errors ? (
                   <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
@@ -235,7 +255,10 @@ const Edit = ({ navigation }) => {
                 )}
               </FormControl>
 
-              <Button onPress={onSubmit} mt="5" colorScheme="cyan">
+
+              <Button onPress={onSubmit} mt="5" 
+              backgroundColor={"#b14b4b"}
+              colorScheme="cyan">
                 Submit
               </Button>
             </VStack>
@@ -246,4 +269,4 @@ const Edit = ({ navigation }) => {
   );
 };
 
-export default Edit;
+export default Edit

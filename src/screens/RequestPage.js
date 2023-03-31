@@ -30,7 +30,7 @@ const RequestPage = () => {
   const [activeButtonsR, setActiveButtonsR] = useState([]);
   const [isRem, setIsRem] = useState([]);
 
-  const {serverUrl, serverPort, userInfo}= useContext(AuthContext);
+  const {serverUrl, serverPort, userInfo, numRequests,  setNumRequests}= useContext(AuthContext);
   const baseUrl = serverUrl+serverPort;
   const [data, setData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
@@ -64,6 +64,17 @@ const RequestPage = () => {
         });
 
     console.log("User-Id is: ", id)
+
+    if(userInfo){
+      axios.get(`${baseUrl}/api/reqNum/${userInfo.user._id}`)
+      .then(res => {
+        setNumRequests(res.data.friendRequestCount);
+       
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    }
     
     
   };
@@ -92,6 +103,8 @@ const RequestPage = () => {
        });
 
    console.log("User-Id is: ", id)
+
+   
    
    
  };
@@ -153,7 +166,9 @@ const RequestPage = () => {
 
             <View
               style={{ flexDirection: "row", marginLeft: 90, marginTop: 10 }}
+              
             >
+             {  activeButtonsR.includes(item._id) ? (<Text></Text>):(
               <TouchableOpacity>
               {isSent.includes(item._id) ? 
               (
@@ -210,9 +225,11 @@ const RequestPage = () => {
                 ))}
 
               </TouchableOpacity>
+             )}
 
+             { activeButtons.includes(item._id) ? (<Text></Text>) : (
               <TouchableOpacity>
-              {isRem.includes(item._id) ? 
+               {isRem.includes(item._id) ? 
               (
                 <Button
                     style={{
@@ -265,7 +282,8 @@ const RequestPage = () => {
                 </Text>
               </Button>
               ))}
-            </TouchableOpacity>
+             </TouchableOpacity>
+              )}
             </View>
           </View>
      
@@ -304,7 +322,7 @@ const RequestPage = () => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>You have no any Friend Requests</Text>
+          <Text style={styles.text}>No Requests</Text>
           </View>
         )
       )}

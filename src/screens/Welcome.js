@@ -100,12 +100,13 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Black",
     flex: 1,
     // backgroundColor: "#D2822D",
-    backgroundColor: "#2d596b",
+    backgroundColor: "#594057",
 
     alignItems: "center",
     justifyContent: "center",
   },
   buttonStyle: {
+    backgroundColor:"#b14b4b",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 35,

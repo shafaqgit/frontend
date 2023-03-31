@@ -184,7 +184,7 @@ const Profile = ({ navigation }) => {
     );
   };
   return (
-    <View backgroundColor="#2d596b" flex={1}>
+    <View backgroundColor="#594057" flex={1}>
       {/* <ImageBackground
         source={require("/Users/user/Desktop/frontend/FYP/assets/images/profile.jpg")}
         style={StyleSheet.absoluteFillObject}
@@ -206,7 +206,7 @@ const Profile = ({ navigation }) => {
           <NativeBaseProvider>
             <View
               style={{
-                bottom: "130%",
+                bottom: "140%",
                 flexDirection: "row",
                 flexWrap: "wrap",
                 justifyContent: "center",

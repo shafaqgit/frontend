@@ -228,7 +228,7 @@ const NonFriends = () => {
       {isLoading ? (
         <ActivityIndicator />
       ) : anyUser ? (
-        <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
+        <View style={{ backgroundColor: "#594057", flex: 1 }}>
           <FlatList
             data={data}
             keyExtractor={(item) => `key-${item._id}`}

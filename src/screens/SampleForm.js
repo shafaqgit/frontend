@@ -201,8 +201,10 @@
 
 
 
-import { React, useState, useContext } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import Home from "./Home.js";
+import { Badge } from 'react-native-elements';
+// import { Ionicons } from "@expo/vector-icons";
 
 import {
   NativeBaseProvider,
@@ -219,13 +221,18 @@ import {
 // import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, Dimensions } from "react-native";
 import { AuthContext } from "../context/AuthContext.js";
+import axios from "axios";
 
 // import Navigation from "../navigations/Navigation";
 
 const SampleForm = ({ navigation }) => {
-  const { logout } = useContext(AuthContext);
+
   const [selected, setSelected] = useState(0);
   const windowWidth = Dimensions.get("window");
+  const {serverUrl, serverPort, userInfo,  logout, numRequests, setNumRequests}= useContext(AuthContext);
+  const baseUrl = serverUrl+serverPort;
+
+
   const handleClick = (count) => {
     setSelected(count);
     switch (count) {
@@ -255,7 +262,7 @@ const SampleForm = ({ navigation }) => {
     <NativeBaseProvider>
       <Home nav={navigation} />
       <HStack
-        bg="#172f38"
+        bg="#36162e"
         alignItems="center"
         // safeAreaBottom
         shadow={6}
@@ -289,7 +296,7 @@ const SampleForm = ({ navigation }) => {
           <Center>
             {/* <Ionicons mb="1" name="person-add" color="white" size="20px" /> */}
             <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
-              Suggestions
+            Users
             </Text>
           </Center>
         </Pressable>
@@ -300,12 +307,20 @@ const SampleForm = ({ navigation }) => {
           flex={1}
           onPress={() => handleClick(2)}
           //{...(selected === 2 && navigation.navigate("Profile"))}
-        >
+         >
           <Center>
             {/* <Ionicons mb="1" name="eye" color="white" size="20px" /> */}
+           
             <Text color="white" fontSize="12" marginTop="5%" marginBottom="10%">
               Profile
             </Text>
+            {numRequests===0 ? (<View></View>):(
+            <Badge
+              value={numRequests}
+              containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+            />
+            )}
+           
           </Center>
         </Pressable>
         <Pressable

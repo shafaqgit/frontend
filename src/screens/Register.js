@@ -1,235 +1,6 @@
-// import React from "react";
-// import { useState } from "react";
-
-// import Ionicons from "@expo/vector-icons/Ionicons";
-// // import all the components we are going to use
-// import {
-//   TextInput,
-//   StyleSheet,
-//   View,
-//   Animated,
-//   Easing,
-//   TouchableHighlight,
-//   Text,
-// } from "react-native";
-
-// import { Button, NativeBaseProvider, Heading } from "native-base";
-// import { withOrientation } from "react-navigation";
-
-// const Register = () => {
-//   const [firstName, setFname] = useState("");
-//   const [lastName, setLname] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [contact, setContact] = useState("");
-//   const [profilePic, setProfile] = useState("");
-
-//   let rotateValueHolder = new Animated.Value(0);
-
-//   // const startImageRotateFunction = () => {
-//   //   rotateValueHolder.setValue(0);
-//   //   Animated.timing(rotateValueHolder, {
-//   //     toValue: 1,
-//   //     duration: 5000,
-//   //     easing: Easing.linear,
-//   //     useNativeDriver: false,
-//   //   }).start(() => startImageRotateFunction());
-//   // };
-
-//   // const RotateData = rotateValueHolder.interpolate({
-//   //   inputRange: [0, 1],
-//   //   outputRange: ["0deg", "360deg"],
-//   // });
-
-//   return (
-//     <NativeBaseProvider>
-//       <View style={styles.container}>
-//         <Text style={styles.textStyle}>SIGN UP</Text>
-//         <Animated.Image
-//           style={{
-//             width: 150,
-//             height: 150,
-//             top: -120,
-//             marginTop: 110,
-//             // transform: [{ rotate: RotateData }],
-//           }}
-//           source={require("../../assets/images/coding.png")}
-//         />
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             marginHorizontal: 40,
-//             alignItems: "center",
-//             padding: 5,
-//             borderWidth: 2,
-//             borderRadius: 35,
-//             shadowOpacity: 0.2,
-//             marginTop: 50,
-//             top: -40,
-//           }}
-//         >
-//           <Ionicons name="md-person" size={32} color="black" />
-//           <TextInput
-//             placeholder="First Name"
-//             value={firstName}
-//             onChangeText={(text) => setFname(text)}
-//             keyboardType="default"
-//             style={styles.input}
-//           />
-//         </View>
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             marginHorizontal: 40,
-//             alignItems: "center",
-//             padding: 5,
-//             borderWidth: 2,
-//             borderRadius: 35,
-//             shadowOpacity: 0.2,
-//             top: -20,
-//           }}
-//         >
-//           <Ionicons name="md-person" size={32} color="black" />
-//           <TextInput
-//             placeholder="Last Name"
-//             value={lastName}
-//             onChangeText={(text) => setLname(text)}
-//             keyboardType="default"
-//             style={styles.input}
-//           />
-//         </View>
-
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             marginHorizontal: 40,
-//             alignItems: "center",
-//             padding: 5,
-//             borderWidth: 2,
-//             borderRadius: 35,
-//             shadowOpacity: 0.2,
-//             top: 0,
-//           }}
-//         >
-//           <Ionicons name="md-mail" size={32} color="black" />
-//           <TextInput
-//             placeholder="Email"
-//             value={email}
-//             onChangeText={(text) => setEmail(text)}
-//             keyboardType="email-address"
-//             secureTextEntry
-//             style={styles.input}
-//           />
-//         </View>
-
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             marginHorizontal: 40,
-//             alignItems: "center",
-//             padding: 5,
-//             borderWidth: 2,
-//             borderRadius: 35,
-//             shadowOpacity: 0.2,
-//             top: 20,
-//           }}
-//         >
-//           <Ionicons name="md-key" size={32} color="black" />
-//           <TextInput
-//             placeholder="Password"
-//             value={password}
-//             onChangeText={(text) => setPassword(text)}
-//             keyboardType="visible-password"
-//             secureTextEntry
-//             style={styles.input}
-//           />
-//         </View>
-
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             marginHorizontal: 40,
-//             alignItems: "center",
-//             padding: 5,
-//             borderWidth: 2,
-//             borderRadius: 35,
-//             shadowOpacity: 0.2,
-//             top: 40,
-//             marginBottom: 50,
-//           }}
-//         >
-//           <Ionicons name="md-call" size={32} color="black" />
-//           <TextInput
-//             placeholder="Contact"
-//             value={contact}
-//             onChangeText={(text) => setContact(text)}
-//             keyboardType="default"
-//             secureTextEntry
-//             style={styles.input}
-//           />
-//         </View>
-
-//         <View marginBottom={"20%"}>
-//           <Button style={styles.buttonStyle}>SIGN UP</Button>
-//         </View>
-//         {/* <TouchableHighlight
-//         onPress={startImageRotateFunction}
-//         style={styles.buttonStyle}
-//       >
-//         <Text style={styles.buttonTextStyle}>Start Image Rotate Function</Text>
-//       </TouchableHighlight> */}
-//       </View>
-//     </NativeBaseProvider>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: "#D2822D",
-//   },
-//   input: {
-//     padding: 2,
-//     width: "80%",
-//     marginLeft: 10,
-//     fontFamily: "Roboto-Light",
-//     color: "white",
-//     fontSize: 20,
-//   },
-//   textStyle: {
-//     top: 250,
-//     marginBottom: 40,
-//     fontFamily: "Roboto-Black",
-//     color: "beige",
-//     fontSize: 40,
-//     textAlign: "center",
-//   },
-//   buttonStyle: {
-//     height: 55,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     borderRadius: 35,
-//     marginHorizontal: 20,
-//     marginVertical: 10,
-//     borderWidth: 1,
-//     minWidth: 250,
-//     shadowOpacity: 0.3,
-//   },
-//   buttonTextStyle: {
-//     fontFamily: "Roboto-Black",
-//     fontSize: 20,
-//     padding: 5,
-//     color: "white",
-//     textAlign: "center",
-//   },
-// });
-
-// export default Register;
-
 import React, { useState, useContext } from "react";
 import * as ImagePicker from "expo-image-picker";
+import axios from "axios"
 import {
   Center,
   Box,
@@ -245,7 +16,7 @@ import {
   Text,
   NativeBaseProvider,
 } from "native-base";
-import { Alert, View, Toast } from "react-native";
+import { Alert, View, Toast, ActivityIndicator} from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
 const Register = ({ navigation }) => {
@@ -260,9 +31,9 @@ const Register = ({ navigation }) => {
   const [hasShownAlert, setHasShownAlert] = useState(false);
   const [emailError, setemailError] = useState();
   const [image, setImage] = useState(null);
+  const [reg, isReg]= useState(false)
   let regEmail =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   const handleSubmit = () => {
    
     if (!email) {
@@ -270,29 +41,36 @@ const Register = ({ navigation }) => {
     } else if (!regEmail.test(email)) {
       Alert.alert("Invalid Email");
     } else {
-      fetch(`${baseUrl}/api/signup`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: fname,
-          lastName: lname,
-          email: email,
-        }),
-      })
-        .then((res) => {
-          res.json();
-          navigation.navigate("Login");
-        })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
+      isReg(true)
+
+  axios
+  .post(`${baseUrl}/api/player/signup`, {
+    firstName:fname,
+    lastName:lname,
+    email:email
+  })
+  .then((res) => {
+    console.log(res);
+    return res // Add return here
+  })
+  .then((data) => { // Handle response data here
+    console.log(data);
+    navigation.navigate("Login");
+  })
+  .catch((error) => {
+    // console.error(error);
+  if (error.response && error.response.data && error.response.data.message) {
+    // extract the error message from the error object
+    const errorMessage = error.response.data.message;
+    // display the error message in an alert
+    Alert.alert(errorMessage);
+  } else {
+    Alert.alert("Registration Failed");
+  }
+  })
+}
+  }
+
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -308,7 +86,7 @@ const Register = ({ navigation }) => {
   };
   return (
     <NativeBaseProvider style={{ backgroundColor: "#D2822D" }}>
-      <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
+      <View style={{ backgroundColor: "#594057", flex: 1 }}>
         <Image
           style={{
             height: 100,
@@ -389,8 +167,17 @@ const Register = ({ navigation }) => {
                   onChangeText={(text) => setEmail(text)}
                 />
               </FormControl>
+              {!isReg ?(
+                <Button
+                mt="2"
+                backgroundColor={"#b14b4b"}
+                colorScheme="indigo"
+              >
+                <ActivityIndicator size="small" color="#333" />
+              </Button>
 
-              <Button
+              ):(
+                <Button
                 onPress={() => {
                   handleSubmit();
                 }}
@@ -399,6 +186,9 @@ const Register = ({ navigation }) => {
               >
                 Sign up
               </Button>
+
+              )}
+              
               <HStack mt="6" justifyContent="center">
                 <Text
                   fontSize="sm"

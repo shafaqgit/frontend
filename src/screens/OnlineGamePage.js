@@ -73,6 +73,27 @@ const OnlineGamePage = ( { navigation }) => {
       setCheck(false);
       setOptionSelected(false);
       // props.nav.navigate("MultiplayerResultScreen", { res });
+
+      let currId=userInfo.user._id
+      var x={
+        "percentageScore":20,
+        "count":4,
+        "gameData": {
+          "players": [{
+            "64251ec9f0be34cfea261a5e": {
+              "Total_Score":0.45
+            },
+            "2343":{
+
+            }
+        }]
+          ,
+          "winner":"userInfo.user._id",
+          "left":false,
+        }
+      }
+      //  props.nav.navigate("MultiplayerResultScreen",x)
+
       navigation.navigate("MultiplayerResultScreen",  res );
     });
   

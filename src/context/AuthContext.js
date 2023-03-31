@@ -7,7 +7,7 @@ import  socket  from "../service/socket";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = "http://192.168.10.34";
+  const serverUrl = "http://192.168.137.223";
   const serverPort = ":3000";
   const socketPort = ":8080";
   const baseUrl = serverUrl + serverPort;
@@ -22,7 +22,9 @@ export const AuthProvider = ({ children }) => {
 
   const [challengeRequest,setChallengeRequest]=useState(null);
 
-
+  const [numRequests, setNumRequests] = useState(0);
+  
+  
   // useEffect(() => {
   //   socket.on('challengeRequest', (data) => {
   //     setChallengeRequest(data);
@@ -74,16 +76,23 @@ export const AuthProvider = ({ children }) => {
         setUserToken(userInfo.token);
         AsyncStorage.setItem("userToken", userInfo.token);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-
+        setNumRequests(userInfo.user.friendRequests.length)
         console.log(userInfo.user.firstName, " joined and Socket-ID:",socket.id);
        
 
         socket.emit("login", userInfo.user._id);
         // return true;
       })
-      .catch((e) => {
-        console.log(`Login error ${e}`);
-        // return false;
+      .catch((error) => {
+        console.log(`Login error ${error}`);
+        if (error.response && error.response.data && error.response.data.message) {
+          // extract the error message from the error object
+          const errorMessage = error.response.data.message;
+          // display the error message in an alert
+          alert(errorMessage);
+        } else {
+          alert("Login Failed");
+        }
       })
       .finally(() => {
         setIsLoading(false);
@@ -139,7 +148,8 @@ export const AuthProvider = ({ children }) => {
         socketPort,
         onlineUser,
         setUserInfo,
-        
+        numRequests,
+        setNumRequests,
       }}
     >
       {children}
