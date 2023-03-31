@@ -45,14 +45,19 @@ const Edit = ({ navigation }) => {
   };
 
   const validate = () => {
-    if (formData.OldPassword === undefined) {
-      setErrors({ ...errors, OldPassword: "Previous Password is required" });
-      return false;
-    }
-    if (formData.NewPassword === undefined) {
-      setErrors({ ...errors, NewPassword: "New Password is required" });
-      return false;
-    }
+
+    // if (formData.OldPassword.length < 6) {
+    //   setErrors({ ...errors, OldPassword: "Incorrect Length of Password" });
+    //   return false;
+    // }
+    // if (formData.OldPassword === undefined) {
+    //   setErrors({ ...errors, OldPassword: "Previous Password is required" });
+    //   return false;
+    // }
+    // if (formData.NewPassword === undefined) {
+    //   setErrors({ ...errors, NewPassword: "New Password is required" });
+    //   return false;
+    // }
 
     if (image === undefined) {
       setErrors({ ...errors, image: "Image is required" });
@@ -88,7 +93,16 @@ const Edit = ({ navigation }) => {
         console.log(response.data);
       })
       .catch(error => {
-        console.error(error.response.data);
+
+        if (error.response && error.response.data && error.response.data.message) {
+          // extract the error message from the error object
+          const errorMessage = error.response.data.message;
+          // display the error message in an alert
+          alert(errorMessage);
+        } else {
+          alert("Updation Failed");
+        }
+        // console.error(error.response.data);
       });
 
     }
@@ -129,7 +143,7 @@ const Edit = ({ navigation }) => {
         // display the error message in an alert
         alert(errorMessage);
       } else {
-        alert("Login Failed");
+        alert("Updation Failed");
       }
         // console.error(error.response.data);
     });

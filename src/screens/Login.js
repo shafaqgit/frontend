@@ -52,9 +52,10 @@ const Login =  ({ navigation }) => {
           style={{
             height: 100,
             width: 100,
-            marginLeft: 160,
+            
+            marginLeft: "40%",
             marginTop: 100,
-            marginBottom: 20,
+            // marginBottom: ,
           }}
           source={require("../../assets/images/coding.png")}
           alt="Application Logo"

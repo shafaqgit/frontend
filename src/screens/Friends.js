@@ -259,7 +259,7 @@ const Friends = () => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>You have no any friends</Text>
+          <Text style={styles.text}>You Have No Friends</Text>
           </View>
         )
       )}

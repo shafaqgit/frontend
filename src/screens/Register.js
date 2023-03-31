@@ -91,8 +91,8 @@ const Register = ({ navigation }) => {
           style={{
             height: 100,
             width: 100,
-            marginLeft: 160,
-            marginTop: 30,
+            marginLeft: "40%",
+            marginTop: "4%",
             // marginBottom: 10,
           }}
           source={require("../../assets/images/coding.png")}

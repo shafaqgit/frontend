@@ -8,7 +8,7 @@ import  socket  from "../service/socket";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = "http://192.168.10.9";
+  const serverUrl = "192.168.137.218";
   const serverPort = ":3000";
   const socketPort = ":8080";
   const baseUrl = serverUrl + serverPort;

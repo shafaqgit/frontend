@@ -65,7 +65,7 @@ const Xyz = (props) => {
       const newDataObj = { 
         player:userInfo.user._id,
         optionsRes: res,
-        stage: "S1",
+        stage: userInfo.user.personalTopics[props.navigation.state.params.index].stage,
         topicid:userInfo.user.personalTopics[props.navigation.state.params.index]._id
       };
     //  console.log("mera data", newDataObj)

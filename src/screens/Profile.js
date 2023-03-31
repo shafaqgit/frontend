@@ -206,10 +206,11 @@ const Profile = ({ navigation }) => {
           <NativeBaseProvider>
             <View
               style={{
-                bottom: "130%",
+                bottom: "140%",
                 flexDirection: "row",
                 flexWrap: "wrap",
                 justifyContent: "center",
+                
               }}
             >
               <TouchableOpacity
@@ -394,6 +395,7 @@ const Profile = ({ navigation }) => {
               >
                 <View
                   style={{
+                   
                     marginTop: cardGap,
 
                     width: cardWidth,
@@ -401,6 +403,7 @@ const Profile = ({ navigation }) => {
                     backgroundColor: "white",
                     borderRadius: 16,
                     shadowOpacity: 0.2,
+                   
                     // justifyContent: "center",
                     // alignItems: "center",
                   }}
@@ -409,6 +412,7 @@ const Profile = ({ navigation }) => {
                     source={require("../../assets/images/friend.jpg")}
                     style={StyleSheet.absoluteFillObject}
                     borderRadius={16}
+                    
                     // blurRadius={100}
                   />
                   <Text

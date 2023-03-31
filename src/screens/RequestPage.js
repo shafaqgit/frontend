@@ -304,7 +304,7 @@ const RequestPage = () => {
         </View>
         ) : (
           <View style={styles.container2}>
-          <Text style={styles.text}>You have no any Friend Requests</Text>
+          <Text style={styles.text}>You Have No Friend Requests</Text>
           </View>
         )
       )}
