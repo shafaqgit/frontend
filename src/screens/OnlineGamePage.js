@@ -259,7 +259,7 @@ const OnlineGamePage = ( { navigation }) => {
       
         <NativeBaseProvider>
           
-            <Box style={{ backgroundColor: "#2d596b", flex: 1 }}>
+            <Box style={{ backgroundColor: "#594057", flex: 1 }}>
 
             <Button size="sm"  onPress={handleLeaveGame} variant="outline" colorScheme="secondary" style={styles.leaveButtonContainer}>
             Leave

@@ -147,6 +147,7 @@ const Home = (props) => {
     /> */}
 
       <Box bg={"#594057"} flex={1}>
+      
         <Box
           bg="white"
           shadow={5}
@@ -156,6 +157,7 @@ const Home = (props) => {
           marginTop={"40%"}
           // justifyContent={"center"}
         >
+         
           <Image
             source={{
               uri: "https://i.pinimg.com/originals/54/e3/7d/54e37d8074ebcde1d96c77d7b2a7f310.gif",
@@ -173,7 +175,9 @@ const Home = (props) => {
               style={{ backgroundColor: "#b14b4b" }}
               
               // onPress={() => navigation.navigate("Xyz")}
+              //below is right 
               onPress={() => props.nav.navigate("Topics")}
+              
               
             >
               Practice Mode

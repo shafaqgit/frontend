@@ -18,14 +18,19 @@ import OnlineGamePage from "../screens/OnlineGamePage";
 import MultiplayerResultScreen from "../screens/MultiplayerResultScreen";
 import Topics from "../screens/Topics";
 import Result from "../screens/Result";
-
+import Analytics from "../screens/Analytics";
+import ChallengeAna from "../screens/ChallengeAna";
+import ProgressChart from "../screens/ProgressChart";
+import QuestionAna from "../screens/QuestionAna";
+import SkillChart from "../screens/SkillChart";
+import TopicAnalytics from "../screens/TopicAnalytics";
 const stackNavigatorOptions = {
   headerShown: true,
   headerStyle: {
     backgroundColor: "#36162e",
   },
   headerTintColor: "white",
-  title: false,
+  title: true,
 };
 
 const AppNavigator = createStackNavigator(
@@ -33,8 +38,34 @@ const AppNavigator = createStackNavigator(
     // Login: { screen: Login, navigationOptions: { headerShown: false } },
     SampleForm: {
       screen: SampleForm,
+     
       navigationOptions: { headerShown: false },
     },
+    Analytics:{
+      screen:Analytics,
+      navigationOptions:{headerShown:true, title:"Analytics"},
+    },
+    QuestionAna:{
+      screen:QuestionAna,
+      navigationOptions:{headerShown:true, title:"Question Analytics"},
+    },
+    ChallengeAna:{
+      screen:ChallengeAna,
+      navigationOptions:{headerShown:true, title:"Challenge Analytics"},
+    },
+    ProgressChart:{
+      screen:ProgressChart,
+      navigationOptions:{headerShown:true, title:"Progress Analytics"},
+    },
+    SkillChart:{
+      screen:SkillChart,
+      navigationOptions:{headerShown:true, title:"Skill Analytics"},
+    },
+    TopicAnalytics:{
+      screen:TopicAnalytics,
+      navigationOptions:{headerShown:true, title:"Topic Analytics"},
+    },
+    
     Home: { screen: Home, navigationOptions: { title: "Home" } },
     // Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
     // Register: { screen: Register, navigationOptions: { title: "Register" } },

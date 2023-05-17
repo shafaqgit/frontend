@@ -244,7 +244,7 @@ const Friends = () => {
         <ActivityIndicator />
       ) : (
          anyFriends ? (
-        <View style={{ backgroundColor: "#2d596b", flex: 1 }}>
+        <View style={{ backgroundColor: "#594057", flex: 1 }}>
           <FlatList
             data={data}
             keyExtractor={(item) => `key-${item._id}`}
@@ -270,11 +270,13 @@ const Friends = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   container2: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   textStyle: {
     fontSize: 18,

@@ -22,6 +22,7 @@ import {
   Center,
   Progress,
   NativeBaseProvider,
+  Input,
 } from "native-base";
 import { AuthContext } from "../context/AuthContext";
 LogBox.ignoreAllLogs();
@@ -191,6 +192,7 @@ const Xyz = (props) => {
     return (
       <NativeBaseProvider>
         {index == count && (
+          
           <Box>
             <Box
               bg="white"
@@ -203,21 +205,37 @@ const Xyz = (props) => {
               // justifyContent={"center"}
             >
               <Card paddingBottom={"15%"}>
+               
                 <Text
                   bold
-                  position="absolute"
+                  // position="absolute"
                   color="black"
                   top={0}
                   m={[1, -2, 8]}
                 >
                   {/* {...(selected == 3 && navigation.navigate("Edit"))} */}
                   {/* {item.id == { count } && item.questionContent} */}
-
+                  
                   {item.questionContent}
                  
                 </Text>
+              
               </Card>
             </Box>
+            {item.category === "641030f029a9b695aed5acfc" && (
+            <Box
+              flexDirection={"column"}
+              marginLeft={"5%"}
+              marginTop={"5%"}
+              marginRight={"5%"}
+              backgroundColor={"white"}
+              borderRadius={"20px"}
+            >
+              <Text style={{fontSize:"20px"}}>Input: {item.inputVal}</Text>
+              {/* Add your additional text box code here */}
+            </Box>
+          )}
+            
 
             <Box>
               {item.options.map((i,ans) => {
@@ -267,7 +285,8 @@ const Xyz = (props) => {
               })}
             </Box>
           </Box>
-        )}
+          )}
+        
       </NativeBaseProvider>
     );
   };

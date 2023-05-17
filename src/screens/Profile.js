@@ -32,8 +32,9 @@ import { AuthContext } from "../context/AuthContext";
 const cardGap = 16;
 
 const cardWidth = (Dimensions.get("window").width - cardGap * 3) / 2;
-
+const greetings = ["Salam" ,"Hello", "Hola", "Bonjour", "Ciao", "Konnichiwa", "Guten Tag", "Salut", "Privet"];
 const Profile = ({ navigation }) => {
+  
   const { userInfo, serverUrl, serverPort } = useContext(AuthContext);
   const baseUrl = serverUrl + serverPort;
   const [data, setData] = useState([]);
@@ -41,6 +42,10 @@ const Profile = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(true);
 
   // const [oneTimeLoad, setOneTimeLoad]= useState(false);
+  const getRandomGreeting = () => {
+    const randomIndex = Math.floor(Math.random() * greetings.length);
+    return greetings[randomIndex];
+  };
 
   const downloadImage = async (imageUrl) => {
     console.log("Image Url is: ", imageUrl);
@@ -108,6 +113,7 @@ const Profile = ({ navigation }) => {
       });
   };
   const renderItem = ({ item, index }) => {
+    const greeting = getRandomGreeting(); // Get a random greeting text
     return (
       <NativeBaseProvider>
         {/* <Image
@@ -156,7 +162,7 @@ const Profile = ({ navigation }) => {
                 fontSize={35}
                 bold
               >
-                Welcome
+                 {greeting}
               </Heading>
               <Heading
                 flexDirection={"column"}
@@ -288,7 +294,10 @@ const Profile = ({ navigation }) => {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity>
+              <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Analytics");
+              }}>
                 <View
                   style={{
                     marginTop: cardGap,
@@ -306,6 +315,7 @@ const Profile = ({ navigation }) => {
                     source={require("../../assets/images/analytics.jpg")}
                     style={StyleSheet.absoluteFillObject}
                     borderRadius={16}
+                    
                     // blurRadius={100}
                   />
                   <Text
@@ -320,7 +330,10 @@ const Profile = ({ navigation }) => {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity>
+              <TouchableOpacity
+                
+              >
+              
                 <View
                   style={{
                     marginTop: cardGap,
